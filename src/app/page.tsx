@@ -1,24 +1,56 @@
 "use client";
 
 import styles from "@/assets/styles/page.module.css";
+import { CustomCard } from "@/components/CustomCard/CustomCard";
 import { ac_store } from "@/redux";
-import { Button } from "@mantine/core";
+import { Button, Flex } from "@mantine/core";
 import { useState } from "react";
-
+import { json } from "@/assets/data/Json";
+import CardsCarousel from "@/components/CardsCarousel/CardsCarousel";
+import CarouselCard from "@/components/CarouselCard/CarouselCard";
 export default function Home() {
   const [incrementAmount, setIncrementAmount] = useState(1);
   const incrementValue = Number(incrementAmount) || 0;
   const re = ac_store.getActions();
   const c = re.useCounter();
-  // console.log();
+  const data = json;
 
   return (
     <main className={styles.main}>
       {/* <JsonInput>{re.root}</JsonInput> */}
-      <Button onClick={() => {
-         setIncrementAmount(+incrementAmount + 1);
-         c.increment(incrementAmount);
-      }}>{incrementValue}</Button>
+      <Flex
+        mih={50}
+        gap="md"
+        justify="flex-start"
+        align="flex-start"
+        direction="row"
+        wrap="wrap"
+        p="md">
+        {data.map((item) => {
+          return (
+            <CustomCard
+              key={item?.id}
+              title={item?.title}
+              image={item?.image}
+              price={item?.price}
+              isFavorite={item?.isFavorite}
+              rating={item?.rating}
+              description={item?.description}
+            />
+          );
+        })}
+      </Flex>
+
+      <Button
+        onClick={() => {
+          setIncrementAmount(+incrementAmount + 1);
+          c.increment(incrementAmount);
+        }}>
+        {incrementValue}
+      </Button>
+      <CardsCarousel />
+      {/* <CarouselCard /> */}
     </main>
   );
 }
+

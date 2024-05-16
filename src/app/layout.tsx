@@ -7,6 +7,7 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { StoreProvider } from "./store-provider";
+import BasicAppShell from "@/components/BasicAppShell/BasicAppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,13 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       </head>
       <body className={inter.className}>
         <StoreProvider>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+          <MantineProvider theme={theme}>
+            <BasicAppShell />
+            {children}
+          </MantineProvider>
         </StoreProvider>
       </body>
     </html>
   );
 }
+

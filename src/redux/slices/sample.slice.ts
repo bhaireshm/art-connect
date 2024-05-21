@@ -1,5 +1,4 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ACStore } from "../store";
 
 export interface CounterSliceState {
   value: number;
@@ -41,5 +40,3 @@ export const counterSlice: any = {
     selectStatus: (counter) => counter.status,
   },
 };
-
-ACStore.getInstance().inject(counterSlice);

@@ -2,7 +2,7 @@
 
 import styles from "@/assets/styles/page.module.css";
 import { CustomCard } from "@/components/CustomCard/CustomCard";
-import { ac_store } from "@/redux";
+import { store } from "@/redux";
 import { Button, Flex } from "@mantine/core";
 import { useState } from "react";
 import { json } from "@/assets/data/Json";
@@ -11,8 +11,8 @@ import '@mantine/carousel/styles.css';
 export default function Home() {
   const [incrementAmount, setIncrementAmount] = useState(1);
   const incrementValue = Number(incrementAmount) || 0;
-  const re = ac_store.getActions();
-  const c = re.useCounter();
+  const re = store();
+  console.log(re);
   const data = json;
 
   return (
@@ -43,11 +43,14 @@ export default function Home() {
       <CardsCarousel />
 
       <Button
+       
         onClick={() => {
-          setIncrementAmount(+incrementAmount + 1);
-          c.increment(incrementAmount);
-        }}>
+           setIncrementAmount(+incrementAmount + 1);
+           // c.increment(incrementAmount);
+          }}>
+        
         {incrementValue}
+      
       </Button>
     </main>
   );

@@ -7,7 +7,7 @@ import { Button, Flex } from "@mantine/core";
 import { useState } from "react";
 import { json } from "@/assets/data/Json";
 import CardsCarousel from "@/components/CardsCarousel/CardsCarousel";
-import CarouselCard from "@/components/CarouselCard/CarouselCard";
+import '@mantine/carousel/styles.css';
 export default function Home() {
   const [incrementAmount, setIncrementAmount] = useState(1);
   const incrementValue = Number(incrementAmount) || 0;
@@ -40,6 +40,7 @@ export default function Home() {
           );
         })}
       </Flex>
+      <CardsCarousel />
 
       <Button
         onClick={() => {
@@ -48,8 +49,6 @@ export default function Home() {
         }}>
         {incrementValue}
       </Button>
-      <CardsCarousel />
-      {/* <CarouselCard /> */}
     </main>
   );
 }

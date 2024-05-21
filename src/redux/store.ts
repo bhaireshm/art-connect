@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { camelCase, isDevelopment } from "@/utils";
 import {
   combineReducers,
@@ -313,3 +312,4 @@ function reduxDefaultlogger(): (
     return next(action);
   };
 }
+

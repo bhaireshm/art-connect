@@ -24,13 +24,19 @@
   },
   "rules": {
     "semi": "warn",
-    "quotes": ["error", "double", { "avoidEscape": true }],
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "import/extensions": "off",
     "consistent-return": "off",
     "no-console": "off",
     "linebreak-style": [
-      "error",
+      "warn",
       "windows"
     ],
     "@typescript-eslint/quotes": [

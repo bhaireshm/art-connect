@@ -6,7 +6,7 @@ import type { ReadOnlyProps } from "@/types";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { StoreProvider } from "./store-provider";
+import { StoreProvider } from "@/redux/store-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 

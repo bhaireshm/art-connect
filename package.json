@@ -15,11 +15,8 @@
     "prettier:check": "prettier --check './src/**/*.{ts,tsx}'",
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
     "format": "pnpm lint:fix && pnpm prettier:write",
-    "test": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
-    "jest": "jest",
-    "jest:watch": "jest --watch",
-    "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mantine/core": "^7.9.0",
@@ -42,6 +39,7 @@
     "eslint-config-next": "14.2.3",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "lint-staged": "^15.2.2",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",

@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo
+echo 🩺 Types checks...
+pnpm typecheck
+ERR=$?
+
+if [ $ERR -eq 0 ]; then
+  echo "Formated all staged files."
+else
+  echo "typechecks Failed."
+  echo "Fix type issues, add changes and try commit again."
+  false
+fi
+
+echo
+echo 🛠️ Lint checks...
+pnpm lint-staged
+ERR=$?
+
+if [ $ERR -eq 0 ]; then
+  echo "Formated all staged files."
+else
+  echo "code formatting check Failed."
+  echo "Run 'pnpm lint-staged', add changes and try commit again."
+  false
+fi

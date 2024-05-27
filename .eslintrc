@@ -34,7 +34,7 @@
     ],
     "react/react-in-jsx-scope": "off",
     "import/extensions": "off",
-    "consistent-return": "off",
+    // "consistent-return": "off",
     "no-console": "off",
     "linebreak-style": [
       "warn",

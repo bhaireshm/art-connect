@@ -1,7 +1,7 @@
-import { Welcome } from "./Welcome";
+import { CustomCard } from "./CustomCard";
 
 export default {
-  title: "Welcome",
+  title: "CustomCard",
 };
 
-export const Usage = () => <Welcome />;
+export const Usage = () => <CustomCard />;

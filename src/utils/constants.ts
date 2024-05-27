@@ -1,11 +1,11 @@
 export const PROJECT_NAME = "ArtConnect";
 
 export const SCHEMA_NAMES = Object.freeze({
-  USER: "User",
-  ARTIST: "Artist",
-  ARTWORK: "Artwork",
-  ORDER: "Order",
-  CART: "Cart",
-  PAGE_CONTENT: "PageContent",
+  USER: "Users",
+  ARTIST: "Artists",
+  ARTWORK: "Artworks",
+  // ORDER: "Orders",
+  // CART: "Carts",
+  // PAGE_CONTENT: "PageContents",
   // ADMIN_DASHBOARD: "AdminDashboard",
 });

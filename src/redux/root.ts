@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mergeObjects } from "@/utils";
 import type { CreateSliceOptions } from "@reduxjs/toolkit";
+
+import { mergeObjects } from "@/utils/helpers";
 
 function rootReducerData(options?: any) {
   let _rootReducerData: CreateSliceOptions = {

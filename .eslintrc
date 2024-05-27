@@ -3,7 +3,7 @@
     "mantine",
     "next/core-web-vitals",
     "plugin:@next/next/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
     // "plugin:jest/recommended",
   ],
   "plugins": [
@@ -20,7 +20,7 @@
     // }
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
   },
   "rules": {
     "semi": "warn",
@@ -29,17 +29,17 @@
     "import/extensions": "off",
     "consistent-return": "off",
     "no-console": "off",
-    "linebreak-style": [
-      "error",
-      "windows"
-    ],
+    // "linebreak-style": [
+    //   "error",
+    //   "windows"
+    // ],
     "@typescript-eslint/quotes": [
       "error",
       "double",
       {
         "avoidEscape": true,
-        "allowTemplateLiterals": true
-      }
-    ]
-  }
+        "allowTemplateLiterals": true,
+      },
+    ],
+  },
 }

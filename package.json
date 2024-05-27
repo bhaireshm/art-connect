@@ -16,11 +16,11 @@
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
     "format": "pnpm lint:fix && pnpm prettier:write",
     "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
-    "prepare": "husky"
+    "prepare": "git config core.hooksPath .hooks"
   },
   "dependencies": {
-    "@mantine/core": "^7.9.0",
-    "@mantine/hooks": "^7.9.0",
+    "@mantine/core": "^7.10.0",
+    "@mantine/hooks": "^7.10.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@tabler/icons-react": "^3.3.0",
     "mongoose": "^8.4.0",

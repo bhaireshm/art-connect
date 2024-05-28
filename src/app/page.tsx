@@ -1,12 +1,11 @@
 "use client";
 
 import styles from "@/assets/styles/page.module.css";
-import { CustomCard } from "@/components/CustomCard/CustomCard";
+import { CustomCard } from "@/components/customCard/CustomCard";
 import { store } from "@/redux";
-import { Button, Flex } from "@mantine/core";
-import { useState } from "react";
+import { Flex } from "@mantine/core";
 import { json } from "@/assets/data/Json";
-import CardsCarousel from "@/components/CardsCarousel/CardsCarousel";
+import CardsCarousel from "@/components/cardsCarousel/CardsCarousel";
 import "@mantine/carousel/styles.css";
 export default function Home() {
   const re = store();
@@ -15,7 +14,6 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      {/* <JsonInput>{re.root}</JsonInput> */}
       <Flex
         mih={50}
         gap="md"
@@ -24,7 +22,7 @@ export default function Home() {
         direction="row"
         wrap="wrap"
         p="md">
-        {data.map((item) => {
+        {data?.map((item) => {
           return (
             <CustomCard
               key={item?.id}
@@ -39,14 +37,7 @@ export default function Home() {
         })}
       </Flex>
       <CardsCarousel />
-
-      <Button
-        onClick={() => {
-          setIncrementAmount(+incrementAmount + 1);
-          // c.increment(incrementAmount);
-        }}>
-        {incrementValue}
-      </Button>
     </main>
   );
 }
+

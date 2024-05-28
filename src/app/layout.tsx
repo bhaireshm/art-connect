@@ -9,7 +9,7 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
-import BasicAppShell from "@/components/BasicAppShell/BasicAppShell";
+import BasicAppShell from "@/components/basicAppShell/BasicAppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 

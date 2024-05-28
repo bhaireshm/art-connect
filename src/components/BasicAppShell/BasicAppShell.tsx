@@ -1,34 +1,13 @@
 "use client";
-// import { AppShell, Avatar, Burger, Group, Image } from "@mantine/core";
-// import { useDisclosure } from "@mantine/hooks";
-// import NextImage from "next/image";
-// import img from "@/assets/image/logo.png";
 
-// export default function BasicAppShell() {
-//   const [opened, { toggle }] = useDisclosure();
-
-//   return (
-//     <AppShell
-//       header={{ height: 60 }}
-//       navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-//       padding="md">
-//       <AppShell.Header display={"flex"} dir="row">
-//         <Group h="100%" px="md">
-//           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-//           <Image component={NextImage} src={img} alt="My image" h={60} fit="contain" />
-//           <Avatar radius="xl" />
-//         </Group>
-//       </AppShell.Header>
-//     </AppShell>
-//   );
-// }
-
-import { Autocomplete, Group, Burger, rem, Image, Avatar } from "@mantine/core";
+import { Autocomplete, Group, Burger, rem, Image, Avatar, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import classes from "./BasicAppShell.module.css";
 import NextImage from "next/image";
 import img from "@/assets/image/logo.png";
+import { useRouter } from "next/navigation";
+
 const links = [
   { link: "/about", label: "Features" },
   { link: "/pricing", label: "Pricing" },
@@ -38,7 +17,7 @@ const links = [
 
 export default function BasicAppShell() {
   const [opened, { toggle }] = useDisclosure(false);
-
+  const router = useRouter();
   const items = links.map((link) => (
     <a
       key={link.label}
@@ -66,6 +45,13 @@ export default function BasicAppShell() {
             visibleFrom="xs"
           />
           <Group className={classes.links} visibleFrom="sm">
+            <Button>Sign up</Button>
+            <Button
+              onClick={() => {
+                router.push("/signin");
+              }}>
+              Sign in
+            </Button>
             <Avatar radius="xl" />
           </Group>
         </Group>

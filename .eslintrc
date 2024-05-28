@@ -3,7 +3,7 @@
     "mantine",
     "next/core-web-vitals",
     "plugin:@next/next/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
     // "plugin:jest/recommended",
   ],
   "plugins": [
@@ -20,33 +20,27 @@
     // }
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
   },
   "ignorePatterns": ["lint-staged.config.js"],
   "rules": {
     "semi": "warn",
-    "quotes": [
-      "error",
-      "double",
-      {
-        "avoidEscape": true
-      }
-    ],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "react/react-in-jsx-scope": "off",
     "import/extensions": "off",
     "consistent-return": "off",
     "no-console": "off",
-    "linebreak-style": [
-      "warn",
-      "windows"
-    ],
+    // "linebreak-style": [
+    //   "error",
+    //   "windows"
+    // ],
     "@typescript-eslint/quotes": [
       "error",
       "double",
       {
         "avoidEscape": true,
-        "allowTemplateLiterals": true
-      }
-    ]
-  }
+        "allowTemplateLiterals": true,
+      },
+    ],
+  },
 }

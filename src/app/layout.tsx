@@ -9,6 +9,7 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
+import BasicAppShell from "@/components/BasicAppShell/BasicAppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,13 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       </head>
       <body className={inter.className}>
         <StoreProvider>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+          <MantineProvider theme={theme}>
+            <BasicAppShell />
+            {children}
+          </MantineProvider>
         </StoreProvider>
       </body>
     </html>
   );
 }
+

@@ -31,7 +31,7 @@ export function CustomCard(props: any) {
 
       <Group justify="space-between" mt="md" mb="xs" wrap="wrap">
         <Button color="blue" mt="md" radius="md">
-          Add to cart
+          Add to cart sfjnnwi
         </Button>
         <Button color="blue" mt="md" radius="md">
           Buy now

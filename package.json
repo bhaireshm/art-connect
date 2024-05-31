@@ -16,7 +16,7 @@
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
     "format": "pnpm lint:fix && pnpm prettier:write",
     "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
-    "prepare": "git config core.hooksPath .hooks"
+    "prepare": "sh ./.hooks/prepare.sh"
   },
   "dependencies": {
     "@mantine/core": "^7.10.0",

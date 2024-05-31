@@ -1,15 +1,12 @@
 "use client";
 
 import styles from "@/assets/styles/page.module.css";
-import { CustomCard } from "@/components/CustomCard/CustomCard";
 import { store } from "@/redux";
 import { Button, Notification, Text } from "@mantine/core";
 
 export default function Home() {
   const re = store();
   console.log(re);
-  const data = json;
-
   return (
     <main className={styles.main}>
       <Text>Hello from ArtConnect</Text>

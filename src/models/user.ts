@@ -1,6 +1,6 @@
+import { SCHEMA_NAMES } from "@/utils/constants";
 import { randomUUID } from "crypto";
 import { model, Schema } from "mongoose";
-import { SCHEMA_NAMES } from "@/utils/constants";
 import { addressSchema } from "./address";
 
 const userSchema = new Schema({
@@ -20,8 +20,8 @@ const userSchema = new Schema({
     lastName: String,
     address: addressSchema,
   },
-  // orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }],
-  // wishlist: [{ type: Schema.Types.ObjectId, ref: "Artwork" }],
+  // orderHistory: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ORDER }],
+  // wishlist: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
   type: {
     enum: [SCHEMA_NAMES.USER, SCHEMA_NAMES.ARTIST],
     required: true,

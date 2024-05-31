@@ -9,6 +9,8 @@ ctrl_c() {
 # ctrl_c is the name of the signal ctrl_c function for SIGINT signal
 trap 'ctrl_c' SIGINT
 
+sh ./.hooks/prepare.sh
+
 echo
 echo 🩺 Types checks...
 pnpm typecheck

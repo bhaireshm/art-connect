@@ -20,8 +20,9 @@ type ReducerType = {
  * Refer the below link and implement the whole reducer injection
  * @link https://redux.js.org/usage/code-splitting#defining-an-injectreducer-function
  */
-export function addReducer(reducer: ReducerType) { // ReducerType[]
-  Object.keys(reducer).forEach(reducerName => {
+export function addReducer(reducer: ReducerType) {
+  // ReducerType[]
+  Object.keys(reducer).forEach((reducerName) => {
     store().replaceReducer(reducer[reducerName]);
   });
 }

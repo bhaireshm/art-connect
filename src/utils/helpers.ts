@@ -47,4 +47,3 @@ export function isDevelopment(MODE = "") {
   // process?.env?.MODE ||
   return ["development", "test", "dev"].some((mode) => mode === String(MODE).toLowerCase());
 }
-

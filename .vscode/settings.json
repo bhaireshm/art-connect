@@ -1,8 +1,1 @@
-{
-  "prettier.configPath": ".prettierrc",
-  "prettier.endOfLine": "auto",
-  "eslint.options": {
-    "rulePaths": "./.eslintrc"
-  }
-}
-
+{}

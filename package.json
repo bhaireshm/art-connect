@@ -19,7 +19,6 @@
     "prepare": "sh ./.hooks/prepare.sh"
   },
   "dependencies": {
-    "@mantine/carousel": "^7.9.1",
     "@mantine/core": "^7.10.0",
     "@mantine/hooks": "^7.10.0",
     "@reduxjs/toolkit": "^2.2.3",

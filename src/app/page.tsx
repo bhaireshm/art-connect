@@ -10,6 +10,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <Text>Hello from ArtConnect</Text>
+      <Text>Hello from Mantine</Text>
       <Button>button</Button>
       <Notification title="We notify you that">
         You are now obligated to give a star to Mantine project on GitHub
@@ -17,4 +18,3 @@ export default function Home() {
     </main>
   );
 }
-

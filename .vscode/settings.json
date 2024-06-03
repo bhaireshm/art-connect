@@ -1,1 +1,9 @@
-{}
+{
+  "prettier.configPath": "./.prettierrc",
+  "prettier.endOfLine": "crlf",
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "always" },
+  // "eslint.options": {
+  //   "rulesets": "./.eslintrc",
+  // },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

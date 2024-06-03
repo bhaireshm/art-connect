@@ -8,7 +8,7 @@ module.exports = {
 
     return [
       `prettier --relative --cache --write ${escapedFileNames}`,
-      `eslint --max-warnings=0 --cache --fix ${filesToLint}`,
+      `eslint --cache --fix ${filesToLint}`, //  --max-warnings=0 
       `git add ${escapedFileNames}`,
     ];
   },

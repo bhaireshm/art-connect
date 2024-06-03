@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Teachers
+- Font Author: Copyright 2023 The Teachers Project Authors (https://github.com/chankfonts/Teachers-fonts)
+- Font Source: https://fonts.gstatic.com/s/teachers/v1/H4c5BXKVncXVmUGsgTwx4E9oHx2xfjBr3powY55O4AS32A.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

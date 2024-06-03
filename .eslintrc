@@ -22,7 +22,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["lint-staged.config.js"],
+  "ignorePatterns": [".eslintrc","lint-staged.config.js", ".prettierrc", "postcss.config.js"],
   "rules": {
     "semi": "warn",
     "quotes": [
@@ -40,6 +40,7 @@
       "warn",
       "windows"
     ],
+    "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/quotes": [
       "error",
       "double",

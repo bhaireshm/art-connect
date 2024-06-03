@@ -11,28 +11,33 @@ trap 'ctrl_c' SIGINT
 
 sh ./.hooks/prepare.sh
 
-echo
-echo 🩺 Types checks...
-pnpm typecheck
-ERR=$?
+# Perform distribution, testing and docs creation only if the 'src' folder contents are modified.
+IS_SRC_MODIFIED=$(git status -s src)
 
-if [ $ERR -eq 0 ]; then
-  echo "Checking all staged files."
-else
-  echo "Typechecks Failed."
-  echo "Fix type issues, add changes and try commit again."
-  exit 1
-fi
+if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
+  echo
+  echo 🩺 Types checks...
+  pnpm typecheck
+  ERR=$?
 
-echo
-echo  🛠️ Lint checks...
-pnpm lint-staged
-ERR=$?
+  if [ $ERR -eq 0 ]; then
+    echo "Checking all staged files."
+  else
+    echo "Typechecks Failed."
+    echo "Fix type issues, add changes and try commit again."
+    exit 1
+  fi
 
-if [ $ERR -eq 0 ]; then
-  echo "Formated all staged files."
-else
-  echo "code formatting check Failed."
-  echo "Run 'pnpm lint-staged', add changes and try commit again."
-  exit 1
+  echo
+  echo 🛠️ Lint checks...
+  pnpm lint-staged
+  ERR=$?
+
+  if [ $ERR -eq 0 ]; then
+    echo "Formated all staged files."
+  else
+    echo "code formatting check Failed."
+    echo "Run 'pnpm lint-staged', add changes and try commit again."
+    exit 1
+  fi
 fi

@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# Stop the process and return false to
+ctrl_c() {
+  echo Stoping checks...
+  false
+}
+
+# ctrl_c is the name of the signal ctrl_c function for SIGINT signal
+trap 'ctrl_c' SIGINT
+
+sh ./.hooks/prepare.sh
+
+echo
+echo 🩺 Types checks...
+pnpm typecheck
+ERR=$?
+
+if [ $ERR -eq 0 ]; then
+  echo "Checking all staged files."
+else
+  echo "Typechecks Failed."
+  echo "Fix type issues, add changes and try commit again."
+  exit 1
+fi
+
+echo
+echo  🛠️ Lint checks...
+pnpm lint-staged
+ERR=$?
+
+if [ $ERR -eq 0 ]; then
+  echo "Formated all staged files."
+else
+  echo "code formatting check Failed."
+  echo "Run 'pnpm lint-staged', add changes and try commit again."
+  exit 1
+fi

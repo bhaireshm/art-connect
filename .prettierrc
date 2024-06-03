@@ -1,0 +1,7 @@
+{
+  "semi": true,
+  "printWidth": 100,
+  "singleQuote": false,
+  "bracketSameLine": true,
+  "endOfLine": "crlf"
+}

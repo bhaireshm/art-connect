@@ -9,3 +9,17 @@ export const SCHEMA_NAMES = Object.freeze({
   PAGE_CONTENT: "PageContents",
   ADMIN_DASHBOARD: "AdminDashboard",
 });
+
+export const CONSTANTS = Object.freeze({
+  LOGIN: "Login",
+  SIGNUP: "Signup",
+  CART: "Cart",
+  DISCOVER: "Discover",
+  LEARN: "Learn",
+  ACADEMY: "Academy",
+  ARTIST: "Artist",
+  ARTWORK: "Artwork",
+  ARTIST_INFO: "ArtistInfo",
+  ABOUTUS: "AboutUs",
+  CREATEITEM: "CreateItem",
+});

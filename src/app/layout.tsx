@@ -9,6 +9,8 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
+import { Navbar } from "@/components/navbar";
+import { FooterLinks } from "@/components/footer1/Footer";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -29,8 +31,12 @@ export default function RootLayout({ children }: ReadOnlyProps) {
         <ColorSchemeScript />
       </head>
       <body className={quicksand.className}>
-        <StoreProvider>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+      <StoreProvider>
+          <MantineProvider theme={theme}>
+            <Navbar />
+            <main>{children}</main>
+            <FooterLinks />
+          </MantineProvider>
         </StoreProvider>
       </body>
     </html>

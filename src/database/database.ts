@@ -1,6 +1,6 @@
 import { PROJECT_NAME } from "@/utils/constants";
 import Log from "@/utils/log";
-import { type ConnectOptions, Connection, connect, disconnect } from "mongoose";
+import { type ConnectOptions, Connection, type SchemaOptions, connect, disconnect } from "mongoose";
 import DatabaseError from "./db.error";
 
 class Database {
@@ -40,6 +40,20 @@ class Database {
 
   public async close(): Promise<void> {
     await this._instance.close();
+  }
+
+  public static getDefaultSchemaOptions(options?: SchemaOptions): SchemaOptions {
+    return {
+      timestamps: true,
+      versionKey: false,
+      toJSON: {
+        transform(_, ret) {
+          ret.id = ret._id;
+          delete ret._id;
+        },
+      },
+      ...options,
+    };
   }
 }
 

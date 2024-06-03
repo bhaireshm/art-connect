@@ -16,7 +16,7 @@ IS_SRC_MODIFIED=$(git status -s src)
 
 if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
   echo
-  echo 🩺 Types checks...
+  echo "🩺 Types checks..."
   pnpm typecheck
   ERR=$?
 
@@ -29,7 +29,7 @@ if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
   fi
 
   echo
-  echo 🛠️ Lint checks...
+  echo "🛠️ Lint checks..."
   pnpm lint-staged
   ERR=$?
 
@@ -41,3 +41,7 @@ if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
     exit 1
   fi
 fi
+
+# Get the list of modified files and save to a temporary file
+MODIFIED_FILES=$(git diff --cached --name-only)
+echo "$MODIFIED_FILES" >.git/MODIFIED_FILES.tmp

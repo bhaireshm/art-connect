@@ -1,5 +1,5 @@
 import { SCHEMA_NAMES } from "@/utils/constants";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const teamMemberSchema = new Schema({
   name: String,
@@ -29,5 +29,5 @@ const pageContentSchema = new Schema({
   },
 });
 
-const PageContent = model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema);
-export default PageContent;
+export default models[SCHEMA_NAMES.PAGE_CONTENT] ||
+  model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema);

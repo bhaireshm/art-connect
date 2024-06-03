@@ -5,15 +5,6 @@ class DatabaseCRUD {
 
   private constructor(instance: Connection) {
     this.instance = instance;
-    this.init();
-  }
-
-  public async init() {
-    this.loadModels();
-  }
-
-  private async loadModels(): Promise<void> {
-    await import("@/models"); //.then(console.log).catch(console.error);
   }
 
   public async create<T>(model: Model<T>, data: T): Promise<T> {
@@ -35,7 +26,7 @@ class DatabaseCRUD {
   public async update<T>(model: Model<T>, query: any, data: Partial<T>): Promise<T | null> {
     const session = await this.startSession();
     try {
-      await session.startTransaction();
+      session.startTransaction();
       const updated = await model.findOneAndUpdate(query, data, { new: true, session });
       await session.commitTransaction();
       return updated;

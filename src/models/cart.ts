@@ -1,5 +1,5 @@
 import { SCHEMA_NAMES } from "@/utils/constants";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 // 5. Shopping Cart Schema
 
@@ -14,5 +14,4 @@ const cartSchema = new Schema({
   totalCost: { type: Number, required: true },
 });
 
-const Cart = model(SCHEMA_NAMES.CART, cartSchema);
-export default Cart;
+export default models[SCHEMA_NAMES.CART] || model(SCHEMA_NAMES.CART, cartSchema);

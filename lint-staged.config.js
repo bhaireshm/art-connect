@@ -7,8 +7,8 @@ module.exports = {
     const filesToLint = await removeIgnoredFiles(fileNames);
 
     return [
-      `eslint --max-warnings=0 --cache --fix ${filesToLint}`,
       `prettier --relative --cache --write ${escapedFileNames}`,
+      `eslint --max-warnings=0 --cache --fix ${filesToLint}`,
       `git add ${escapedFileNames}`,
     ];
   },

@@ -1,5 +1,5 @@
 import { SCHEMA_NAMES } from "@/utils/constants";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const orderSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER, required: true },
@@ -31,5 +31,4 @@ const orderSchema = new Schema({
   estimatedDeliveryDate: { type: Date, required: true },
 });
 
-const Order = model(SCHEMA_NAMES.ORDER, orderSchema);
-export default Order;
+export default models[SCHEMA_NAMES.ORDER] || model(SCHEMA_NAMES.ORDER, orderSchema);

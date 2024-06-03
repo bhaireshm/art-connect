@@ -1,5 +1,5 @@
 import { SCHEMA_NAMES } from "@/utils/constants";
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 // 3. Artwork Schema
 const artworkSchema = new Schema({
@@ -17,5 +17,4 @@ const artworkSchema = new Schema({
   relatedArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
 });
 
-const Artwork = model(SCHEMA_NAMES.ARTWORK, artworkSchema);
-export default Artwork;
+export default models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, artworkSchema);

@@ -1,17 +1,11 @@
 "use client";
 
 import React from "react";
-
 import Image from "next/image";
-
 import styles from "@/assets/styles/page.module.css";
-
 import { Box, Container, Grid, Text, useMantineTheme } from "@mantine/core";
-
 import Art from "@/assets/image/Art.svg";
-
 import { CardsCarousel } from "@/components/cardsCarousel/CardsCarousel";
-
 import "@mantine/carousel/styles.css";
 
 export default function Home(): React.JSX.Element {

@@ -2,7 +2,7 @@ const path = require("path");
 const { ESLint } = require("eslint");
 
 module.exports = {
-  "./src/**/*.{ts,js,json}": async (fileNames) => {
+  "./src/**/*.{ts,tsx,js,json}": async (fileNames) => {
     const escapedFileNames = fileNames.map((fileName) => path.resolve(fileName)).join(" ");
     const filesToLint = await removeIgnoredFiles(fileNames);
 

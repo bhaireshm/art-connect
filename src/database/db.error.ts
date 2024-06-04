@@ -1,9 +1,10 @@
 import { Error } from "mongoose";
 
-export default class DatabaseError {
+export default class DatabaseError extends Error {
   public err: any;
 
   constructor(err: any) {
+    super(err);
     this.err = err;
     this.constructError();
   }

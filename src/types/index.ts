@@ -8,3 +8,5 @@ export interface Props {
 }
 
 export type ReadOnlyProps<T = Props> = Readonly<T & Props>;
+
+export type Params<S extends string> = { params: Record<S, string> };

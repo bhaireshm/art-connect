@@ -44,5 +44,7 @@ const userSchema = new Schema(
   Database.getDefaultSchemaOptions(),
 );
 
-const User = models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, userSchema);
-export default new DatabaseCRUD<typeof User>(User);
+const User = new DatabaseCRUD<typeof userSchema>(
+  models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, userSchema),
+);
+export default User;

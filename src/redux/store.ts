@@ -1,9 +1,8 @@
-import { configureStore, type Reducer } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, type Reducer } from "@reduxjs/toolkit";
 
-export const store = () =>
-  configureStore({
-    reducer: {},
-  });
+const reducers = combineReducers({});
+
+export const store = () => configureStore({ reducer: reducers });
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof store>;

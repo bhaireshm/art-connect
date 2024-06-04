@@ -29,7 +29,8 @@ try {
 
 const isApiModified = (file) =>
   file.startsWith('src/app/api') ||
-  file.startsWith('src/models') ||
+  file.startsWith('src/modules') ||
+  file.startsWith('src/core') ||
   file.startsWith('src/database');
 
 const isUiModified = (file) =>

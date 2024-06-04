@@ -10,11 +10,11 @@
     "export": "next build && next export",
     "typecheck": "tsc --noEmit",
     "lint": "next lint && pnpm lint:stylelint",
-    "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --cache --fix ./src/**/*.{ts,tsx}",
     "lint:stylelint": "stylelint ./src/**/*.css --cache",
     "prettier:check": "prettier --check './src/**/*.{ts,tsx}'",
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
-    "format": "pnpm lint:fix && pnpm prettier:write",
+    "format": "pnpm prettier:write && pnpm lint:fix",
     "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
     "prepare": "sh ./.hooks/prepare.sh"
   },

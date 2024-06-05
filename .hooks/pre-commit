@@ -16,20 +16,23 @@ IS_SRC_MODIFIED=$(git status -s src)
 
 if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
   echo
-  echo "🩺 Types checks..."
-  pnpm typecheck
+  echo "Build checks... 🛠️"
+  pnpm build
+  echo
+  # echo "Types checks... 🩺"
+  # pnpm typecheck
   ERR=$?
 
   if [ $ERR -eq 0 ]; then
     echo "Checking all staged files."
   else
-    echo "Typechecks Failed."
+    echo "Build Failed."
     echo "Fix type issues, add changes and try commit again."
     exit 1
   fi
 
   echo
-  echo "🛠️ Lint checks..."
+  echo "Lint checks... 📃"
   pnpm lint-staged
   ERR=$?
 

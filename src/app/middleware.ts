@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const allowedOrigins = ["https://*.github.com", "http://localhost"];
+const allowedOrigins = ["https://\\*.github.com", "http://localhost"];
 
 const corsOptions = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
@@ -26,17 +26,24 @@ export function middleware(request: NextRequest) {
   // Handle simple requests
   const response = NextResponse.next();
 
-  if (isAllowedOrigin) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-  }
+  if (isAllowedOrigin) response.headers.set("Access-Control-Allow-Origin", origin);
 
   Object.entries(corsOptions).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
 
+  // Authentication using cookies
+  // const currentUser = request.cookies.get("currentUser")?.value;
+  // if (currentUser && !request.nextUrl.pathname.startsWith("/dashboard")) {
+  //   return Response.redirect(new URL("/", request.url));
+  // }
+  // if (!currentUser && !request.nextUrl.pathname.startsWith("/login")) {
+  //   return Response.redirect(new URL("/login", request.url));
+  // }
+
   return response;
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };

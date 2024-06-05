@@ -1,24 +1,25 @@
 "use server";
 
 // https://nextjs.org/docs/app/building-your-application/routing/route-handlers#dynamic-route-segments
+import { NextRequest } from "next/server";
 
+import ResponseHandler from "@/core/response.handler";
 import DatabaseError from "@/database/db.error";
 import { User } from "@/modules";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   const users = await User.findAll({});
-  return NextResponse.json({ data: users });
+  return ResponseHandler.success(users);
 }
 
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     const user = await User.create(data);
-    return NextResponse.json({ data: user });
+    return ResponseHandler.success(user, 201);
   } catch (error) {
     const err = new DatabaseError(error).format();
-    return NextResponse.json(err, { status: err.status });
+    return ResponseHandler.error(err, err.message, 400);
   }
 }
 

@@ -11,12 +11,11 @@ class ResponseHandler {
   constructor(data: any, error?: any, message?: string, status?: number) {
     this.data = data;
     this.error = error;
-    this.message = message;
-
     if (status) {
       this.status = status;
       this.statusText = STATUS_CODES[status];
     }
+    this.message = message ?? this.statusText;
   }
 
   static success(data: any, arg2?: string | number, arg3?: number): NextResponse {

@@ -19,32 +19,30 @@ class DatabaseCRUD<T> extends Database {
   }
 
   public async create(data: T): Promise<T[]> {
-    const created = await this.model.create([data]);
-    return created;
+    return this.model.create([data]);
   }
 
-  public async update(query: any, data: Partial<T>): Promise<T | null> {
-    const updated = await this.model.findOneAndUpdate(query, data, { new: true });
-    return updated;
+  public async update(query: any, data: Partial<T>) {
+    return this.model.findOneAndUpdate(query, data, { new: true });
   }
 
   public async delete(query: any) {
     return this.model.deleteOne(query);
   }
 
-  public async findOne(query: any): Promise<T | null> {
+  public async findOne(query: any) {
     return this.model.findOne(query);
   }
 
-  public async findById(id: string): Promise<T | null> {
+  public async findById(id: string) {
     return this.model.findById(id);
   }
 
-  public async filter(pipeline: PipelineStage[], options?: AggregateOptions): Promise<T[]> {
+  public async filter(pipeline: PipelineStage[], options?: AggregateOptions) {
     return this.model.aggregate(pipeline, options);
   }
 
-  public async count(query: any): Promise<number> {
+  public async count(query: any) {
     return this.model.countDocuments(query);
   }
 }

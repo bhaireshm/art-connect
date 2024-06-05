@@ -1,45 +1,44 @@
+import { type NextRequest } from "next/server";
+
 import ResponseHandler from "@/core/response.handler";
 import DatabaseError from "@/database/db.error";
 import { User } from "@/modules";
 import type { Params } from "@/types";
-import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET(req: NextRequest, { params }: Params<"uid">) {
+const uid = "uid";
+
+export async function GET(req: NextRequest, { params }: Params<typeof uid>) {
   const userId = params.uid;
-  if (!userId) return NextResponse.json({ error: "Missing user ID" }, ResponseHandler.status(400));
+  if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
   const user = await User.findOne({ _id: userId });
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  if (!user) return ResponseHandler.error({ user }, "User not found", 404);
 
-  return NextResponse.json({ data: user }, { status: 200 });
+  return ResponseHandler.success(user);
 }
 
 export async function PUT(req: NextRequest) {
   try {
-    const userId = req.nextUrl.searchParams.get("uid");
-    if (!userId) {
-      return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
-    }
+    const userId = req.nextUrl.searchParams.get(uid);
+    if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
+
     const data = await req.json();
     const user = await User.update({ _id: userId }, data);
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-    return NextResponse.json({ data: user });
+    if (!user?.isModified()) return ResponseHandler.error({ user }, "User not found", 404);
+
+    return ResponseHandler.success(user, "User details updated");
   } catch (error) {
     const err = new DatabaseError(error).format();
-    return NextResponse.json(err, { status: err.status });
+    return ResponseHandler.error(err, err.message, err.status);
   }
 }
 
 export async function DELETE(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get("iid");
-  if (!userId) {
-    return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
-  }
+  const userId = req.nextUrl.searchParams.get(uid);
+  if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
+
   const user = await User.delete({ _id: userId });
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
-  }
-  return NextResponse.json({ data: user });
+  if (user.deletedCount) return ResponseHandler.error({ user }, "User not found", 404);
+
+  return ResponseHandler.success(user, "User deleted", 202);
 }

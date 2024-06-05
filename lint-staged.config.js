@@ -2,13 +2,13 @@ const path = require("path");
 const { ESLint } = require("eslint");
 
 module.exports = {
-  "./src/**/*.{ts,js,json}": async (fileNames) => {
+  "./src/**/*.{ts,tsx,js,json}": async (fileNames) => {
     const escapedFileNames = fileNames.map((fileName) => path.resolve(fileName)).join(" ");
     const filesToLint = await removeIgnoredFiles(fileNames);
 
     return [
-      `eslint --max-warnings=0 --cache --fix ${filesToLint}`,
       `prettier --relative --cache --write ${escapedFileNames}`,
+      `eslint --cache --fix ${filesToLint}`, //  --max-warnings=0 
       `git add ${escapedFileNames}`,
     ];
   },

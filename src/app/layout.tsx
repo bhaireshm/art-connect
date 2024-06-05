@@ -31,7 +31,7 @@ export default function RootLayout({ children }: ReadOnlyProps) {
         <ColorSchemeScript />
       </head>
       <body className={quicksand.className}>
-      <StoreProvider>
+        <StoreProvider>
           <MantineProvider theme={theme}>
             <Navbar />
             <main>{children}</main>
@@ -42,4 +42,3 @@ export default function RootLayout({ children }: ReadOnlyProps) {
     </html>
   );
 }
-

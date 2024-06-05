@@ -1,6 +1,6 @@
 import { PROJECT_NAME } from "@/utils/constants";
 import Log from "@/utils/log";
-import { type ConnectOptions, Connection, connect, disconnect } from "mongoose";
+import { type ConnectOptions, Connection, type SchemaOptions, connect, disconnect } from "mongoose";
 import DatabaseError from "./db.error";
 
 class Database {
@@ -14,20 +14,16 @@ class Database {
 
   public async connect(options?: ConnectOptions): Promise<Connection> {
     const MONGODB_URI = `${process.env.DB_URL}${process.env.DB_NAME}`;
-    if (!MONGODB_URI) throw new Error("MONGODB_URI not defined");
+    if (!MONGODB_URI) throw new DatabaseError("MONGODB_URI not defined");
     const dbOptions: ConnectOptions = {
       appName: PROJECT_NAME,
       ...options,
     };
 
-    try {
-      const connection = await connect(MONGODB_URI, dbOptions);
-      Log.info(`Connected to ${connection.connection.db.databaseName}`);
+    const connection = await connect(MONGODB_URI, dbOptions);
+    Log.info(`Connected to ${connection.connection.db.databaseName}`);
 
-      return connection.connection;
-    } catch (error) {
-      throw new DatabaseError(error);
-    }
+    return connection.connection;
   }
 
   public static async connect() {
@@ -40,6 +36,20 @@ class Database {
 
   public async close(): Promise<void> {
     await this._instance.close();
+  }
+
+  public static getDefaultSchemaOptions(options?: SchemaOptions): SchemaOptions {
+    return {
+      timestamps: true,
+      versionKey: false,
+      toJSON: {
+        transform(_, ret) {
+          ret.id = ret._id;
+          delete ret._id;
+        },
+      },
+      ...options,
+    };
   }
 }
 

@@ -8,11 +8,9 @@ const corsOptions = {
 };
 
 export function middleware(request: NextRequest) {
-  // Check the origin from the request
+  /************ Allowed origin checks ends here ************/
   const origin = request.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
-
-  // Handle preflighted requests
   const isPreflight = request.method === "OPTIONS";
 
   if (isPreflight) {
@@ -23,27 +21,21 @@ export function middleware(request: NextRequest) {
     return NextResponse.json({}, { headers: preflightHeaders });
   }
 
-  // Handle simple requests
   const response = NextResponse.next();
-
   if (isAllowedOrigin) response.headers.set("Access-Control-Allow-Origin", origin);
+  Object.entries(corsOptions).forEach(([key, value]) => response.headers.set(key, value));
 
-  Object.entries(corsOptions).forEach(([key, value]) => {
-    response.headers.set(key, value);
-  });
+  /************ Authentication using cookies ************/
+  const userToken = request.cookies.get("user")?.value;
+  const loginUrl = new URL("/login", request.url);
 
-  // Authentication using cookies
-  // const currentUser = request.cookies.get("currentUser")?.value;
-  // if (currentUser && !request.nextUrl.pathname.startsWith("/dashboard")) {
-  //   return Response.redirect(new URL("/", request.url));
-  // }
-  // if (!currentUser && !request.nextUrl.pathname.startsWith("/login")) {
-  //   return Response.redirect(new URL("/login", request.url));
-  // }
+  if (!userToken && !request.nextUrl.pathname.startsWith("/login")) return NextResponse.redirect(loginUrl);
+  if (!userToken) return NextResponse.redirect(loginUrl);
 
   return response;
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  // matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: ["/login"],
 };

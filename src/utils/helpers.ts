@@ -7,6 +7,7 @@
  */
 
 import type { AnyObj } from "@/types";
+import { createHmac, randomBytes } from "crypto";
 
 export function mergeObjects<T extends object>(obj1: AnyObj, obj2: AnyObj): T {
   const o1 = { ...obj1 };
@@ -46,4 +47,9 @@ export function camelCase(str: string, removeSpecialChars = false): string {
 export function isDevelopment(MODE = "") {
   // process?.env?.MODE ||
   return ["development", "test", "dev"].some((mode) => mode === String(MODE).toLowerCase());
+}
+
+export function hashData(data: string, salt?: string): string {
+  if (!salt) salt = randomBytes(16).toString("hex");
+  return createHmac("sha256", salt).update(data).digest("hex");
 }

@@ -10,7 +10,7 @@ import { hashData } from "@/utils/helpers";
 
 /** /api/users/ */
 export async function GET() {
-  const users = await User.findAll({});
+  const users = await User.findAll({}, { password: 0 });
   return ResponseHandler.success(users);
 }
 
@@ -23,9 +23,10 @@ export async function POST(req: NextRequest) {
     if (data.password) data.password = hashData(data.password, data.email);
 
     // Create user
-    const users = await User.create(data);
+    const user = await User.create(data);
+    user.forEach((u: any) => delete u.password);
 
-    return ResponseHandler.success(users.length === 1 ? users[0] : users, 201);
+    return ResponseHandler.success(user.length === 1 ? user[0] : user, 201);
   } catch (error) {
     const err = new DatabaseError(error).format();
     return ResponseHandler.error(err, err.message, 400);

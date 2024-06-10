@@ -19,7 +19,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // Hash the password
   const hashedPassword = hashData(password, email);
 
-  // verify the password with the stored user.password
+  // Verify the password with the stored user.password
   if (user.get("password") !== hashedPassword) {
     return ResponseHandler.error(
       { p: user.get("password"), hashedPassword },

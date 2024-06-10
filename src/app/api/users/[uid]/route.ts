@@ -11,20 +11,20 @@ export async function GET(req: NextRequest, { params }: Params<typeof uid>) {
   const userId = params.uid;
   if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
-  const user = await User.findOne({ _id: userId });
-  if (!user) return ResponseHandler.error({ user }, "User not found", 404);
+  const user = await User.findById(userId, { password: 0 });
+  if (!user) return ResponseHandler.error({ user, userId }, "User not found", 404);
 
   return ResponseHandler.success(user);
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
   try {
-    const userId = req.nextUrl.searchParams.get(uid);
+    const userId = params.uid;
     if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
     const data = await req.json();
-    const user = await User.update({ _id: userId }, data);
-    if (!user?.isModified()) return ResponseHandler.error({ user }, "User not found", 404);
+    const user = await User.update(userId, data);
+    if (!user) return ResponseHandler.error({ user, userId }, "User not found", 404);
 
     return ResponseHandler.success(user, "User details updated");
   } catch (error) {

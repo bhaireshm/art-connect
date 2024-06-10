@@ -24,16 +24,20 @@ class DatabaseCRUD<T> extends Database {
     this.model = model;
   }
 
-  public async findAll(query: any): Promise<T[]> {
-    return this.model.find(query);
+  public async findAll(query: any, projection?: ProjectionType<T>): Promise<T[]> {
+    return this.model.find(query, projection);
   }
 
   public async create(data: T, options?: CreateOptions): Promise<T[]> {
     return this.model.create([data], options);
   }
 
-  public async update(query: any, data: Partial<T>) {
-    return this.model.findOneAndUpdate(query, data, { new: true });
+  public async update(id: string, data: Partial<T>) {
+    return this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
+  }
+
+  public async updateMany(data: Partial<T>[]) {
+    return this.model.updateMany(data, { new: true }).exec();
   }
 
   public async delete(query: any) {
@@ -45,7 +49,7 @@ class DatabaseCRUD<T> extends Database {
   }
 
   public async findById(id: string, projection?: ProjectionType<T>) {
-    return this.model.findById(id, projection);
+    return this.model.findById(id, projection).exec();
   }
 
   public async filter(pipeline: PipelineStage[], options?: AggregateOptions) {

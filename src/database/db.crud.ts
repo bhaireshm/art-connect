@@ -1,4 +1,4 @@
-import { Model, type AggregateOptions, type PipelineStage } from "mongoose";
+import { Model, type AggregateOptions, type CreateOptions, type PipelineStage } from "mongoose";
 import Database from "./database";
 
 class DatabaseCRUD<T> extends Database {
@@ -18,8 +18,8 @@ class DatabaseCRUD<T> extends Database {
     return this.model.find(query);
   }
 
-  public async create(data: T): Promise<T[]> {
-    return this.model.create([data]);
+  public async create(data: T, options?: CreateOptions): Promise<T[]> {
+    return this.model.create([data], options);
   }
 
   public async update(query: any, data: Partial<T>) {

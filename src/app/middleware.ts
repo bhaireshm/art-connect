@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const allowedOrigins = ["https://*.github.com", "http://localhost"];
+const allowedOrigins = ["https://\\*.github.com", "http://localhost"];
 
 const corsOptions = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
@@ -8,11 +8,9 @@ const corsOptions = {
 };
 
 export function middleware(request: NextRequest) {
-  // Check the origin from the request
+  /************ Allowed origin checks ends here ************/
   const origin = request.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
-
-  // Handle preflighted requests
   const isPreflight = request.method === "OPTIONS";
 
   if (isPreflight) {
@@ -23,20 +21,21 @@ export function middleware(request: NextRequest) {
     return NextResponse.json({}, { headers: preflightHeaders });
   }
 
-  // Handle simple requests
   const response = NextResponse.next();
+  if (isAllowedOrigin) response.headers.set("Access-Control-Allow-Origin", origin);
+  Object.entries(corsOptions).forEach(([key, value]) => response.headers.set(key, value));
 
-  if (isAllowedOrigin) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-  }
+  /************ Authentication using cookies ************/
+  const userToken = request.cookies.get("user")?.value;
+  const loginUrl = new URL("/login", request.url);
 
-  Object.entries(corsOptions).forEach(([key, value]) => {
-    response.headers.set(key, value);
-  });
+  if (!userToken && !request.nextUrl.pathname.startsWith("/login")) return NextResponse.redirect(loginUrl);
+  if (!userToken) return NextResponse.redirect(loginUrl);
 
   return response;
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  // matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: ["/login"],
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Carousel } from "@mantine/carousel";
 import { Paper, Text, Button, useMantineTheme, rem, Box, ActionIcon, Divider } from "@mantine/core";
@@ -91,12 +92,11 @@ const data = [
 export function CardsCarousel(): JSX.Element {
   const router = useRouter();
   const theme = useMantineTheme();
-  const isFavorite = (id: number): void => {
-    data.forEach((item, ind) => {
-      if (item.id === id) {
-        data[ind].isFav = !item.isFav;
-      }
-    });
+  const [renderData, setRenderData] = useState(data);
+  const toggleFavorite = (cardId: number): void => {
+    setRenderData((prevData) =>
+      prevData.map((card) => (card.id === cardId ? { ...card, isFav: !card.isFav } : card)),
+    );
   };
   function Card({
     id,
@@ -134,7 +134,7 @@ export function CardsCarousel(): JSX.Element {
                 radius={50}>
                 <IconHeart
                   style={{ width: rem(25), height: rem(25) }}
-                  onClick={() => isFavorite(id)}
+                  onClick={() => toggleFavorite(id)}
                 />
               </ActionIcon>
             </Box>
@@ -183,7 +183,7 @@ export function CardsCarousel(): JSX.Element {
       </Box>
     );
   }
-  const slides = data?.map((item) => (
+  const slides = renderData?.map((item) => (
     <Carousel.Slide key={item.title}>
       <Card {...item} />
     </Carousel.Slide>

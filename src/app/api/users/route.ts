@@ -20,12 +20,12 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     // Encrypt the password
-    if (data.password) data.password = hashData(data.password);
+    if (data.password) data.password = hashData(data.password, data.email);
 
     // Create user
-    const user = await User.create(data);
+    const users = await User.create(data);
 
-    return ResponseHandler.success(user.length === 1 ? user[0] : user, 201);
+    return ResponseHandler.success(users.length === 1 ? users[0] : users, 201);
   } catch (error) {
     const err = new DatabaseError(error).format();
     return ResponseHandler.error(err, err.message, 400);

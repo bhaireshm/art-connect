@@ -45,23 +45,22 @@ export default function Home(): React.JSX.Element {
                 flexDirection: "column",
                 width: "50%",
               }}>
-              <Image src={Art} alt="art" objectFit="contain" width={800} />
+              <Image src={Art} alt="art" width={800} />
             </Box>
           </Grid.Col>
         </Grid>
-        <Box py={30} px={20}>
-          <Text
-            ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}
-            c={theme.colors.blue[9]}
-            fw={800}
-            py={10}>
-            Hot bid
-          </Text>
-          <CardsCarousel />
-        </Box>
       </Container>
+      <Box py={30} px={20}>
+        <Text
+          ff={theme.fontFamily}
+          fs={theme.fontSizes.xl}
+          c={theme.colors.blue[9]}
+          fw={800}
+          py={10}>
+          Hot bid
+        </Text>
+        <CardsCarousel />
+      </Box>
     </main>
   );
 }
-

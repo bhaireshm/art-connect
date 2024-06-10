@@ -14,13 +14,13 @@ import {
   Input,
   Text,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconSearch } from "@tabler/icons-react";
-import classes from "./navbar.module.css";
-import Logo from "../../assets/image/artConnect.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CONSTANTS } from "@/utils/constants";
+import Logo from "../../assets/image/artConnect.png";
+import classes from "./navbar.module.css";
 
 interface CustomButton {
   title: string;
@@ -33,7 +33,6 @@ export function Navbar(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
   const router = useRouter();
-  const isMobile = useMediaQuery("(max-width: 755px)");
   const isLogin = false;
 
   /**
@@ -44,18 +43,16 @@ export function Navbar(): React.JSX.Element {
    * background color (bg), and border radius (radius) properties. If the color, background color, or
    * border radius are not provided, default values are used from the theme.
    */
-  const CustomButton = ({ title, c, bg, radius }: CustomButton): JSX.Element => {
-    return (
+  const CustomButton = ({ title, c, bg, radius }: CustomButton): JSX.Element => (
       <Button
-        c={c || theme.colors.blue[1]}
-        bg={bg || theme.colors.blue[9]}
-        radius={radius || 50}
+        c={c ?? theme.colors.blue[1]}
+        bg={bg ?? theme.colors.blue[9]}
+        radius={radius ?? 50}
         ff={theme.fontFamily}
         fs={theme.fontSizes.xl}>
         {title}
       </Button>
     );
-  };
 
   return (
     <Box>

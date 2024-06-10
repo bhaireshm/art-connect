@@ -1,24 +1,24 @@
 "use client";
 
+import { ROUTES } from "@/utils/constants";
 import {
-  Group,
-  Button,
-  Divider,
+  Avatar,
   Box,
   Burger,
+  Button,
+  Divider,
   Drawer,
-  Avatar,
+  Group,
+  Input,
   ScrollArea,
+  Text,
   rem,
   useMantineTheme,
-  Input,
-  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconSearch } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CONSTANTS } from "@/utils/constants";
 import Logo from "../../assets/image/artConnect.png";
 import classes from "./navbar.module.css";
 
@@ -44,15 +44,15 @@ export function Navbar(): React.JSX.Element {
    * border radius are not provided, default values are used from the theme.
    */
   const CustomButton = ({ title, c, bg, radius }: CustomButton): JSX.Element => (
-      <Button
-        c={c ?? theme.colors.blue[1]}
-        bg={bg ?? theme.colors.blue[9]}
-        radius={radius ?? 50}
-        ff={theme.fontFamily}
-        fs={theme.fontSizes.xl}>
-        {title}
-      </Button>
-    );
+    <Button
+      c={c ?? theme.colors.blue[1]}
+      bg={bg ?? theme.colors.blue[9]}
+      radius={radius ?? 50}
+      ff={theme.fontFamily}
+      fs={theme.fontSizes.xl}>
+      {title}
+    </Button>
+  );
 
   return (
     <Box>
@@ -61,32 +61,38 @@ export function Navbar(): React.JSX.Element {
           <Box
             h="100%"
             component="div"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(ROUTES.HOME.path)}
             style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Image height={100} width={100} src={Logo} alt="logo" />
             {/* <Divider orientation="vertical" h="85%" size="md" /> */}
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
-            <Box onClick={() => router.push("/discover")} className={classes.link} variant="link">
+            <Box
+              onClick={() => router.push(ROUTES.DISCOVER.path)}
+              className={classes.link}
+              variant="link">
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.DISCOVER}
+                {ROUTES.DISCOVER.label}
               </Text>
             </Box>
             <Box component="div" onClick={() => router.push("/learn")} className={classes.link}>
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.CREATEITEM}
+                {ROUTES.CREATEITEM.label}
               </Text>
             </Box>
-            <Box component="div" onClick={() => router.push("/aboutus")} className={classes.link}>
+            <Box
+              component="div"
+              onClick={() => router.push(ROUTES.ABOUTUS.path)}
+              className={classes.link}>
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.ABOUTUS}
+                {ROUTES.ABOUTUS.label}
               </Text>
             </Box>
           </Group>
           <Group visibleFrom="sm">
             <Input placeholder="Search" leftSection={<IconSearch size={16} />} radius={50} />
-            <CustomButton title={isLogin ? CONSTANTS.SIGNUP : CONSTANTS.LOGIN} />
-            {!isLogin && <CustomButton title={CONSTANTS.SIGNUP} />}
+            <CustomButton title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label} />
+            {!isLogin && <CustomButton title={ROUTES.SIGNUP.label} />}
             <Box
               component="div"
               style={{
@@ -98,7 +104,7 @@ export function Navbar(): React.JSX.Element {
               <IconGardenCart stroke={2} color={theme.colors.blue[9]} />
               <Box component="div" className={classes.link}>
                 <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                  {CONSTANTS.CART}
+                  {ROUTES.CART.label}
                 </Text>
               </Box>
             </Box>
@@ -117,32 +123,32 @@ export function Navbar(): React.JSX.Element {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Box
             component="div"
-            onClick={() => router.push("/discover")}
+            onClick={() => router.push(ROUTES.DISCOVER.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.DISCOVER}
+            {ROUTES.DISCOVER.label}
           </Box>
           <Box
             component="div"
-            onClick={() => router.push("/createitem")}
+            onClick={() => router.push(ROUTES.CREATEITEM.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.CREATEITEM}
+            {ROUTES.CREATEITEM.label}
           </Box>
           <Box
             component="div"
-            onClick={() => router.push("/aboutus")}
+            onClick={() => router.push(ROUTES.ABOUTUS.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.ABOUTUS}
+            {ROUTES.ABOUTUS.label}
           </Box>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <CustomButton title={isLogin ? CONSTANTS.SIGNUP : CONSTANTS.LOGIN} />
-            <CustomButton title={CONSTANTS.SIGNUP} />
+            <CustomButton title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label} />
+            <CustomButton title={ROUTES.SIGNUP.label} />
           </Group>
         </ScrollArea>
       </Drawer>

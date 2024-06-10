@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import styles from "@/assets/styles/page.module.css";
-import { Box, Container, Grid, Text, useMantineTheme } from "@mantine/core";
 import Art from "@/assets/image/Art.svg";
+import styles from "@/assets/styles/page.module.css";
 import { CardsCarousel } from "@/components/cardsCarousel/CardsCarousel";
+import { ROUTES } from "@/utils/constants";
 import "@mantine/carousel/styles.css";
-import { CONSTANTS } from "@/utils/constants";
+import { Box, Container, Grid, Text, useMantineTheme } from "@mantine/core";
+import Image from "next/image";
+import React from "react";
 
 export default function Home(): React.JSX.Element {
   const theme = useMantineTheme();
@@ -53,7 +53,7 @@ export default function Home(): React.JSX.Element {
           c={theme.colors.blue[9]}
           fw={800}
           py={10}>
-          {CONSTANTS.HOTBID}
+          {ROUTES.HOTBID.label}
         </Text>
         <CardsCarousel />
       </Box>

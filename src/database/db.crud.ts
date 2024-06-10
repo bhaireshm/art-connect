@@ -1,13 +1,23 @@
-import { Model, type AggregateOptions, type CreateOptions, type PipelineStage } from "mongoose";
+import {
+  Model,
+  type AggregateOptions,
+  type CreateOptions,
+  type PipelineStage,
+  ProjectionType,
+} from "mongoose";
 import Database from "./database";
 
 class DatabaseCRUD<T> extends Database {
   private model: Model<T>;
 
+  /** Model Instance */
+  m: Model<T>;
+
   constructor(model: Model<T>) {
     super();
     this.connect();
     this.model = model;
+    this.m = model;
   }
 
   public setModel(model: Model<T>) {
@@ -30,12 +40,12 @@ class DatabaseCRUD<T> extends Database {
     return this.model.deleteOne(query);
   }
 
-  public async findOne(query: any) {
-    return this.model.findOne(query);
+  public async findOne(query: any, projection?: ProjectionType<T>) {
+    return this.model.findOne(query, projection).exec();
   }
 
-  public async findById(id: string) {
-    return this.model.findById(id);
+  public async findById(id: string, projection?: ProjectionType<T>) {
+    return this.model.findById(id, projection);
   }
 
   public async filter(pipeline: PipelineStage[], options?: AggregateOptions) {

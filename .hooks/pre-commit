@@ -16,22 +16,6 @@ IS_SRC_MODIFIED=$(git status -s src)
 
 if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
   echo
-  echo "Build checks... 🛠️"
-  pnpm build
-  echo
-  # echo "Types checks... 🩺"
-  # pnpm typecheck
-  ERR=$?
-
-  if [ $ERR -eq 0 ]; then
-    echo "Checking all staged files."
-  else
-    echo "Build Failed."
-    echo "Fix type issues, add changes and try commit again."
-    exit 1
-  fi
-
-  echo
   echo "Lint checks... 📃"
   pnpm lint-staged
   ERR=$?
@@ -43,6 +27,21 @@ if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
     echo "Run 'pnpm lint-staged', add changes and try commit again."
     exit 1
   fi
+
+  echo
+  echo "Build checks... 🛠️"
+  pnpm build
+  echo
+  ERR=$?
+
+  if [ $ERR -eq 0 ]; then
+    echo "Build completed."
+  else
+    echo "Build Failed."
+    echo "Fix type issues, add changes and try commit again."
+    exit 1
+  fi
+
 fi
 
 # Get the list of modified files and save to a temporary file

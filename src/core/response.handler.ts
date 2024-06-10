@@ -7,8 +7,9 @@ class ResponseHandler {
   status?: number;
   message?: string;
   statusText?: string;
+  response?: ResponseInit;
 
-  constructor(data: any, error?: any, message?: string, status?: number) {
+  constructor(data: any, error?: any, message?: string, status?: number, response?: ResponseInit) {
     this.data = data;
     this.error = error;
     if (status) {
@@ -16,9 +17,10 @@ class ResponseHandler {
       this.statusText = STATUS_CODES[status];
     }
     this.message = message ?? this.statusText;
+    this.response = response;
   }
 
-  static success(data: any, arg2?: string | number, arg3?: number): NextResponse {
+  static success(data: any, arg2?: string | number, arg3?: number | ResponseInit): NextResponse {
     let message = "";
     let status = 200;
 
@@ -26,11 +28,12 @@ class ResponseHandler {
       message = arg2;
       if (typeof arg3 === "number") status = arg3;
     } else if (typeof arg2 === "number") status = arg2;
+    const headers = typeof arg3 === "object" ? arg3 : undefined;
 
-    return new ResponseHandler(data, null, message, status).json();
+    return new ResponseHandler(data, null, message, status, headers).json();
   }
 
-  static error(error: any, arg2?: string | number, arg3?: number): NextResponse {
+  static error(error: any, arg2?: string | number, arg3?: number | ResponseInit): NextResponse {
     let message = "";
     let status = 500;
 
@@ -38,8 +41,9 @@ class ResponseHandler {
       message = arg2;
       if (typeof arg3 === "number") status = arg3;
     } else if (typeof arg2 === "number") status = arg2;
+    const headers = typeof arg3 === "object" ? arg3 : undefined;
 
-    return new ResponseHandler(null, error, message, status).json();
+    return new ResponseHandler(null, error, message, status, headers).json();
   }
 
   json(): NextResponse {
@@ -50,7 +54,7 @@ class ResponseHandler {
         status: this.status,
         error: this.error,
       },
-      { status: this.status, statusText: this.statusText },
+      { status: this.status, statusText: this.statusText, ...this.response },
     );
   }
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { ROUTES } from "@/utils/constants";
 import { Carousel } from "@mantine/carousel";
-import { Paper, Text, Button, useMantineTheme, rem, Box, ActionIcon, Divider } from "@mantine/core";
-import { IconHeart } from "@tabler/icons-react";
+import { ActionIcon, Box, Button, Divider, Paper, rem, Text, useMantineTheme } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
-import { CONSTANTS, ROUTES } from "@/utils/constants";
+import { IconHeart } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 import classes from "./cardsCarousel.module.css";
 
 interface CartProps {
@@ -165,7 +165,7 @@ export function CardsCarousel(): JSX.Element {
               radius={50}
               variant="outline"
               onClick={() => {
-                router.push(ROUTES.CART);
+                router.push(ROUTES.CART.path);
               }}>
               {`${units}${price}`}
             </Button>
@@ -174,9 +174,9 @@ export function CardsCarousel(): JSX.Element {
               color="dark"
               radius={50}
               onClick={() => {
-                router.push(ROUTES.CART);
+                router.push(ROUTES.CART.path);
               }}>
-              {CONSTANTS.ADD_TO_CART}
+              {ROUTES.ADD_TO_CART.label}
             </Button>
           </Box>
         </Box>

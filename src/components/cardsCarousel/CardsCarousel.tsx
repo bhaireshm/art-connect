@@ -5,9 +5,10 @@ import { Carousel } from "@mantine/carousel";
 import { Paper, Text, Button, useMantineTheme, rem, Box, ActionIcon, Divider } from "@mantine/core";
 import { IconHeart } from "@tabler/icons-react";
 import { useHover } from "@mantine/hooks";
-import classes from "./CardsCarousel.module.css";
+import { CONSTANTS, ROUTES } from "@/utils/constants";
+import classes from "./cardsCarousel.module.css";
 
-interface CardProps {
+interface CartProps {
   id: number;
   image: string;
   title: string;
@@ -94,7 +95,6 @@ export function CardsCarousel(): JSX.Element {
     data.forEach((item, ind) => {
       if (item.id === id) {
         data[ind].isFav = !item.isFav;
-        console.log("data[ind]", data[ind].isFav);
       }
     });
   };
@@ -106,7 +106,7 @@ export function CardsCarousel(): JSX.Element {
     isFav,
     units,
     price,
-  }: Readonly<CardProps>): JSX.Element {
+  }: Readonly<CartProps>): JSX.Element {
     const { hovered, ref } = useHover();
     return (
       <Box>
@@ -115,7 +115,7 @@ export function CardsCarousel(): JSX.Element {
           p="xl"
           radius="md"
           style={{ backgroundImage: `url(${image})` }}
-          className={classes.card}
+          className={classes.cart}
           ref={ref}
           h={300}>
           {hovered && (
@@ -165,24 +165,25 @@ export function CardsCarousel(): JSX.Element {
               radius={50}
               variant="outline"
               onClick={() => {
-                router.push("/card");
-              }}>{`${units}${price}`}
+                router.push(ROUTES.CART);
+              }}>
+              {`${units}${price}`}
             </Button>
             <Button
               variant={theme.colors?.blue[0]}
               color="dark"
               radius={50}
               onClick={() => {
-                router.push("/card");
+                router.push(ROUTES.CART);
               }}>
-              Add to Card
+              {CONSTANTS.ADD_TO_CART}
             </Button>
           </Box>
         </Box>
       </Box>
     );
   }
-  const slides = data.map((item) => (
+  const slides = data?.map((item) => (
     <Carousel.Slide key={item.title}>
       <Card {...item} />
     </Carousel.Slide>

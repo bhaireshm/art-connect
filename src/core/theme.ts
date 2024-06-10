@@ -27,7 +27,7 @@ export const theme = createTheme({
       "#002d56",
     ],
   },
-  fontFamily: "Nunito",
+  fontFamily: "Teachers, open-sans",
   fontSizes: {
     xs: "12px",
     sm: "14px",
@@ -36,4 +36,3 @@ export const theme = createTheme({
     xl: "20",
   },
 });
-

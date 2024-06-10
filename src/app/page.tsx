@@ -7,6 +7,7 @@ import { Box, Container, Grid, Text, useMantineTheme } from "@mantine/core";
 import Art from "@/assets/image/Art.svg";
 import { CardsCarousel } from "@/components/cardsCarousel/CardsCarousel";
 import "@mantine/carousel/styles.css";
+import { CONSTANTS } from "@/utils/constants";
 
 export default function Home(): React.JSX.Element {
   const theme = useMantineTheme();
@@ -20,11 +21,8 @@ export default function Home(): React.JSX.Element {
             span={span}
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 50 }}>
             <Box
+              className="flexColoumn"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
                 width: "50%",
                 flexWrap: "wrap",
               }}>
@@ -39,10 +37,8 @@ export default function Home(): React.JSX.Element {
               </Text>
             </Box>
             <Box
+              className="flexColoumn"
               style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
                 width: "50%",
               }}>
               <Image src={Art} alt="art" width={800} />
@@ -57,7 +53,7 @@ export default function Home(): React.JSX.Element {
           c={theme.colors.blue[9]}
           fw={800}
           py={10}>
-          Hot bid
+          {CONSTANTS.HOTBID}
         </Text>
         <CardsCarousel />
       </Box>

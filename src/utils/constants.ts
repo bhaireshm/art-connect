@@ -102,5 +102,9 @@ export const CONSTANTS = Object.freeze({
   LOGIN: "Login",
   LOGOUT: "Logout",
   CONTACTUS: "ContactUs",
-  CART: "Cart",
+  HOTBID: "Hot bid",
+  ADD_TO_CART: "Add to Cart",
+});
+export const ROUTES = Object.freeze({
+  CART: "/cart",
 });

@@ -16,7 +16,7 @@
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
     "format": "pnpm prettier:write && pnpm lint:fix",
     "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
-    "prepare": "sh ./.hooks/prepare.sh"
+    "prepare": "chmod +x ./.hooks/prepare.sh && sh ./.hooks/prepare.sh"
   },
   "dependencies": {
     "@mantine/carousel": "^7.10.1",

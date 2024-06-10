@@ -2,9 +2,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const GIT_PATH = path.join(__dirname, "..", '.git');
+const TEMP_FILE_PATH = path.join(GIT_PATH, 'MODIFIED_FILES.tmp'); // Path to the temporary file
+const IS_NO_VERIFY = fs.existsSync(TEMP_FILE_PATH);
 
-// Path to the temporary file
-const TEMP_FILE_PATH = path.join(__dirname, '..', '.git', 'MODIFIED_FILES.tmp');
+if (!IS_NO_VERIFY) process.exit(0);
 
 // Get the commit message file from arguments
 const COMMIT_MSG_FILE = process.argv[2];

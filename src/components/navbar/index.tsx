@@ -18,7 +18,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconSearch } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CONSTANTS } from "@/utils/constants";
 import Logo from "../../assets/image/artConnect.png";
 import classes from "./navbar.module.css";
 
@@ -44,15 +43,15 @@ export function Navbar(): React.JSX.Element {
    * border radius are not provided, default values are used from the theme.
    */
   const CustomButton = ({ title, c, bg, radius }: CustomButton): JSX.Element => (
-      <Button
-        c={c ?? theme.colors.blue[1]}
-        bg={bg ?? theme.colors.blue[9]}
-        radius={radius ?? 50}
-        ff={theme.fontFamily}
-        fs={theme.fontSizes.xl}>
-        {title}
-      </Button>
-    );
+    <Button
+      c={c ?? theme.colors.blue[1]}
+      bg={bg ?? theme.colors.blue[9]}
+      radius={radius ?? 50}
+      ff={theme.fontFamily}
+      fs={theme.fontSizes.xl}>
+      {title}
+    </Button>
+  );
 
   return (
     <Box>
@@ -64,29 +63,28 @@ export function Navbar(): React.JSX.Element {
             onClick={() => router.push("/")}
             style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Image height={100} width={100} src={Logo} alt="logo" />
-            {/* <Divider orientation="vertical" h="85%" size="md" /> */}
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
             <Box onClick={() => router.push("/discover")} className={classes.link} variant="link">
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.DISCOVER}
+                Discover
               </Text>
             </Box>
             <Box component="div" onClick={() => router.push("/learn")} className={classes.link}>
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.CREATEITEM}
+                CreateItem
               </Text>
             </Box>
             <Box component="div" onClick={() => router.push("/aboutus")} className={classes.link}>
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                {CONSTANTS.ABOUTUS}
+                AboutUs
               </Text>
             </Box>
           </Group>
           <Group visibleFrom="sm">
             <Input placeholder="Search" leftSection={<IconSearch size={16} />} radius={50} />
-            <CustomButton title={isLogin ? CONSTANTS.SIGNUP : CONSTANTS.LOGIN} />
-            {!isLogin && <CustomButton title={CONSTANTS.SIGNUP} />}
+            <CustomButton title={isLogin ? "Signup" : "Login"} />
+            {!isLogin && <CustomButton title="Signup" />}
             <Box
               component="div"
               style={{
@@ -96,11 +94,6 @@ export function Navbar(): React.JSX.Element {
                 alignItems: "center",
               }}>
               <IconGardenCart stroke={2} color={theme.colors.blue[9]} />
-              <Box component="div" className={classes.link}>
-                <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                  {CONSTANTS.CART}
-                </Text>
-              </Box>
             </Box>
             <Avatar />
           </Group>
@@ -121,7 +114,7 @@ export function Navbar(): React.JSX.Element {
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.DISCOVER}
+            Discover
           </Box>
           <Box
             component="div"
@@ -129,7 +122,7 @@ export function Navbar(): React.JSX.Element {
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.CREATEITEM}
+            CreateItem
           </Box>
           <Box
             component="div"
@@ -137,12 +130,12 @@ export function Navbar(): React.JSX.Element {
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
-            {CONSTANTS.ABOUTUS}
+            AboutUs
           </Box>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <CustomButton title={isLogin ? CONSTANTS.SIGNUP : CONSTANTS.LOGIN} />
-            <CustomButton title={CONSTANTS.SIGNUP} />
+            <CustomButton title={isLogin ? "Signup" : "Login"} />
+            <CustomButton title="Signup" />
           </Group>
         </ScrollArea>
       </Drawer>

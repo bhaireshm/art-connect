@@ -94,18 +94,6 @@ Object.entries(STATUS_CODES).forEach(([code, text]) => {
 
 export { STATUS_TEXT };
 
-export const CONSTANTS = Object.freeze({
-  DISCOVER: "Discover",
-  CREATEITEM: "CreateItem",
-  ABOUTUS: "AboutUs",
-  SIGNUP: "Signup",
-  LOGIN: "Login",
-  LOGOUT: "Logout",
-  CONTACTUS: "ContactUs",
-  HOTBID: "Hot bid",
-  ADD_TO_CART: "Add to Cart",
-  CART: "Cart",
-});
 export const ROUTES = Object.freeze({
   CART: "/cart",
 });

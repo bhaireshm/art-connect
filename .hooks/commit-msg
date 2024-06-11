@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "commit-msg hook..."
-
 commit_msg_file=$1
 message=$(cat "$commit_msg_file")
 
@@ -9,7 +7,7 @@ message=$(cat "$commit_msg_file")
 message=$(echo "$message" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
 # Define the regular expression for conventional commit messages
-conventional_commit_message_regexp="^(build|chore|ci|docs|feat|fix|configs|perf|refactor|revert|style|test)(\([\w\.-]+\))?(!)?:\s*(.|\n)+"
+conventional_commit_message_regexp="^(\((api|ui|api, ui)\)\s+)?(build|chore|ci|docs|feat|fix|configs|perf|refactor|revert|style|test)(\([\w\.-]+\))?(!)?:\s*(.|\n)+"
 
 # Debugging output
 # echo "Commit message: '$message'"

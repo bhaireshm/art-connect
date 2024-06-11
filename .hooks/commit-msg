@@ -1,0 +1,27 @@
+#!/bin/bash
+
+commit_msg_file=$1
+message=$(cat "$commit_msg_file")
+
+# Remove leading and trailing whitespace from the commit message
+message=$(echo "$message" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+# Define the regular expression for conventional commit messages
+conventional_commit_message_regexp="^(build|chore|ci|docs|feat|fix|configs|perf|refactor|revert|style|test)(\([\w\.-]+\))?(!)?:\s*(.|\n)+"
+
+# Debugging output
+# echo "Commit message: '$message'"
+# echo "Regex: '$conventional_commit_message_regexp'"
+
+# Check if the message matches the conventional commit regex
+if [[ ! $message =~ $conventional_commit_message_regexp ]]; then
+  echo "Invalid message format"
+  echo "Message: '$message'"
+  echo "Cannot commit: the commit message does not comply with conventional commits standards."
+  echo -e "\nPlease follow the conventional commits standards."
+  echo "Expected format: {type}: {message}"
+  echo -e "Example:\n  feat: New feature added."
+  exit 1
+fi
+
+exit 0

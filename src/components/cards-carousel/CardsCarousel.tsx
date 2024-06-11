@@ -96,7 +96,7 @@ export function CardsCarousel({ cardsItems }: Readonly<{ cardsItems: CartProps[]
               radius={50}
               variant="outline"
               onClick={() => {
-                router.push(ROUTES.CART);
+                router.push(ROUTES.CART.path);
               }}>
               {`${units}${price}`}
             </Button>
@@ -105,7 +105,7 @@ export function CardsCarousel({ cardsItems }: Readonly<{ cardsItems: CartProps[]
               color="dark"
               radius={50}
               onClick={() => {
-                router.push(ROUTES.CART);
+                router.push(ROUTES.CART.path);
               }}>
               <IconGardenCart stroke={2} color={theme.colors.blue[0]} />
             </Button>

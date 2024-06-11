@@ -16,7 +16,7 @@
     "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
     "format": "pnpm prettier:write && pnpm lint:fix",
     "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
-    "prepare": "sh ./.hooks/prepare.sh"
+    "prepare": "chmod +x ./.hooks/prepare.sh && sh ./.hooks/prepare.sh"
   },
   "dependencies": {
     "@mantine/carousel": "^7.10.1",
@@ -24,6 +24,8 @@
     "@mantine/hooks": "^7.10.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@tabler/icons-react": "^3.3.0",
+    "cookie": "^0.6.0",
+    "jose": "^5.4.0",
     "mongoose": "^8.4.0",
     "next": "14.2.3",
     "react": "^18",
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",
+    "@types/cookie": "^0.6.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

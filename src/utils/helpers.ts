@@ -38,7 +38,7 @@ export function mergeObjects<T extends object>(obj1: AnyObj, obj2: AnyObj): T {
  * @param {boolean} removeSpecialChars - A flag to indicate whether to remove special characters from the string. Default is `false`.
  * @returns {string} - Returns a new string where each word's first letter is converted to uppercase.
  */
-export function camelCase(str: string, removeSpecialChars = false): string {
+export function camelCase(str: string, removeSpecialChars: boolean = false): string {
   str = str.replace(/(^|\s)\S/g, (t) => t.toUpperCase());
   if (removeSpecialChars) str = str.replace(/[-_\s]+/g, "");
   return str;

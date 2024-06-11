@@ -1,3 +1,4 @@
+import type { CookieSerializeOptions } from "cookie";
 import type { ValueOf } from "next/dist/shared/lib/constants";
 
 export const PROJECT_NAME = "ArtConnect";
@@ -94,6 +95,31 @@ Object.entries(STATUS_CODES).forEach(([code, text]) => {
 
 export { STATUS_TEXT };
 
-export const ROUTES = Object.freeze({
-  CART: "/cart",
+export const COOKIE = Object.freeze({
+  name: "art-connect-token",
+  serializeOptions: {
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 30,
+    sameSite: "strict",
+    httpOnly: true,
+    path: "/",
+  } as CookieSerializeOptions,
 });
+
+export const ROUTES = {
+  ABOUTUS: { label: "About Us", path: "/about" },
+  ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
+  ADMIN: { label: "Admin", path: "/admin" },
+  ARTWORK: { label: "Artwork", path: "/artwork" },
+  CONTACTUS: { label: "Contact Us", path: "/contact" },
+  CREATEITEM: { label: "Create Item", path: "/create" },
+  CART: { label: "Cart", path: "/cart" },
+  DISCOVER: { label: "Discover", path: "/discover" },
+  HOME: { label: "Home", path: "/" },
+  HOTBID: { label: "Hot Bid", path: "/hotbid" },
+  LOGIN: { label: "Login", path: "/login" },
+  LOGOUT: { label: "Logout", path: "/logout" },
+  ORDER: { label: "Order", path: "/order" },
+  PROFILE: { label: "Profile", path: "/profile" },
+  SIGNUP: { label: "Signup", path: "/signup" },
+};

@@ -5,9 +5,9 @@ import Image from "next/image";
 import styles from "@/assets/styles/page.module.css";
 import { Box, Container, Grid, Text, useMantineTheme } from "@mantine/core";
 import Art from "@/assets/image/Art.svg";
-import { CardsCarousel } from "@/components/cardsCarousel/CardsCarousel";
 import "@mantine/carousel/styles.css";
-import { CONSTANTS } from "@/utils/constants";
+import { CategoiesSection } from "@/components/catagoies-section/CategoiesSection";
+import { artCategories } from "@/assets/json-data/art-catagories";
 
 export default function Home(): React.JSX.Element {
   const theme = useMantineTheme();
@@ -46,17 +46,9 @@ export default function Home(): React.JSX.Element {
           </Grid.Col>
         </Grid>
       </Container>
-      <Box py={30} px={20}>
-        <Text
-          ff={theme.fontFamily}
-          fs={theme.fontSizes.xl}
-          c={theme.colors.blue[9]}
-          fw={800}
-          py={10}>
-          {CONSTANTS.HOTBID}
-        </Text>
-        <CardsCarousel />
-      </Box>
+      {artCategories?.map((catagoiesItem) => (
+        <CategoiesSection categoryList={catagoiesItem} key={catagoiesItem.id} />
+      ))}
     </main>
   );
 }

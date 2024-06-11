@@ -1,18 +1,19 @@
 "use client";
 
+import { ROUTES } from "@/utils/constants";
 import {
-  Group,
-  Button,
-  Divider,
+  Avatar,
   Box,
   Burger,
+  Button,
+  Divider,
   Drawer,
-  Avatar,
+  Group,
+  Input,
   ScrollArea,
+  Text,
   rem,
   useMantineTheme,
-  Input,
-  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconSearch } from "@tabler/icons-react";
@@ -60,12 +61,15 @@ export function Navbar(): React.JSX.Element {
           <Box
             h="100%"
             component="div"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(ROUTES.HOME.path)}
             style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
-            <Box onClick={() => router.push("/discover")} className={classes.link} variant="link">
+            <Box
+              onClick={() => router.push(ROUTES.DISCOVER.path)}
+              className={classes.link}
+              variant="link">
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 Discover
               </Text>
@@ -75,7 +79,10 @@ export function Navbar(): React.JSX.Element {
                 CreateItem
               </Text>
             </Box>
-            <Box component="div" onClick={() => router.push("/aboutus")} className={classes.link}>
+            <Box
+              component="div"
+              onClick={() => router.push(ROUTES.ABOUTUS.path)}
+              className={classes.link}>
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 AboutUs
               </Text>
@@ -110,7 +117,7 @@ export function Navbar(): React.JSX.Element {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Box
             component="div"
-            onClick={() => router.push("/discover")}
+            onClick={() => router.push(ROUTES.DISCOVER.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
@@ -118,7 +125,7 @@ export function Navbar(): React.JSX.Element {
           </Box>
           <Box
             component="div"
-            onClick={() => router.push("/createitem")}
+            onClick={() => router.push(ROUTES.CREATEITEM.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>
@@ -126,7 +133,7 @@ export function Navbar(): React.JSX.Element {
           </Box>
           <Box
             component="div"
-            onClick={() => router.push("/aboutus")}
+            onClick={() => router.push(ROUTES.ABOUTUS.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}>

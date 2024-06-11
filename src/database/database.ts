@@ -42,7 +42,9 @@ class Database {
     return {
       timestamps: true,
       versionKey: false,
+      toObject: { useProjection: true },
       toJSON: {
+        useProjection: true,
         transform(_, ret) {
           ret.id = ret._id;
           delete ret._id;

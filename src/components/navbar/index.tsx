@@ -100,7 +100,11 @@ export function Navbar(): React.JSX.Element {
                 justifyContent: "center",
                 alignItems: "center",
               }}>
-              <IconGardenCart stroke={2} color={theme.colors.blue[9]} />
+              <IconGardenCart
+                stroke={2}
+                color={theme.colors.blue[9]}
+                onClick={() => router.push(ROUTES.CART.path)}
+              />
             </Box>
             <Avatar />
           </Group>

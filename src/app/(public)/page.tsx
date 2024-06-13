@@ -11,7 +11,6 @@ import { artCategories } from "@/assets/json-data/art-catagories";
 
 export default function Home(): React.JSX.Element {
   const theme = useMantineTheme();
-
   const span = 12;
   return (
     <main className={styles.main}>

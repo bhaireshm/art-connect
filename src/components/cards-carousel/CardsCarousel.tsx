@@ -7,7 +7,7 @@ import { Paper, Text, Button, useMantineTheme, rem, Box, ActionIcon, Divider } f
 import { IconGardenCart, IconHeart } from "@tabler/icons-react";
 import { useHover } from "@mantine/hooks";
 import { ROUTES } from "@/utils/constants";
-import classes from "./cardsCarousel.module.css";
+import classes from "./CardsCarousel.module.css";
 
 interface CartProps {
   id: number;
@@ -42,13 +42,14 @@ export function CardsCarousel({ cardsItems }: Readonly<{ cardsItems: CartProps[]
     return (
       <Box>
         <Paper
+          ref={ref}
           shadow="md"
           p="xl"
           radius="md"
-          style={{ backgroundImage: `url(${image})` }}
-          className={classes.cart}
-          ref={ref}
-          h={300}>
+          className={classes.card}
+          style={{
+            backgroundImage: `url(${image})`,
+          }}>
           {hovered && (
             <Box
               component="div"
@@ -125,7 +126,10 @@ export function CardsCarousel({ cardsItems }: Readonly<{ cardsItems: CartProps[]
       slideSize={{ base: "20%", sm: "20%" }}
       slideGap={{ base: rem(2), sm: "xl" }}
       align="start"
-      slidesToScroll={1}>
+      slidesToScroll={1}
+      // controlsOffset={rem(-300)} // not working Need to check
+      // loop  // not working Need to check
+    >
       {slides}
     </Carousel>
   );

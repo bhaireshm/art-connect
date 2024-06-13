@@ -122,4 +122,5 @@ export const ROUTES = {
   ORDER: { label: "Order", path: "/order" },
   PROFILE: { label: "Profile", path: "/profile" },
   SIGNUP: { label: "Signup", path: "/signup" },
+  CATEGOIES: { label: "Categories", path: "/categories" },
 };

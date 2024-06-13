@@ -1,4 +1,5 @@
 import Database from "@/database/database";
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -19,5 +20,8 @@ const adminDashboardSchema = new Schema(
   Database.getDefaultSchemaOptions(),
 );
 
-export default models[SCHEMA_NAMES.ADMIN_DASHBOARD] ||
-  model(SCHEMA_NAMES.ADMIN_DASHBOARD, adminDashboardSchema);
+const AdminDashboard = new DatabaseCRUD<typeof adminDashboardSchema>(
+  models[SCHEMA_NAMES.ADMIN_DASHBOARD] || model(SCHEMA_NAMES.ADMIN_DASHBOARD, adminDashboardSchema),
+);
+
+export default AdminDashboard;

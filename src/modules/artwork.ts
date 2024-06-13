@@ -1,3 +1,4 @@
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -17,4 +18,7 @@ const artworkSchema = new Schema({
   relatedArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
 });
 
-export default models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, artworkSchema);
+const Artwork = new DatabaseCRUD<typeof artworkSchema>(
+  models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, artworkSchema),
+);
+export default Artwork;

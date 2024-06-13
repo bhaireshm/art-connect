@@ -1,3 +1,4 @@
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -29,5 +30,7 @@ const pageContentSchema = new Schema({
   },
 });
 
-export default models[SCHEMA_NAMES.PAGE_CONTENT] ||
-  model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema);
+const PageContent = new DatabaseCRUD<typeof pageContentSchema>(
+  models[SCHEMA_NAMES.PAGE_CONTENT] || model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema),
+);
+export default PageContent;

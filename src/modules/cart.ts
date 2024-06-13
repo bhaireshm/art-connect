@@ -1,3 +1,4 @@
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -14,4 +15,7 @@ const cartSchema = new Schema({
   totalCost: { type: Number, required: true },
 });
 
-export default models[SCHEMA_NAMES.CART] || model(SCHEMA_NAMES.CART, cartSchema);
+const Cart = new DatabaseCRUD<typeof cartSchema>(
+  models[SCHEMA_NAMES.CART] || model(SCHEMA_NAMES.CART, cartSchema),
+);
+export default Cart;

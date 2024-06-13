@@ -1,3 +1,4 @@
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -31,4 +32,8 @@ const orderSchema = new Schema({
   estimatedDeliveryDate: { type: Date, required: true },
 });
 
-export default models[SCHEMA_NAMES.ORDER] || model(SCHEMA_NAMES.ORDER, orderSchema);
+const Order = new DatabaseCRUD<typeof orderSchema>(
+  models[SCHEMA_NAMES.ORDER] || model(SCHEMA_NAMES.ORDER, orderSchema),
+);
+
+export default Order;

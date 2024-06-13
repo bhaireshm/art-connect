@@ -4,20 +4,6 @@
     "next/core-web-vitals",
     "plugin:@next/next/recommended",
     "plugin:@typescript-eslint/recommended"
-    // "plugin:jest/recommended",
-  ],
-  "plugins": [
-    // "testing-library", "jest"
-  ],
-  "overrides": [
-    // {
-    //   "files": [
-    //     "**/?(*.)+(spec|test).[jt]s?(x)"
-    //   ],
-    //   "extends": [
-    //     "plugin:testing-library/react"
-    //   ]
-    // }
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -48,6 +34,7 @@
         "avoidEscape": true,
         "allowTemplateLiterals": true
       }
-    ]
+    ],
+    "prefer-destructuring": ["off"]
   }
 }

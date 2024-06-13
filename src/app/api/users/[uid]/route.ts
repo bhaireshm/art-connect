@@ -28,8 +28,8 @@ export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
 
     return ResponseHandler.success(user, "User details updated");
   } catch (error) {
-    const err = new DatabaseError(error).format();
-    return ResponseHandler.error(err, err.message, err.status);
+    const err = new DatabaseError(error);
+    return ResponseHandler.error(err, err.message, err.code);
   }
 }
 

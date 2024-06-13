@@ -24,11 +24,10 @@ export async function POST(req: NextRequest) {
 
     // Create user
     const user = await User.create(data);
-    user.forEach((u: any) => delete u.password);
 
     return ResponseHandler.success(user.length === 1 ? user[0] : user, 201);
   } catch (error) {
-    const err = new DatabaseError(error).format();
-    return ResponseHandler.error(err, err.message, 400);
+    const err = new DatabaseError(error);
+    return ResponseHandler.error(err, err.code);
   }
 }

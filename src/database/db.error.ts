@@ -1,44 +1,40 @@
+import { STATUS_TEXT } from "@/utils/constants";
 import { Error } from "mongoose";
 
 export default class DatabaseError extends Error {
-  public err: any;
+  code: number;
+  errors?: any;
+  host?: string;
+  key?: string;
 
-  constructor(err: any) {
-    super(err);
-    this.err = err;
-    this.constructError();
-  }
+  constructor(err?: any) {
+    let message = err ?? "Internal Server Error";
+    let statusCode = STATUS_TEXT.INTERNAL_SERVER_ERROR;
+    let errors; let host; let
+key;
 
-  constructError() {
-    if (this.err instanceof Error.ValidationError) {
-      this.err = this.validationError(this.err);
-    } else if (this.err instanceof Error.DocumentNotFoundError) {
-      this.err = this.documentNotFoundError(this.err);
-    } else this.err = this.format();
-  }
+    if (err instanceof Error.ValidationError) {
+      message = "Validation failed";
+      statusCode = STATUS_TEXT.BAD_REQUEST;
+      errors = err.errors;
+    } else if (err instanceof Error.DocumentNotFoundError) {
+      message = "Document not found";
+      statusCode = STATUS_TEXT.NOT_FOUND;
+    } else if (err.name === "MongoServerError" && err.code === 11000) {
+      message = "Duplicate key error";
+      statusCode = STATUS_TEXT.CONFLICT;
+      key = Object.keys(err.keyValue)[0];
+    } else if (err instanceof Error.MongooseServerSelectionError) {
+      message = "Connection failed";
+      statusCode = STATUS_TEXT.INTERNAL_SERVER_ERROR;
+    }
 
-  throw() {
-    throw this.err;
-  }
-
-  format(err = this.err) {
-    return {
-      name: err.name,
-      stack: err.stack,
-      message: err.message,
-      status: err.status ?? 500,
-    };
-  }
-
-  validationError(err: Error.ValidationError) {
-    this.err.name = Error.ValidationError.name;
-    this.err.status = 403;
-    // extract the error messages from errors
-    return err;
-  }
-
-  documentNotFoundError(err: Error.DocumentNotFoundError) {
-    this.err.status = 404;
-    return err;
+    super(message);
+    this.name = "DatabaseError";
+    this.code = statusCode;
+    this.errors = errors;
+    this.host = host;
+    this.key = key;
+    Error.captureStackTrace(this, this.constructor);
   }
 }

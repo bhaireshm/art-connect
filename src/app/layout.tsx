@@ -10,7 +10,7 @@ import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
 import { Navbar } from "@/components/navbar";
-import { FooterLinks } from "@/components/footer1/Footer";
+import { FooterLinks } from "@/components/footer/Footer";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 

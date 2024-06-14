@@ -1,9 +1,9 @@
 import {
   Model,
+  ProjectionType,
   type AggregateOptions,
   type CreateOptions,
   type PipelineStage,
-  ProjectionType,
 } from "mongoose";
 import Database from "./database";
 
@@ -15,7 +15,6 @@ class DatabaseCRUD<T> extends Database {
 
   constructor(model: Model<T>) {
     super();
-    this.connect();
     this.model = model;
     this.m = model;
   }
@@ -24,40 +23,72 @@ class DatabaseCRUD<T> extends Database {
     this.model = model;
   }
 
-  public async findAll(query: any, projection?: ProjectionType<T>): Promise<T[]> {
-    return this.model.find(query, projection);
+  public async findAll(
+    query: any,
+    projection?: ProjectionType<T>,
+  ): Promise<T[]> {
+    this.connect();
+    const result = await this.model.find(query, projection);
+    this.disconnect();
+    return result;
   }
 
   public async create(data: T, options?: CreateOptions): Promise<T[]> {
-    return this.model.create([data], options);
+    this.connect();
+    const result = await this.model.create([data], options);
+    this.disconnect();
+    return result;
   }
 
   public async update(id: string, data: Partial<T>) {
-    return this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).exec();
+    this.connect();
+    const result = await this.model
+      .findByIdAndUpdate(id, data, { new: true, runValidators: true })
+      .exec();
+    this.disconnect();
+    return result;
   }
 
   public async updateMany(data: Partial<T>[]) {
-    return this.model.updateMany(data, { new: true }).exec();
+    this.connect();
+    const result = await this.model.updateMany(data, { new: true }).exec();
+    this.disconnect();
+    return result;
   }
 
   public async delete(query: any) {
-    return this.model.deleteOne(query);
+    this.connect();
+    const result = await this.model.deleteOne(query);
+    this.disconnect();
+    return result;
   }
 
   public async findOne(query: any, projection?: ProjectionType<T>) {
-    return this.model.findOne(query, projection).exec();
+    this.connect();
+    const result = await this.model.findOne(query, projection).exec();
+    this.disconnect();
+    return result;
   }
 
   public async findById(id: string, projection?: ProjectionType<T>) {
-    return this.model.findById(id, projection).exec();
+    this.connect();
+    const result = await this.model.findById(id, projection).exec();
+    this.disconnect();
+    return result;
   }
 
   public async filter(pipeline: PipelineStage[], options?: AggregateOptions) {
-    return this.model.aggregate(pipeline, options);
+    this.connect();
+    const result = await this.model.aggregate(pipeline, options);
+    this.disconnect();
+    return result;
   }
 
   public async count(query: any) {
-    return this.model.countDocuments(query);
+    this.connect();
+    const result = await this.model.countDocuments(query);
+    this.disconnect();
+    return result;
   }
 }
 

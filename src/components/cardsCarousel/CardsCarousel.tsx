@@ -2,7 +2,16 @@
 
 import { ROUTES } from "@/utils/constants";
 import { Carousel } from "@mantine/carousel";
-import { ActionIcon, Box, Button, Divider, Paper, rem, Text, useMantineTheme } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Divider,
+  Paper,
+  rem,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { IconHeart } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -93,9 +102,7 @@ export function CardsCarousel(): JSX.Element {
   const theme = useMantineTheme();
   const isFavorite = (id: number): void => {
     data.forEach((item, ind) => {
-      if (item.id === id) {
-        data[ind].isFav = !item.isFav;
-      }
+      if (item.id === id) data[ind].isFav = !item.isFav;
     });
   };
   function Card({
@@ -117,12 +124,14 @@ export function CardsCarousel(): JSX.Element {
           style={{ backgroundImage: `url(${image})` }}
           className={classes.cart}
           ref={ref}
-          h={300}>
+          h={300}
+        >
           {hovered && (
             <Box
               component="div"
               w="100%"
-              style={{ display: "flex", justifyContent: "space-between" }}>
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Text className={classes.category} size="xs">
                 {category}
               </Text>
@@ -131,7 +140,8 @@ export function CardsCarousel(): JSX.Element {
                 color={isFav ? "red" : theme.colors?.blue[0]}
                 size={40}
                 aria-label="ActionIcon with size as a number"
-                radius={50}>
+                radius={50}
+              >
                 <IconHeart
                   style={{ width: rem(25), height: rem(25) }}
                   onClick={() => isFavorite(id)}
@@ -148,7 +158,8 @@ export function CardsCarousel(): JSX.Element {
             justifyContent: "space-between",
             alignItems: "center",
             gap: rem(10),
-          }}>
+          }}
+        >
           <Box>
             <Text size="lg">{category}</Text>
             <Text size="sm">{artist}</Text>
@@ -160,13 +171,15 @@ export function CardsCarousel(): JSX.Element {
               alignItems: "center",
               justifyContent: "center",
               flexDirection: "column",
-            }}>
+            }}
+          >
             <Button
               radius={50}
               variant="outline"
               onClick={() => {
                 router.push(ROUTES.CART.path);
-              }}>
+              }}
+            >
               {`${units}${price}`}
             </Button>
             <Button
@@ -175,7 +188,8 @@ export function CardsCarousel(): JSX.Element {
               radius={50}
               onClick={() => {
                 router.push(ROUTES.CART.path);
-              }}>
+              }}
+            >
               {ROUTES.ADD_TO_CART.label}
             </Button>
           </Box>
@@ -194,7 +208,8 @@ export function CardsCarousel(): JSX.Element {
       slideSize={{ base: "20%", sm: "20%" }}
       slideGap={{ base: rem(2), sm: "xl" }}
       align="start"
-      slidesToScroll={1}>
+      slidesToScroll={1}
+    >
       {slides}
     </Carousel>
   );

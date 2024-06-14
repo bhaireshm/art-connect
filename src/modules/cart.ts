@@ -8,7 +8,11 @@ const cartSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER, required: true },
   items: [
     {
-      artwork: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK, required: true },
+      artwork: {
+        type: Schema.Types.ObjectId,
+        ref: SCHEMA_NAMES.ARTWORK,
+        required: true,
+      },
       quantity: { type: Number, required: true },
     },
   ],

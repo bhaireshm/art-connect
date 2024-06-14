@@ -22,14 +22,20 @@ export function middleware(request: NextRequest) {
   }
 
   const response = NextResponse.next();
-  if (isAllowedOrigin) response.headers.set("Access-Control-Allow-Origin", origin);
-  Object.entries(corsOptions).forEach(([key, value]) => response.headers.set(key, value));
+  if (isAllowedOrigin)
+    response.headers.set("Access-Control-Allow-Origin", origin);
+
+  Object.entries(corsOptions).forEach(([key, value]) =>
+    response.headers.set(key, value),
+  );
 
   /************ Authentication using cookies ************/
   const userToken = request.cookies.get("user")?.value;
   const loginUrl = new URL("/login", request.url);
 
-  if (!userToken && !request.nextUrl.pathname.startsWith("/login")) return NextResponse.redirect(loginUrl);
+  if (!userToken && !request.nextUrl.pathname.startsWith("/login"))
+    return NextResponse.redirect(loginUrl);
+
   if (!userToken) return NextResponse.redirect(loginUrl);
 
   return response;

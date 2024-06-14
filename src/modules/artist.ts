@@ -11,7 +11,9 @@ const artistSchema = new Schema(
     bio: { type: String, required: true },
     background: String,
     gallery: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
-    availableArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
+    availableArtworks: [
+      { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK },
+    ],
   },
   Database.getDefaultSchemaOptions(),
 );

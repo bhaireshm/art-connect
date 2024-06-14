@@ -31,6 +31,7 @@ const pageContentSchema = new Schema({
 });
 
 const PageContent = new DatabaseCRUD<typeof pageContentSchema>(
-  models[SCHEMA_NAMES.PAGE_CONTENT] || model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema),
+  models[SCHEMA_NAMES.PAGE_CONTENT] ||
+    model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema),
 );
 export default PageContent;

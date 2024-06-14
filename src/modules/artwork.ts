@@ -14,7 +14,11 @@ const artworkSchema = new Schema({
   medium: String,
   images: [String], // URLs to high-resolution images
   price: { type: Number, required: true },
-  artist: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTIST, required: true },
+  artist: {
+    type: Schema.Types.ObjectId,
+    ref: SCHEMA_NAMES.ARTIST,
+    required: true,
+  },
   relatedArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
 });
 

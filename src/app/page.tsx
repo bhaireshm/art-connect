@@ -19,20 +19,40 @@ export default function Home(): React.JSX.Element {
         <Grid justify="center" px={200}>
           <Grid.Col
             span={span}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 50 }}>
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 50,
+            }}
+          >
             <Box
               className="flexColoumn"
               style={{
                 width: "50%",
                 flexWrap: "wrap",
-              }}>
-              <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl} fw={800}>
+              }}
+            >
+              <Text
+                c={theme.colors.blue[9]}
+                ff={theme.fontFamily}
+                fs={theme.fontSizes.xl}
+                fw={800}
+              >
                 The New Creative Economy.
               </Text>
-              <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl}>
+              <Text
+                c={theme.colors.blue[9]}
+                ff={theme.fontFamily}
+                fs={theme.fontSizes.xl}
+              >
                 Share your creations with the world
               </Text>
-              <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl}>
+              <Text
+                c={theme.colors.blue[9]}
+                ff={theme.fontFamily}
+                fs={theme.fontSizes.xl}
+              >
                 Collect and sell digital art, powered by the best online tools.
               </Text>
             </Box>
@@ -40,7 +60,8 @@ export default function Home(): React.JSX.Element {
               className="flexColoumn"
               style={{
                 width: "50%",
-              }}>
+              }}
+            >
               <Image src={Art} alt="art" width={800} />
             </Box>
           </Grid.Col>
@@ -52,7 +73,8 @@ export default function Home(): React.JSX.Element {
           fs={theme.fontSizes.xl}
           c={theme.colors.blue[9]}
           fw={800}
-          py={10}>
+          py={10}
+        >
           {ROUTES.HOTBID.label}
         </Text>
         <CardsCarousel />

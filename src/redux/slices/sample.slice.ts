@@ -30,9 +30,11 @@ export const counterSlice: any = {
       state.value -= 1;
     }),
     // Use the `PayloadAction` type to declare the contents of `action.payload`
-    incrementByAmount: create.reducer((state: any, action: PayloadAction<number>) => {
-      state.value += action.payload;
-    }),
+    incrementByAmount: create.reducer(
+      (state: any, action: PayloadAction<number>) => {
+        state.value += action.payload;
+      },
+    ),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.

@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Middleware, Store, type AnyAction, type Dispatch } from "@reduxjs/toolkit";
+import {
+  Middleware,
+  Store,
+  type AnyAction,
+  type Dispatch,
+} from "@reduxjs/toolkit";
 
 type MiddlewareFunction = (store: Store) => Middleware<Dispatch<AnyAction>>;
 
@@ -13,21 +18,23 @@ export class DynamicMiddlewares {
   public static combineMiddlewares(middlewares: any, reducers: any) {
     const apiMiddlewares: MiddlewareFunction[] = [];
 
-    if (Array.isArray(middlewares)) {
+    if (Array.isArray(middlewares))
       middlewares?.forEach((midlwr) => checkMiddlewareHasMiddleware(midlwr));
-    } else checkMiddlewareHasMiddleware(middlewares);
+    else checkMiddlewareHasMiddleware(middlewares);
 
     // * Add API to middleware for caching and etc.
-    if (Object.keys(reducers).length) {
-      Object.keys(reducers).forEach((rdcr: string) => checkMiddlewareHasMiddleware(reducers[rdcr]));
-    } else checkMiddlewareHasMiddleware(reducers);
+    if (Object.keys(reducers).length)
+      Object.keys(reducers).forEach((rdcr: string) =>
+        checkMiddlewareHasMiddleware(reducers[rdcr]),
+      );
+    else checkMiddlewareHasMiddleware(reducers);
 
     // * Check whether the passed middleware is an API
     function checkMiddlewareHasMiddleware(midlwr: any) {
       if (apiMiddlewares.indexOf(midlwr) > -1) return;
-      if (midlwr?.middleware && typeof midlwr?.middleware === "function") {
+      if (midlwr?.middleware && typeof midlwr?.middleware === "function")
         apiMiddlewares.push(midlwr.middleware);
-      } else if (midlwr?.reducerPath) apiMiddlewares.push(midlwr);
+      else if (midlwr?.reducerPath) apiMiddlewares.push(midlwr);
     }
 
     return apiMiddlewares;

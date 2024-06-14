@@ -1,24 +1,22 @@
 import Database from "@/database/database";
 import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
-import { model, models, Schema } from "mongoose";
+import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      // required: true,
       unique: true,
     },
     email: {
       type: String,
-      // required: true,
       unique: true,
     },
     password: {
       type: String,
-      // required: true
+      select: false,
     },
     socialAccounts: {
       google: String,

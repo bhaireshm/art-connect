@@ -1,6 +1,8 @@
 {
   "extends": [
+    "next",
     "mantine",
+    "prettier",
     "next/core-web-vitals"
   ],
   "parserOptions": {
@@ -9,6 +11,7 @@
   "ignorePatterns": [".eslintrc", "lint-staged.config.js", ".prettierrc", "postcss.config.js"],
   "rules": {
     "semi": "warn",
+    "curly": ["error", "multi"],
     "quotes": ["error", "double"],
     "linebreak-style": ["warn", "windows"],
     "no-console": "off",

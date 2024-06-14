@@ -20,16 +20,19 @@ export async function POST(request: NextRequest, response: NextResponse) {
   const hashedPassword = hashData(password, email);
 
   // Verify the password with the stored user.password
-  if (user.get("password") !== hashedPassword) {
+  if (user.get("password") !== hashedPassword)
     return ResponseHandler.error(
       { p: user.get("password"), hashedPassword },
       "Invalid credentials 2",
       401,
     );
-  }
 
   // Generate the token
-  const userTokenData = { email, username: user.get("username"), id: user.get("id") };
+  const userTokenData = {
+    email,
+    username: user.get("username"),
+    id: user.get("id"),
+  };
   const token = await JWT.createJwt(userTokenData);
 
   return ResponseHandler.success({ token, user: userTokenData }, 200, response);

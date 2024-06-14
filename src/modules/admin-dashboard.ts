@@ -5,7 +5,11 @@ import { Schema, model, models } from "mongoose";
 
 const adminDashboardSchema = new Schema(
   {
-    admin: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER, required: true },
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: SCHEMA_NAMES.USER,
+      required: true,
+    },
     siteAnalytics: {
       totalVisitors: Number,
       totalSales: Number,
@@ -13,7 +17,9 @@ const adminDashboardSchema = new Schema(
       totalArtists: Number,
     },
     manageArtists: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTIST }],
-    manageArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
+    manageArtworks: [
+      { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK },
+    ],
     manageOrders: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ORDER }],
     manageUsers: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER }],
   },
@@ -21,7 +27,8 @@ const adminDashboardSchema = new Schema(
 );
 
 const AdminDashboard = new DatabaseCRUD<typeof adminDashboardSchema>(
-  models[SCHEMA_NAMES.ADMIN_DASHBOARD] || model(SCHEMA_NAMES.ADMIN_DASHBOARD, adminDashboardSchema),
+  models[SCHEMA_NAMES.ADMIN_DASHBOARD] ||
+    model(SCHEMA_NAMES.ADMIN_DASHBOARD, adminDashboardSchema),
 );
 
 export default AdminDashboard;

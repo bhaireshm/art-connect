@@ -4,7 +4,9 @@ import { PROJECT_NAME } from "./constants";
 
 const getJwtSecretKey = () => {
   const key = process.env.JWT_SECRET_KEY;
-  if (!key?.length) throw new Error("Environment variable 'JWT_SECRET_KEY' not found");
+  if (!key?.length)
+    throw new Error("Environment variable 'JWT_SECRET_KEY' not found");
+
   return createSecretKey(key, "utf-8");
 };
 

@@ -1,8 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { Text, Container, ActionIcon, Group, rem, useMantineTheme } from "@mantine/core";
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
+import {
+  Text,
+  Container,
+  ActionIcon,
+  Group,
+  rem,
+  useMantineTheme,
+} from "@mantine/core";
+import {
+  IconBrandTwitter,
+  IconBrandYoutube,
+  IconBrandInstagram,
+} from "@tabler/icons-react";
 import classes from "./Footer.module.css";
 import Logo from "../../assets/image/artConnect.png";
 
@@ -46,7 +57,8 @@ export function FooterLinks() {
         component="a"
         href={link.link}
         onClick={(event) => event.preventDefault()}
-        c={theme.colors.blue[0]}>
+        c={theme.colors.blue[0]}
+      >
         {link.label}
       </Text>
     ));
@@ -62,26 +74,47 @@ export function FooterLinks() {
   });
 
   return (
-    <footer className={classes.footer} style={{ backgroundColor: theme.colors.blue[9] }}>
+    <footer
+      className={classes.footer}
+      style={{ backgroundColor: theme.colors.blue[9] }}
+    >
       <Container className={classes.inner}>
         <div className={classes.logo}>
           <Image height={150} width={150} src={Logo} alt="logo" />
-          <Text size="xs" c={theme.colors.blue[0]} className={classes.description}>
+          <Text
+            size="xs"
+            c={theme.colors.blue[0]}
+            className={classes.description}
+          >
             Build fully functional accessible web applications faster than ever
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
-        <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
+        <Group
+          gap={0}
+          className={classes.social}
+          justify="flex-end"
+          wrap="nowrap"
+        >
           <ActionIcon size="lg" color={theme.colors.blue[0]} variant="subtle">
-            <IconBrandTwitter style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+            <IconBrandTwitter
+              style={{ width: rem(20), height: rem(20) }}
+              stroke={1.5}
+            />
           </ActionIcon>
           <ActionIcon size="lg" color={theme.colors.blue[0]} variant="subtle">
-            <IconBrandYoutube style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+            <IconBrandYoutube
+              style={{ width: rem(20), height: rem(20) }}
+              stroke={1.5}
+            />
           </ActionIcon>
           <ActionIcon size="lg" color={theme.colors.blue[0]} variant="subtle">
-            <IconBrandInstagram style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+            <IconBrandInstagram
+              style={{ width: rem(20), height: rem(20) }}
+              stroke={1.5}
+            />
           </ActionIcon>
         </Group>
       </Container>

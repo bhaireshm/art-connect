@@ -30,7 +30,8 @@ interface CustomButton {
 }
 
 export function Navbar(): React.JSX.Element {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   const theme = useMantineTheme();
   const router = useRouter();
   const isLogin = false;
@@ -43,26 +44,40 @@ export function Navbar(): React.JSX.Element {
    * background color (bg), and border radius (radius) properties. If the color, background color, or
    * border radius are not provided, default values are used from the theme.
    */
-  const CustomButton = ({ title, c, bg, radius }: CustomButton): JSX.Element => (
+  const CustomButton = ({
+    title,
+    c,
+    bg,
+    radius,
+  }: CustomButton): JSX.Element => (
     <Button
       c={c ?? theme.colors.blue[1]}
       bg={bg ?? theme.colors.blue[9]}
       radius={radius ?? 50}
       ff={theme.fontFamily}
-      fs={theme.fontSizes.xl}>
+      fs={theme.fontSizes.xl}
+    >
       {title}
     </Button>
   );
 
   return (
     <Box>
-      <header className={classes.header} style={{ backgroundColor: theme.colors.blue[1] }}>
+      <header
+        className={classes.header}
+        style={{ backgroundColor: theme.colors.blue[1] }}
+      >
         <Group justify="space-between" h="100%">
           <Box
             h="100%"
             component="div"
             onClick={() => router.push(ROUTES.HOME.path)}
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Image height={100} width={100} src={Logo} alt="logo" />
             {/* <Divider orientation="vertical" h="85%" size="md" /> */}
           </Box>
@@ -70,12 +85,17 @@ export function Navbar(): React.JSX.Element {
             <Box
               onClick={() => router.push(ROUTES.DISCOVER.path)}
               className={classes.link}
-              variant="link">
+              variant="link"
+            >
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 {ROUTES.DISCOVER.label}
               </Text>
             </Box>
-            <Box component="div" onClick={() => router.push("/learn")} className={classes.link}>
+            <Box
+              component="div"
+              onClick={() => router.push("/learn")}
+              className={classes.link}
+            >
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 {ROUTES.CREATEITEM.label}
               </Text>
@@ -83,15 +103,22 @@ export function Navbar(): React.JSX.Element {
             <Box
               component="div"
               onClick={() => router.push(ROUTES.ABOUTUS.path)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 {ROUTES.ABOUTUS.label}
               </Text>
             </Box>
           </Group>
           <Group visibleFrom="sm">
-            <Input placeholder="Search" leftSection={<IconSearch size={16} />} radius={50} />
-            <CustomButton title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label} />
+            <Input
+              placeholder="Search"
+              leftSection={<IconSearch size={16} />}
+              radius={50}
+            />
+            <CustomButton
+              title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label}
+            />
             {!isLogin && <CustomButton title={ROUTES.SIGNUP.label} />}
             <Box
               component="div"
@@ -100,7 +127,8 @@ export function Navbar(): React.JSX.Element {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <IconGardenCart stroke={2} color={theme.colors.blue[9]} />
               <Box component="div" className={classes.link}>
                 <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
@@ -110,7 +138,11 @@ export function Navbar(): React.JSX.Element {
             </Box>
             <Avatar />
           </Group>
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
+          />
         </Group>
       </header>
       <Drawer
@@ -119,14 +151,16 @@ export function Navbar(): React.JSX.Element {
         size="100%"
         padding="md"
         hiddenFrom="sm"
-        zIndex={1000000}>
+        zIndex={1000000}
+      >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Box
             component="div"
             onClick={() => router.push(ROUTES.DISCOVER.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             {ROUTES.DISCOVER.label}
           </Box>
           <Box
@@ -134,7 +168,8 @@ export function Navbar(): React.JSX.Element {
             onClick={() => router.push(ROUTES.CREATEITEM.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             {ROUTES.CREATEITEM.label}
           </Box>
           <Box
@@ -142,12 +177,15 @@ export function Navbar(): React.JSX.Element {
             onClick={() => router.push(ROUTES.ABOUTUS.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             {ROUTES.ABOUTUS.label}
           </Box>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <CustomButton title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label} />
+            <CustomButton
+              title={isLogin ? ROUTES.SIGNUP.label : ROUTES.LOGIN.label}
+            />
             <CustomButton title={ROUTES.SIGNUP.label} />
           </Group>
         </ScrollArea>

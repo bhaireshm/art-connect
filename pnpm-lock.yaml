@@ -46,9 +46,6 @@ dependencies:
     version: 0.33.4
 
 devDependencies:
-  '@eslint/js':
-    specifier: ^9.2.0
-    version: 9.4.0
   '@types/cookie':
     specifier: ^0.6.0
     version: 0.6.0
@@ -70,12 +67,6 @@ devDependencies:
   eslint-config-next:
     specifier: 14.2.3
     version: 14.2.3(eslint@8.57.0)(typescript@5.4.5)
-  eslint-plugin-react:
-    specifier: ^7.34.1
-    version: 7.34.2(eslint@8.57.0)
-  eslint-plugin-react-hooks:
-    specifier: ^4.6.2
-    version: 4.6.2(eslint@8.57.0)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.5
@@ -94,9 +85,6 @@ devDependencies:
   typescript:
     specifier: ^5.4.5
     version: 5.4.5
-  typescript-eslint:
-    specifier: ^7.8.0
-    version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
 
 packages:
 
@@ -149,11 +137,6 @@ packages:
   /@eslint/js@8.57.0:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
-
-  /@eslint/js@9.4.0:
-    resolution: {integrity: sha512-fdI7VJjP3Rvc70lC4xkFXHB0fiPeojiL1PxVG6t1ZvXQrarj893PweuBTujxDUFk0Fxj4R7PIIAZ/aiiyZPZcg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
   /@floating-ui/core@1.6.2:
@@ -3713,25 +3696,6 @@ packages:
       has-proto: 1.0.3
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
-    dev: true
-
-  /typescript-eslint@7.11.0(eslint@8.57.0)(typescript@5.4.5):
-    resolution: {integrity: sha512-ZKe3yHF/IS/kCUE4CGE3UgtK+Q7yRk1e9kwEI0rqm9XxMTd9P1eHe0LVVtrZ3oFuIQ2unJ9Xn0vTsLApzJ3aPw==}
-    engines: {node: ^18.18.0 || >=20.0.0}
-    peerDependencies:
-      eslint: ^8.56.0
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@typescript-eslint/eslint-plugin': 7.11.0(@typescript-eslint/parser@7.11.0)(eslint@8.57.0)(typescript@5.4.5)
-      '@typescript-eslint/parser': 7.11.0(eslint@8.57.0)(typescript@5.4.5)
-      '@typescript-eslint/utils': 7.11.0(eslint@8.57.0)(typescript@5.4.5)
-      eslint: 8.57.0
-      typescript: 5.4.5
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /typescript@5.4.5:

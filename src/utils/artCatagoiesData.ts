@@ -9,4 +9,3 @@ const artCataogies = [
 ];
 
 export default artCataogies;
-

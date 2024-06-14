@@ -34,7 +34,6 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
     "@types/cookie": "^0.6.0",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -42,14 +41,11 @@
     "eslint": "^8.57.0",
     "eslint-config-mantine": "^3.2.0",
     "eslint-config-next": "14.2.3",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^7.8.0"
+    "typescript": "^5.4.5"
   }
 }

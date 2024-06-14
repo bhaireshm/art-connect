@@ -1,40 +1,19 @@
 {
   "extends": [
     "mantine",
-    "next/core-web-vitals",
-    "plugin:@next/next/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "next/core-web-vitals"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": [".eslintrc","lint-staged.config.js", ".prettierrc", "postcss.config.js"],
+  "ignorePatterns": [".eslintrc", "lint-staged.config.js", ".prettierrc", "postcss.config.js"],
   "rules": {
     "semi": "warn",
-    "quotes": [
-      "error",
-      "double",
-      {
-        "avoidEscape": true
-      }
-    ],
-    "react/react-in-jsx-scope": "off",
-    "import/extensions": "off",
-    // "consistent-return": "off",
+    "quotes": ["error", "double"],
+    "linebreak-style": ["warn", "windows"],
     "no-console": "off",
-    "linebreak-style": [
-      "warn",
-      "windows"
-    ],
-    "@typescript-eslint/no-explicit-any": ["off"],
-    "@typescript-eslint/quotes": [
-      "error",
-      "double",
-      {
-        "avoidEscape": true,
-        "allowTemplateLiterals": true
-      }
-    ],
-    "prefer-destructuring": ["off"]
+    "prefer-destructuring": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/quotes": "off"
   }
 }

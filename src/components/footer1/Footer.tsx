@@ -5,6 +5,7 @@ import { Text, Container, ActionIcon, Group, rem, useMantineTheme } from "@manti
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
 import classes from "./Footer.module.css";
 import Logo from "../../assets/image/artConnect.png";
+
 const data = [
   {
     title: "About",
@@ -87,4 +88,3 @@ export function FooterLinks() {
     </footer>
   );
 }
-

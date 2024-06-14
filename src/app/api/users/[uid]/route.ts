@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
 
     const data = await req.json();
     const user = await User.update(userId, data);
-    if (!user) return ResponseHandler.error({ user, userId }, "User not found", 404);
+    if (!user) return ResponseHandler.error(userId, "User not found", 404);
 
     return ResponseHandler.success(user, "User details updated");
   } catch (error) {

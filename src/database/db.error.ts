@@ -10,8 +10,9 @@ export default class DatabaseError extends Error {
   constructor(err?: any) {
     let message = err ?? "Internal Server Error";
     let statusCode = STATUS_TEXT.INTERNAL_SERVER_ERROR;
-    let errors; let host; let
-key;
+    let errors;
+    let host;
+    let key;
 
     if (err instanceof Error.ValidationError) {
       message = "Validation failed";

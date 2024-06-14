@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { Box, Divider, Text, Grid, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import Logo from "../../assets/image/artConnect.png";
 import { IconBrandFacebook, IconBrandTwitter, IconBrandInstagram } from "@tabler/icons-react";
+import Logo from "../../assets/image/artConnect.png";
+
 export default function Footer(): React.JSX.Element {
   const isMobile = useMediaQuery("(max-width: 755px)");
   const span = isMobile ? 12 : 4;

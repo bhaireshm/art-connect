@@ -24,12 +24,12 @@ export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
 
     const data = await req.json();
     const user = await User.update(userId, data);
-    if (!user) return ResponseHandler.error({ user, userId }, "User not found", 404);
+    if (!user) return ResponseHandler.error(userId, "User not found", 404);
 
     return ResponseHandler.success(user, "User details updated");
   } catch (error) {
-    const err = new DatabaseError(error).format();
-    return ResponseHandler.error(err, err.message, err.status);
+    const err = new DatabaseError(error);
+    return ResponseHandler.error(err, err.message, err.code);
   }
 }
 

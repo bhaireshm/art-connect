@@ -13,17 +13,23 @@ class Database {
   }
 
   public async connect(options?: ConnectOptions): Promise<Connection> {
-    const MONGODB_URI = `${process.env.DB_URL}${process.env.DB_NAME}`;
-    if (!MONGODB_URI) throw new DatabaseError("MONGODB_URI not defined");
-    const dbOptions: ConnectOptions = {
-      appName: PROJECT_NAME,
-      ...options,
-    };
+    try {
+      const MONGODB_URI = `${process.env.DB_URL}${process.env.DB_NAME}`;
+      if (!MONGODB_URI) throw new DatabaseError("MONGODB_URI not defined");
 
-    const connection = await connect(MONGODB_URI, dbOptions);
-    Log.info(`Connected to ${connection.connection.db.databaseName}`);
+      const dbOptions: ConnectOptions = {
+        appName: PROJECT_NAME,
+        ...options,
+      };
 
-    return connection.connection;
+      const connection = await connect(MONGODB_URI, dbOptions);
+      Log.info(`Connected to '${MONGODB_URI}'`);
+
+      return connection.connection;
+    } catch (error) {
+      Log.error(error);
+      throw error;
+    }
   }
 
   public static async connect() {

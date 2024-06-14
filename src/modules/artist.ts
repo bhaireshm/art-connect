@@ -1,4 +1,5 @@
 import Database from "@/database/database";
+import DatabaseCRUD from "@/database/db.crud";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -15,4 +16,8 @@ const artistSchema = new Schema(
   Database.getDefaultSchemaOptions(),
 );
 
-export default models[SCHEMA_NAMES.ARTIST] || model(SCHEMA_NAMES.ARTIST, artistSchema);
+const Artist = new DatabaseCRUD<typeof artistSchema>(
+  models[SCHEMA_NAMES.ARTIST] || model(SCHEMA_NAMES.ARTIST, artistSchema),
+);
+
+export default Artist;

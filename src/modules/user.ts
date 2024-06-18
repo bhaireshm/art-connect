@@ -1,5 +1,4 @@
-import Database from "@/database/database";
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
@@ -39,10 +38,10 @@ const userSchema = new mongoose.Schema(
       // },
     }, // artistInfoId if type is "Artist"
   },
-  Database.getDefaultSchemaOptions(),
+  DB.getDefaultSchemaOptions()
 );
 
-const User = new DatabaseCRUD<typeof userSchema>(
+const User = new DBCrud<typeof userSchema>(
   models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, userSchema),
 );
 export default User;

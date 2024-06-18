@@ -1,7 +1,6 @@
 # TODO
 
 - add enum categories in the DB and attach to required models.
-- remove password from user's response, both getAll and getByID apis.
 
 ## FRONTEND TODO
 

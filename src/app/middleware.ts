@@ -7,7 +7,7 @@ const corsOptions = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   /************ Allowed origin checks ends here ************/
   const origin = request.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
@@ -37,6 +37,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
 
   if (!userToken) return NextResponse.redirect(loginUrl);
+
+  // Use below link and implement multiple middleware functions execution
+  // https://medium.com/sopra-steria-norge/how-to-write-actual-api-middleware-for-next-js-2a38355f6674
+  // const isAPI = request.nextUrl.pathname.startsWith("/api");
+  // if (isAPI) // ...
 
   return response;
 }

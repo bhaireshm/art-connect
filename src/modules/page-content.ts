@@ -1,4 +1,4 @@
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -28,9 +28,9 @@ const pageContentSchema = new Schema({
     },
     faq: [faqSchema], // Only for Contact Us page (optional)
   },
-});
+}, DB.getDefaultSchemaOptions());
 
-const PageContent = new DatabaseCRUD<typeof pageContentSchema>(
+const PageContent = new DBCrud<typeof pageContentSchema>(
   models[SCHEMA_NAMES.PAGE_CONTENT] ||
     model(SCHEMA_NAMES.PAGE_CONTENT, pageContentSchema),
 );

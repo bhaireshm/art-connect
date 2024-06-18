@@ -1,4 +1,4 @@
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -34,9 +34,9 @@ const orderSchema = new Schema({
   orderStatus: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
   estimatedDeliveryDate: { type: Date, required: true },
-});
+}, DB.getDefaultSchemaOptions());
 
-const Order = new DatabaseCRUD<typeof orderSchema>(
+const Order = new DBCrud<typeof orderSchema>(
   models[SCHEMA_NAMES.ORDER] || model(SCHEMA_NAMES.ORDER, orderSchema),
 );
 

@@ -1,5 +1,4 @@
-import Database from "@/database/database";
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -23,10 +22,10 @@ const adminDashboardSchema = new Schema(
     manageOrders: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ORDER }],
     manageUsers: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER }],
   },
-  Database.getDefaultSchemaOptions(),
+  DB.getDefaultSchemaOptions(),
 );
 
-const AdminDashboard = new DatabaseCRUD<typeof adminDashboardSchema>(
+const AdminDashboard = new DBCrud<typeof adminDashboardSchema>(
   models[SCHEMA_NAMES.ADMIN_DASHBOARD] ||
     model(SCHEMA_NAMES.ADMIN_DASHBOARD, adminDashboardSchema),
 );

@@ -21,7 +21,7 @@ class Database {
   public async connect(options?: ConnectOptions): Promise<Connection> {
     try {
       const MONGODB_URI = `${process.env.DB_URL}${process.env.DB_NAME}`;
-      if (!MONGODB_URI) throw new DatabaseError("MONGODB_URI not defined");
+      if (!MONGODB_URI) throw new DatabaseError("'MONGODB_URI' not defined");
 
       const dbOptions: ConnectOptions = {
         appName: PROJECT_NAME,
@@ -29,12 +29,19 @@ class Database {
       };
 
       const connection = await connect(MONGODB_URI, dbOptions);
-      Log.info(`Connected to '${MONGODB_URI}'`);
+      Log.info(`Connected to '${MONGODB_URI.split("/").pop()}'`);
 
+      this._instance = connection.connection;
       return connection.connection;
-    } catch (error) {
-      Log.error(error);
-      throw error;
+    } catch (error: any) {
+      if (error?.name === "MongooseError" && error?.message?.includes("Can't call `openUri()`")) {
+        Log.info("Reconnecting to database...");
+        await this.close();
+        return this.connect();
+      } 
+        Log.error(error);
+        throw error;
+      
     }
   }
 
@@ -62,6 +69,8 @@ class Database {
         transform(_, ret) {
           ret.id = ret._id;
           delete ret._id;
+          if (ret.password) delete ret.password;
+          return ret;
         },
       },
       ...options,

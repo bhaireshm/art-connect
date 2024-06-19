@@ -3,7 +3,7 @@ import { SCHEMA_NAMES } from "@/utils/constants";
 import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
 
-const userSchema = new mongoose.Schema(
+export const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      select: false,
+      // select: false,
     },
     socialAccounts: {
       google: String,
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
   DB.getDefaultSchemaOptions()
 );
 
-const User = new DBCrud<typeof userSchema>(
-  models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, userSchema),
+const User = new DBCrud<typeof UserSchema>(
+  models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, UserSchema),
 );
 export default User;

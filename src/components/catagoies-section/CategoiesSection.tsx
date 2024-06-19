@@ -1,8 +1,8 @@
 "use client";
 
-import { Box, Button, Group, Text, rem, useMantineTheme } from "@mantine/core";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/utils/constants";
+import { Box, Group, Text, useMantineTheme } from "@mantine/core";
+import Link from "next/link";
+import classes from "./CategoriesSection.module.css";
 import { CardsCarousel } from "../cards-carousel/CardsCarousel";
 
 interface Cardimage {
@@ -23,7 +23,6 @@ interface CategoiesSectionProps {
 export function CategoiesSection({
   categoryList,
 }: Readonly<{ categoryList: CategoiesSectionProps }>) {
-  const router = useRouter();
   const theme = useMantineTheme();
 
   return (
@@ -34,20 +33,15 @@ export function CategoiesSection({
           fs={theme.fontSizes.xl}
           c={theme.colors.blue[9]}
           fw={800}
-          py={10}>
-          {categoryList?.title}
+          py={10}
+        >
+          {categoryList?.title.toUpperCase()}
         </Text>
-        <Button
-          m={rem(10)}
-          radius={50}
-          variant="outline"
-          onClick={() => {
-            router.push(ROUTES.CATEGOIES.path);
-          }}>
+        <Link href={`/categories/${categoryList?.title}`} className={classes.link}>
           See More
-        </Button>
+        </Link>
       </Group>
-      <CardsCarousel cardsItems={categoryList?.card_details} />
+      <CardsCarousel cardsItems={categoryList} />
     </Box>
   );
 }

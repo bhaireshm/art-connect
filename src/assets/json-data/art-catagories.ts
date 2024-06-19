@@ -1,7 +1,7 @@
 export const artCategories = [
   {
     id: 1,
-    title: "Painting",
+    title: "painting",
     card_details: [
       {
         id: 1,
@@ -73,7 +73,7 @@ export const artCategories = [
   },
   {
     id: 2,
-    title: "Sculpture",
+    title: "sculpture",
     card_details: [
       {
         id: 1,
@@ -145,7 +145,7 @@ export const artCategories = [
   },
   {
     id: 3,
-    title: "Photography",
+    title: "photography",
     card_details: [
       {
         id: 1,
@@ -217,7 +217,7 @@ export const artCategories = [
   },
   {
     id: 4,
-    title: "Architecture",
+    title: "architecture",
     card_details: [
       {
         id: 1,
@@ -289,7 +289,7 @@ export const artCategories = [
   },
   {
     id: 5,
-    title: "Literature",
+    title: "literature",
     card_details: [
       {
         id: 1,

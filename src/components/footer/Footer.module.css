@@ -69,13 +69,14 @@
 
 .afterFooter {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   margin-top: var(--mantine-spacing-xl);
   padding-top: var(--mantine-spacing-xl);
   padding-bottom: var(--mantine-spacing-xl);
   border-top: rem(2px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-
+  margin-left: rem(20);
+  margin-right: rem(20);
   @media (max-width: $mantine-breakpoint-sm) {
     flex-direction: column;
   }

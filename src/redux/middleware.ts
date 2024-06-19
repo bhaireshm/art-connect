@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Middleware,
-  Store,
-  type AnyAction,
-  type Dispatch,
-} from "@reduxjs/toolkit";
+import { Middleware, Store, type AnyAction, type Dispatch } from "@reduxjs/toolkit";
 
 type MiddlewareFunction = (store: Store) => Middleware<Dispatch<AnyAction>>;
 
@@ -24,9 +19,7 @@ export class DynamicMiddlewares {
 
     // * Add API to middleware for caching and etc.
     if (Object.keys(reducers).length)
-      Object.keys(reducers).forEach((rdcr: string) =>
-        checkMiddlewareHasMiddleware(reducers[rdcr]),
-      );
+      Object.keys(reducers).forEach((rdcr: string) => checkMiddlewareHasMiddleware(reducers[rdcr]));
     else checkMiddlewareHasMiddleware(reducers);
 
     // * Check whether the passed middleware is an API

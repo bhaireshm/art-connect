@@ -9,13 +9,7 @@ class ResponseHandler {
   statusText?: string;
   response?: ResponseInit;
 
-  constructor(
-    data: any,
-    error?: any,
-    message?: string,
-    status?: number,
-    response?: ResponseInit,
-  ) {
+  constructor(data: any, error?: any, message?: string, status?: number, response?: ResponseInit) {
     this.data = data;
     this.error = error;
     if (status) {
@@ -26,11 +20,7 @@ class ResponseHandler {
     this.response = response;
   }
 
-  static success(
-    data: any,
-    arg2?: string | number,
-    arg3?: number | ResponseInit,
-  ): NextResponse {
+  static success(data: any, arg2?: string | number, arg3?: number | ResponseInit): NextResponse {
     let message = "";
     let status = 200;
 
@@ -43,11 +33,7 @@ class ResponseHandler {
     return new ResponseHandler(data, null, message, status, headers).json();
   }
 
-  static error(
-    error: any,
-    arg2?: string | number,
-    arg3?: number | ResponseInit,
-  ): NextResponse {
+  static error(error: any, arg2?: string | number, arg3?: number | ResponseInit): NextResponse {
     let message = "";
     let status = 500;
 
@@ -68,7 +54,7 @@ class ResponseHandler {
         status: this.status,
         error: this.error,
       },
-      { status: this.status, statusText: this.statusText, ...this.response },
+      { status: this.status, statusText: this.statusText, ...this.response }
     );
   }
 }

@@ -1,0 +1,4 @@
+#!/usr/bin
+
+pnpm install
+pnpm format

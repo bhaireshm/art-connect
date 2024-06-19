@@ -24,7 +24,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     return ResponseHandler.error(
       { p: user.get("password"), hashedPassword },
       "Invalid credentials 2",
-      401,
+      401
     );
 
   // Generate the token

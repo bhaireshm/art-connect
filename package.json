@@ -4,18 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-    "start": "next start",
     "export": "next build && next export",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint && pnpm lint:stylelint",
-    "lint:fix": "eslint --cache --fix ./src/**/*.{ts,tsx}",
-    "lint:stylelint": "stylelint ./src/**/*.css --cache",
-    "prettier:check": "prettier --check './src/**/*.{ts,tsx}'",
-    "prettier:write": "prettier --write './src/**/*.{ts,tsx}'",
-    "format": "pnpm prettier:write && pnpm lint:fix",
-    "types:check": "pnpm prettier:check && pnpm lint && pnpm typecheck && pnpm jest",
+    "lint:fix": "eslint --cache --fix ./src/**/*.{ts,tsx,json}",
+    "format": "pnpm lint:fix",
+    "types:check": "pnpm lint && pnpm typecheck && pnpm jest",
     "prepare": "chmod +x ./.hooks/prepare.sh && sh ./.hooks/prepare.sh"
   },
   "dependencies": {
@@ -41,11 +38,11 @@
     "eslint": "^8.57.0",
     "eslint-config-mantine": "^3.2.0",
     "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "^9.1.0",
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
-    "prettier": "^3.2.5",
     "typescript": "^5.4.5"
   }
 }

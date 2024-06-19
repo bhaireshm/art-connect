@@ -1,13 +1,13 @@
 # Understanding the Class
 
-The DatabaseCRUD class provides a set of methods for interacting with a MongoDB database using Mongoose. It's designed to handle common CRUD (Create, Read, Update, Delete) operations, as well as some additional features like filtering and counting documents.
+The Database CRUD class provides a set of methods for interacting with a MongoDB database using Mongoose. It's designed to handle common CRUD (Create, Read, Update, Delete) operations, as well as some additional features like filtering and counting documents.
 
 ## Steps to Use the Class
 
 ```ts
 // Imports:
 import { Schema, model } from 'mongoose';
-import DatabaseCRUD from './database/db.crud'; // Adjust the path if needed
+import { DBCrud } from '@/database'; // Adjust the path if needed
 
 // Create a Mongoose Model:
 const mySchema = new Schema({
@@ -18,8 +18,8 @@ const mySchema = new Schema({
 });
 const MyModel = model('MyModel', mySchema); // Replace 'MyModel' with your model name
 
-// Instantiate the DatabaseCRUD Class:
-const dbCRUD = new DatabaseCRUD(MyModel); // Pass your Mongoose model
+// Instantiate the DBCrud Class:
+const dbCRUD = new DBCrud(MyModel); // Pass your Mongoose model
 
 // Perform CRUD Operations:
 // Create:
@@ -63,6 +63,6 @@ console.log(`Number of documents: ${count}`);
 
 ### Important Notes
 
-Database Connection: The DatabaseCRUD class assumes you have already established a connection to your MongoDB database using Mongoose.
-Error Handling: You should implement proper error handling in your code to catch any potential errors during database operations.
-Asynchronous Operations: Remember that most database operations are asynchronous. Use await to handle the results of these operations.
+- Database Connection: The DBCrud class assumes you have already established a connection to your MongoDB database using Mongoose.
+- Error Handling: You should implement proper error handling in your code to catch any potential errors during database operations.
+- Asynchronous Operations: Remember that most database operations are asynchronous. Use await to handle the results of these operations.

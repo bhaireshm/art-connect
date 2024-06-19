@@ -1,4 +1,4 @@
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { model, models, Schema } from "mongoose";
 
@@ -8,9 +8,9 @@ export const addressSchema = new Schema({
   state: String,
   zip: String,
   country: String,
-});
+}, DB.getDefaultSchemaOptions());
 
-const AddressSchema = new DatabaseCRUD<typeof addressSchema>(
+const AddressSchema = new DBCrud<typeof addressSchema>(
   models[SCHEMA_NAMES.ADDRESS] || model(SCHEMA_NAMES.ADDRESS, addressSchema),
 );
 export default AddressSchema;

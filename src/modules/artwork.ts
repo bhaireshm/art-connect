@@ -1,4 +1,4 @@
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -14,11 +14,15 @@ const artworkSchema = new Schema({
   medium: String,
   images: [String], // URLs to high-resolution images
   price: { type: Number, required: true },
-  artist: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTIST, required: true },
+  artist: {
+    type: Schema.Types.ObjectId,
+    ref: SCHEMA_NAMES.ARTIST,
+    required: true,
+  },
   relatedArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
-});
+}, DB.getDefaultSchemaOptions());
 
-const Artwork = new DatabaseCRUD<typeof artworkSchema>(
+const Artwork = new DBCrud<typeof artworkSchema>(
   models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, artworkSchema),
 );
 export default Artwork;

@@ -1,5 +1,4 @@
-import Database from "@/database/database";
-import DatabaseCRUD from "@/database/db.crud";
+import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
@@ -11,12 +10,14 @@ const artistSchema = new Schema(
     bio: { type: String, required: true },
     background: String,
     gallery: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
-    availableArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
+    availableArtworks: [
+      { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK },
+    ],
   },
-  Database.getDefaultSchemaOptions(),
+  DB.getDefaultSchemaOptions(),
 );
 
-const Artist = new DatabaseCRUD<typeof artistSchema>(
+const Artist = new DBCrud<typeof artistSchema>(
   models[SCHEMA_NAMES.ARTIST] || model(SCHEMA_NAMES.ARTIST, artistSchema),
 );
 

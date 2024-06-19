@@ -18,13 +18,20 @@ export default function Home(): React.JSX.Element {
         <Grid justify="center" px={200}>
           <Grid.Col
             span={span}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 50 }}>
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 50,
+            }}
+          >
             <Box
               className="flexColoumn"
               style={{
                 width: "50%",
                 flexWrap: "wrap",
-              }}>
+              }}
+            >
               <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl} fw={800}>
                 The New Creative Economy.
               </Text>
@@ -39,7 +46,8 @@ export default function Home(): React.JSX.Element {
               className="flexColoumn"
               style={{
                 width: "50%",
-              }}>
+              }}
+            >
               <Image src={Art} alt="art" width={800} />
             </Box>
           </Grid.Col>

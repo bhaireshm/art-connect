@@ -13,7 +13,7 @@ export function mergeObjects<T extends object>(obj1: AnyObj, obj2: AnyObj): T {
   const o1 = { ...obj1 };
   const o2 = { ...obj2 };
 
-  for (const key in o1) {
+  for (const key in o1)
     if (Object.hasOwn(o1, key)) {
       if (Array.isArray(o2[key]) && Array.isArray(o1[key])) {
         o2[key] = [...o1[key], ...o2[key]];
@@ -27,7 +27,7 @@ export function mergeObjects<T extends object>(obj1: AnyObj, obj2: AnyObj): T {
       }
       o2[key] = o1[key];
     }
-  }
+
   return o2 as T;
 }
 

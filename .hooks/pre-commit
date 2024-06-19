@@ -24,7 +24,7 @@ if [ ! -z "$IS_SRC_MODIFIED" -a "$IS_SRC_MODIFIED" != " " ]; then
     echo "Formated all staged files."
   else
     echo "code formatting check Failed."
-    echo "Run 'pnpm lint-staged', add changes and try commit again."
+    echo "Run 'pnpm format', add changes and try commit again."
     exit 1
   fi
 

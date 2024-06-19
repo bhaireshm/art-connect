@@ -1,6 +1,12 @@
 import { PROJECT_NAME } from "@/utils/constants";
 import Log from "@/utils/log";
-import { type ConnectOptions, Connection, type SchemaOptions, connect, disconnect } from "mongoose";
+import {
+  type ConnectOptions,
+  Connection,
+  type SchemaOptions,
+  connect,
+  disconnect,
+} from "mongoose";
 import DatabaseError from "./db.error";
 
 class Database {
@@ -44,7 +50,9 @@ class Database {
     await this._instance.close();
   }
 
-  public static getDefaultSchemaOptions(options?: SchemaOptions): SchemaOptions {
+  public static getDefaultSchemaOptions(
+    options?: SchemaOptions,
+  ): SchemaOptions {
     return {
       timestamps: true,
       versionKey: false,

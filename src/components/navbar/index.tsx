@@ -49,7 +49,8 @@ export function Navbar(): React.JSX.Element {
       bg={bg ?? theme.colors.blue[9]}
       radius={radius ?? 50}
       ff={theme.fontFamily}
-      fs={theme.fontSizes.xl}>
+      fs={theme.fontSizes.xl}
+    >
       {title}
     </Button>
   );
@@ -62,14 +63,20 @@ export function Navbar(): React.JSX.Element {
             h="100%"
             component="div"
             onClick={() => router.push(ROUTES.HOME.path)}
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
             <Box
               onClick={() => router.push(ROUTES.DISCOVER.path)}
               className={classes.link}
-              variant="link">
+              variant="link"
+            >
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 Discover
               </Text>
@@ -82,7 +89,8 @@ export function Navbar(): React.JSX.Element {
             <Box
               component="div"
               onClick={() => router.push(ROUTES.ABOUTUS.path)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
                 AboutUs
               </Text>
@@ -99,7 +107,8 @@ export function Navbar(): React.JSX.Element {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <IconGardenCart
                 stroke={2}
                 color={theme.colors.blue[9]}
@@ -117,14 +126,16 @@ export function Navbar(): React.JSX.Element {
         size="100%"
         padding="md"
         hiddenFrom="sm"
-        zIndex={1000000}>
+        zIndex={1000000}
+      >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Box
             component="div"
             onClick={() => router.push(ROUTES.DISCOVER.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             Discover
           </Box>
           <Box
@@ -132,7 +143,8 @@ export function Navbar(): React.JSX.Element {
             onClick={() => router.push(ROUTES.CREATEITEM.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             CreateItem
           </Box>
           <Box
@@ -140,7 +152,8 @@ export function Navbar(): React.JSX.Element {
             onClick={() => router.push(ROUTES.ABOUTUS.path)}
             className={classes.link}
             ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}>
+            fs={theme.fontSizes.xl}
+          >
             AboutUs
           </Box>
           <Divider my="sm" />

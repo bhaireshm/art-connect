@@ -13,9 +13,9 @@ function rootReducerData(options?: any) {
       },
     },
   };
-  if (options?.root) {
+  if (options?.root)
     _rootReducerData = mergeObjects<CreateSliceOptions>(_rootReducerData, options.root);
-  }
+
   return _rootReducerData;
 }
 

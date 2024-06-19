@@ -46,7 +46,8 @@ export function FooterLinks() {
         component="a"
         href={link.link}
         onClick={(event) => event.preventDefault()}
-        c={theme.colors.blue[0]}>
+        c={theme.colors.blue[0]}
+      >
         {link.label}
       </Text>
     ));

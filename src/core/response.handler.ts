@@ -54,7 +54,7 @@ class ResponseHandler {
         status: this.status,
         error: this.error,
       },
-      { status: this.status, statusText: this.statusText, ...this.response },
+      { status: this.status, statusText: this.statusText, ...this.response }
     );
   }
 }

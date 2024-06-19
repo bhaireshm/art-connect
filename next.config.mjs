@@ -3,11 +3,11 @@ const nextConfig = {
   experimental: {
     esmExternals: "loose",
     serverComponentsExternalPackages: ["mongoose"],
-    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
 
-   // Image Config
-   images: {
+  // Image Config
+  images: {
     remotePatterns: [
       {
         protocol: "https",

@@ -9,15 +9,29 @@ import {
 } from "mongoose";
 import DatabaseError from "./db.error";
 
+/**
+ * A singleton class that manages the database connection.
+ */
 class Database {
   private static instance: Database;
   private _instance!: Connection;
 
+  /**
+   * Returns the singleton instance of the Database class.
+   *
+   * @returns The singleton instance of the Database class.
+   */
   public static getInstance(): Database {
     if (!Database.instance) Database.instance = new Database();
     return Database.instance;
   }
 
+  /**
+   * Connects to the database.
+   *
+   * @param options The options to use for connecting to the database.
+   * @returns The database connection.
+   */
   public async connect(options?: ConnectOptions): Promise<Connection> {
     try {
       const MONGODB_URI = `${process.env.DB_URL}${process.env.DB_NAME}`;
@@ -38,25 +52,46 @@ class Database {
         Log.info("Reconnecting to database...");
         await this.close();
         return this.connect();
-      } 
-        Log.error(error);
-        throw error;
-      
+      }
+      Log.error(error);
+      throw error;
+
     }
   }
 
+  /**
+   * Connects to the database.
+   *
+   * @returns The database connection.
+   */
   public static async connect() {
     return this.getInstance().connect();
   }
 
+  /**
+   * Disconnects from the database.
+   *
+   * @returns A promise that resolves when the disconnection is complete.
+   */
   public async disconnect(): Promise<void> {
     await disconnect();
   }
 
+  /**
+   * Closes the database connection.
+   *
+   * @returns A promise that resolves when the connection is closed.
+   */
   public async close(): Promise<void> {
     await this._instance.close();
   }
 
+  /**
+   * Returns the default schema options.
+   *
+   * @param options The options to override the default schema options.
+   * @returns The default schema options.
+   */
   public static getDefaultSchemaOptions(
     options?: SchemaOptions,
   ): SchemaOptions {

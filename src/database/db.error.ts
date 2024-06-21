@@ -1,12 +1,38 @@
 import { STATUS_TEXT } from "@/utils/constants";
 import { Error } from "mongoose";
 
+/**
+ * Custom error class for database-related errors.
+ *
+ * Extends the built-in `Error` class and provides additional properties
+ * for specific database error information.
+ */
 export default class DatabaseError extends Error {
+  /**
+   * HTTP status code associated with the error.
+   */
   code: number;
+
+  /**
+   * Mongoose validation errors, if any.
+   */
   errors?: any;
+
+  /**
+   * Hostname of the database server, if available.
+   */
   host?: string;
+
+  /**
+   * Key that caused a duplicate key error, if any.
+   */
   key?: string;
 
+  /**
+   * Creates a new instance of the DatabaseError class.
+   *
+   * @param err The original error object, if any.
+   */
   constructor(err?: any) {
     let message = err ?? "Internal Server Error";
     let statusCode = STATUS_TEXT.INTERNAL_SERVER_ERROR;

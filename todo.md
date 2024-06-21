@@ -6,3 +6,7 @@
 
 - Home page need to convert into SSR.
 - Create Reusable section for home screen and redirect to item screen.
+- Form to create/add artworks
+- User profile view/edit (both in single page)
+- Artwork listing page
+- Artwork details page

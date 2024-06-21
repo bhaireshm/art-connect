@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     // Create user
     const user = await User.create(data);
 
-    return ResponseHandler.success(user.length === 1 ? user[0] : user, 201);
+    return ResponseHandler.success(user, 201);
   } catch (error) {
     const err = new DatabaseError(error);
     return ResponseHandler.error(err, err.code);

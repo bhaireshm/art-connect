@@ -10,3 +10,4 @@
 - User profile view/edit (both in single page)
 - Artwork listing page
 - Artwork details page
+- https://github.com/wpcodevo/JWT_Authentication_React

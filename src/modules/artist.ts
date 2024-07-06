@@ -2,7 +2,7 @@ import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
-const artistSchema = new Schema(
+export const ArtistSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,8 +17,8 @@ const artistSchema = new Schema(
   DB.getDefaultSchemaOptions(),
 );
 
-const Artist = new DBCrud<typeof artistSchema>(
-  models[SCHEMA_NAMES.ARTIST] || model(SCHEMA_NAMES.ARTIST, artistSchema),
+const Artist = new DBCrud<typeof ArtistSchema>(
+  models[SCHEMA_NAMES.ARTIST] || model(SCHEMA_NAMES.ARTIST, ArtistSchema),
 );
 
 export default Artist;

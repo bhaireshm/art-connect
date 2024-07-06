@@ -3,7 +3,7 @@ import {
   ProjectionType,
   type AggregateOptions,
   type CreateOptions,
-  type PipelineStage,
+  type PipelineStage
 } from "mongoose";
 import Database from "./database";
 
@@ -20,7 +20,7 @@ class DBCrud<T> extends Database {
 
   /**
    * Creates a new instance of the DBCrud class.
-   *
+   * 
    * @param model The Mongoose model to use for CRUD operations.
    */
   constructor(model: Model<T>) {
@@ -61,7 +61,7 @@ class DBCrud<T> extends Database {
    * @param options The options to use for creating the document(s).
    * @returns The created document(s).
    */
-  public async create(data: T, options?: CreateOptions): Promise<T | T[]> {
+  public async create(data: T, options?: CreateOptions): Promise<T | T[]> { // this["m"]["schema"]["paths"]
     await this.connect();
     const isMulti = Array.isArray(data);
     const result = await this.model.create(isMulti ? data : [data], options);

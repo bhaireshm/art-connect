@@ -2,6 +2,7 @@ import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
+import Artist from "./artist";
 
 export const UserSchema = new mongoose.Schema(
   {
@@ -40,6 +41,17 @@ export const UserSchema = new mongoose.Schema(
   },
   DB.getDefaultSchemaOptions()
 );
+
+UserSchema.post("save", async function () {
+  if (this.get("type") === SCHEMA_NAMES.ARTIST) {
+    // const data: any = {
+    //   name: this.get("username"),
+    //   bio: "some bio info",
+    // }
+    // const artist = await Artist.create(data);
+    // if (artist) this.set("artistInfo", artist.get("id"));
+  }
+});
 
 const User = new DBCrud<typeof UserSchema>(
   models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, UserSchema),

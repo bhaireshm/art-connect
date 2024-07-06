@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Starry Night",
+    "description": "A vibrant depiction of a starry night sky, reminiscent of Van Gogh's style.",
+    "dimensions": {
+      "height": 30,
+      "width": 40,
+      "depth": 1.5
+    },
+    "medium": "Acrylic on Canvas",
+    "images": ["", ""],
+    "price": 2200,
+    "artist": "60d21baee7c8f1a8b68b4570",
+    "relatedArtworks": ["60d21bb2e7c8f1a8b68b4571", "60d21bb3e7c8f1a8b68b4572"]
+  },
+  {
+    "title": "Tranquil Meadow",
+    "description": "A peaceful landscape showcasing a lush green meadow with wildflowers.",
+    "dimensions": {
+      "height": 18,
+      "width": 24,
+      "depth": 1
+    },
+    "medium": "Watercolor on Paper",
+    "images": ["", ""],
+    "price": 800,
+    "artist": "60d21baee7c8f1a8b68b4573",
+    "relatedArtworks": ["60d21bb4e7c8f1a8b68b4574", "60d21bb5e7c8f1a8b68b4575"]
+  },
+  {
+    "title": "Cityscape in Rain",
+    "description": "A captivating portrayal of a cityscape glistening in the rain.",
+    "dimensions": {
+      "height": 48,
+      "width": 72,
+      "depth": 3
+    },
+    "medium": "Oil on Canvas",
+    "images": ["", ""],
+    "price": 3500,
+    "artist": "60d21baee7c8f1a8b68b4576",
+    "relatedArtworks": ["60d21bb6e7c8f1a8b68b4577", "60d21bb7e7c8f1a8b68b4578"]
+  },
+  {
+    "title": "Abstract Expression",
+    "description": "A bold and dynamic abstract expression with contrasting colors and textures.",
+    "dimensions": {
+      "height": 20,
+      "width": 20,
+      "depth": 2
+    },
+    "medium": "Mixed Media on Canvas",
+    "images": ["", ""],
+    "price": 1800,
+    "artist": "60d21baee7c8f1a8b68b4579",
+    "relatedArtworks": ["60d21bb8e7c8f1a8b68b457a", "60d21bb9e7c8f1a8b68b457b"]
+  }
+]

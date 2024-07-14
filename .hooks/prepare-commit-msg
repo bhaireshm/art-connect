@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const GIT_PATH = path.join(__dirname, "..", '.git');
+const TEMP_FILE_PATH = path.join(GIT_PATH, 'MODIFIED_FILES.tmp'); // Path to the temporary file
+const IS_NO_VERIFY = fs.existsSync(TEMP_FILE_PATH);
+
+if (!IS_NO_VERIFY) process.exit(0);
+
+// Get the commit message file from arguments
+const COMMIT_MSG_FILE = process.argv[2];
+
+// Read the commit message
+let message;
+try {
+  message = fs.readFileSync(COMMIT_MSG_FILE, 'utf8');
+} catch (error) {
+  console.error(`Error reading commit message file: ${error.message}`);
+  process.exit(1);
+}
+
+// Read the list of modified files from the temporary file
+let modifiedFiles;
+try {
+  modifiedFiles = fs.readFileSync(TEMP_FILE_PATH, 'utf8').split('\n').filter(Boolean);
+} catch (error) {
+  console.error(`Error reading modified files: ${error.message}`);
+  process.exit(1);
+}
+
+const isApiModified = (file) =>
+  file.startsWith('src/app/api') ||
+  file.startsWith('src/modules') ||
+  file.startsWith('src/core') ||
+  file.startsWith('src/database');
+
+const isUiModified = (file) =>
+  file.startsWith('src/app/(private)') ||
+  file.startsWith('src/app/(public)') ||
+  file.includes('components') ||
+  file.includes('assets') ||
+  file.includes('styles');
+
+// Check if specific folders are modified
+const prefixes = [];
+if (modifiedFiles.some(isApiModified)) prefixes.push('api');
+if (modifiedFiles.some(isUiModified)) prefixes.push('ui');
+
+// Concatenate the prefixes to the message if necessary
+let newMessage = message;
+if (prefixes.length) newMessage = `(${prefixes.join(prefixes.length > 1 ? ', ' : '')}) ` + newMessage;
+
+// Write the updated message to the file
+try {
+  fs.writeFileSync(COMMIT_MSG_FILE, newMessage);
+} catch (error) {
+  console.error(`Error writing to commit message file: ${error.message}`);
+  process.exit(1);
+}
+
+// Clean up the temporary file
+try {
+  fs.unlinkSync(TEMP_FILE_PATH);
+} catch (error) {
+  console.error(`Error deleting temporary file: ${error.message}`);
+  process.exit(1);
+}
+
+process.exit(0);

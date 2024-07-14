@@ -1,70 +1,162 @@
-import { ClientSession, Connection, Model } from "mongoose";
+import {
+  Model,
+  ProjectionType,
+  type AggregateOptions,
+  type CreateOptions,
+  type PipelineStage
+} from "mongoose";
+import Database from "./database";
 
-class DatabaseCRUD {
-  private instance: Connection;
+/**
+ * A class that provides CRUD operations for a given Mongoose model.
+ *
+ * @template T The type of the Mongoose model.
+ */
+class DBCrud<T> extends Database {
+  private model: Model<T>;
 
-  private constructor(instance: Connection) {
-    this.instance = instance;
-    this.init();
+  /** Model Instance */
+  m: Model<T>;
+
+  /**
+   * Creates a new instance of the DBCrud class.
+   * 
+   * @param model The Mongoose model to use for CRUD operations.
+   */
+  constructor(model: Model<T>) {
+    super();
+    this.model = model;
+    this.m = model;
   }
 
-  public async init() {
-    this.loadModels();
+  /**
+   * Sets the Mongoose model to use for CRUD operations.
+   *
+   * @param model The Mongoose model to use for CRUD operations.
+   */
+  public setModel(model: Model<T>) {
+    this.model = model;
   }
 
-  private async loadModels(): Promise<void> {
-    await import("@/models"); //.then(console.log).catch(console.error);
+  /**
+   * Finds all documents that match the given query.
+   *
+   * @param query The query to use for finding documents.
+   * @param projection The projection to use for selecting fields.
+   * @returns An array of documents that match the query.
+   */
+  public async findAll(
+    query: any,
+    projection?: ProjectionType<T>,
+  ): Promise<T[]> {
+    await this.connect();
+    const result = await this.model.find(query, projection);
+    return result;
   }
 
-  public async create<T>(model: Model<T>, data: T): Promise<T> {
-    const session = await this.startSession();
-    try {
-      session.startTransaction();
-      const created = await model.create([data], { session });
-      await session.commitTransaction();
-      return created[0];
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      await session.endSession();
-    }
+  /**
+   * Creates a new document or multiple documents.
+   *
+   * @param data The data to use for creating the document(s).
+   * @param options The options to use for creating the document(s).
+   * @returns The created document(s).
+   */
+  public async create(data: T, options?: CreateOptions): Promise<T | T[]> { // this["m"]["schema"]["paths"]
+    await this.connect();
+    const isMulti = Array.isArray(data);
+    const result = await this.model.create(isMulti ? data : [data], options);
+    return isMulti ? result : result[0];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async update<T>(model: Model<T>, query: any, data: Partial<T>): Promise<T | null> {
-    const session = await this.startSession();
-    try {
-      await session.startTransaction();
-      const updated = await model.findOneAndUpdate(query, data, { new: true, session });
-      await session.commitTransaction();
-      return updated;
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      await session.endSession();
-    }
+  /**
+   * Updates a document by its ID.
+   *
+   * @param id The ID of the document to update.
+   * @param data The data to use for updating the document.
+   * @returns The updated document.
+   */
+  public async update(id: string, data: Partial<T>) {
+    await this.connect();
+    const result = await this.model
+      .findByIdAndUpdate(id, data, { new: true, runValidators: true })
+      .exec();
+    return result;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async delete<T>(model: Model<T>, query: any): Promise<void> {
-    const session = await this.startSession();
-    try {
-      session.startTransaction();
-      await model.deleteOne(query, { session });
-      await session.commitTransaction();
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      await session.endSession();
-    }
+  /**
+   * Updates multiple documents.
+   *
+   * @param data The data to use for updating the documents.
+   * @returns The result of the update operation.
+   */
+  public async updateMany(data: Partial<T>[]) {
+    await this.connect();
+    const result = await this.model.updateMany(data, { new: true }).exec();
+    return result;
   }
 
-  private async startSession(): Promise<ClientSession> {
-    return this.instance.startSession();
+  /**
+   * Deletes a document that matches the given query.
+   *
+   * @param query The query to use for deleting the document.
+   * @returns The result of the delete operation.
+   */
+  public async delete(query: any) {
+    await this.connect();
+    const result = await this.model.deleteOne(query);
+    return result;
+  }
+
+  /**
+   * Finds a single document that matches the given query.
+   *
+   * @param query The query to use for finding the document.
+   * @param projection The projection to use for selecting fields.
+   * @returns The document that matches the query.
+   */
+  public async findOne(query: any, projection?: ProjectionType<T>) {
+    await this.connect();
+    const result = await this.model.findOne(query, projection).exec();
+    return result;
+  }
+
+  /**
+   * Finds a document by its ID.
+   *
+   * @param id The ID of the document to find.
+   * @param projection The projection to use for selecting fields.
+   * @returns The document with the given ID.
+   */
+  public async findById(id: string, projection?: ProjectionType<T>) {
+    await this.connect();
+    const result = await this.model.findById(id, projection).exec();
+    return result;
+  }
+
+  /**
+   * Filters documents using an aggregation pipeline.
+   *
+   * @param pipeline The aggregation pipeline to use for filtering documents.
+   * @param options The options to use for the aggregation operation.
+   * @returns The result of the aggregation operation.
+   */
+  public async filter(pipeline: PipelineStage[], options?: AggregateOptions) {
+    await this.connect();
+    const result = await this.model.aggregate(pipeline, options);
+    return result;
+  }
+
+  /**
+   * Counts the number of documents that match the given query.
+   *
+   * @param query The query to use for counting documents.
+   * @returns The number of documents that match the query.
+   */
+  public async count(query: any) {
+    await this.connect();
+    const result = await this.model.countDocuments(query);
+    return result;
   }
 }
 
-export default DatabaseCRUD;
+export default DBCrud;

@@ -1,5 +1,6 @@
 import "@/assets/styles/globals.css";
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
@@ -9,6 +10,8 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
+import { Navbar } from "@/components/navbar";
+import { FooterLinks } from "@/components/footer/Footer";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -30,10 +33,13 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       </head>
       <body className={quicksand.className}>
         <StoreProvider>
-          <MantineProvider theme={theme}>{children}</MantineProvider>
+          <MantineProvider theme={theme}>
+            <Navbar />
+            <main>{children}</main>
+            <FooterLinks />
+          </MantineProvider>
         </StoreProvider>
       </body>
     </html>
   );
 }
-

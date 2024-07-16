@@ -3,8 +3,9 @@ import {
   configureStore,
   type Reducer,
 } from "@reduxjs/toolkit";
+import { rootReducerData } from "./root";
 
-const reducers = combineReducers({});
+const reducers = combineReducers({ rootReducerData });
 
 export const store = () => configureStore({ reducer: reducers });
 
@@ -24,7 +25,6 @@ type ReducerType = {
  * @link https://redux.js.org/usage/code-splitting#defining-an-injectreducer-function
  */
 export function addReducer(reducer: ReducerType) {
-  // ReducerType[]
   Object.keys(reducer).forEach((reducerName) => {
     store().replaceReducer(reducer[reducerName]);
   });

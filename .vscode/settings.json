@@ -1,7 +1,7 @@
 {
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": "always" },
-  "eslint.options": {
-    "rulePaths": "./.eslintrc",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
   },
-  "prettier.printWidth": 100
+  "IDX.aI.enableInlineCompletion": true,
+  "IDX.aI.enableCodebaseIndexing": true
 }

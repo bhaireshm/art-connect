@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "../create-slice";
-import { createActionHook } from "../hooks";
+import { dispatchActionMethods } from "../hooks";
 
 interface User {
   email: string;
@@ -30,9 +30,7 @@ export const userSlice = createAppSlice({
 
     // Update user information
     updateUserInfo: create?.reducer((state: UserSliceState, action: PayloadAction<Partial<User>>) => {
-      if (state.user) {
-        state.user = { ...state.user, ...action.payload };
-      }
+      if (state.user) state.user = { ...state.user, ...action.payload };
     }),
 
     // Logout
@@ -40,12 +38,20 @@ export const userSlice = createAppSlice({
       state.token = null;
       state.user = null;
     }),
+
+    isLogin: create?.reducer((state: UserSliceState) => {
+      if (state?.token) return true;
+      return false;
+    }),
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getUserInfo: create?.reducer((state: UserSliceState, action: PayloadAction<string>) => ({ ...state }))
   }),
   selectors: {
     selectToken: (state: UserSliceState) => state.token,
     selectUser: (state: UserSliceState) => state.user,
+    selectUserInfo: (state: UserSliceState) => state,
   },
 });
 
-// Create the action hook function
-export const useUser = () => createActionHook<typeof userSlice.actions>(userSlice)
+export const useUser = () => dispatchActionMethods<typeof userSlice.actions>(userSlice);

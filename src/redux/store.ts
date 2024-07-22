@@ -5,8 +5,8 @@ import { userSlice } from "./slices";
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      rootReducerData,
-      ...userSlice.reducer
+      // rootReducerData,
+      [userSlice.name]: userSlice.reducer,
     }
   });
 };

@@ -16,6 +16,7 @@
     "prepare": "chmod +x ./.hooks/prepare.sh && sh ./.hooks/prepare.sh"
   },
   "dependencies": {
+    "@bhairesh/ez.js": "^1.2.3",
     "@mantine/carousel": "^7.10.1",
     "@mantine/core": "^7.10.0",
     "@mantine/form": "^7.10.2",

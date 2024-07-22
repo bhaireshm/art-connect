@@ -2,8 +2,8 @@
 
 import { Box, Group, Text, useMantineTheme } from "@mantine/core";
 import Link from "next/link";
-import classes from "./CategoriesSection.module.css";
 import { CardsCarousel } from "../cards-carousel/CardsCarousel";
+import classes from "./CategoriesSection.module.css";
 
 interface Cardimage {
   id: number;

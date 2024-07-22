@@ -1,18 +1,15 @@
 "use client";
 
-import React from "react";
 import styles from "@/assets/styles/page.module.css";
-import Image from "next/image";
 import { Container, Grid, Text, rem, useMantineTheme } from "@mantine/core";
-import Art from "@/assets/image/Art.svg";
-import { CategoiesSection } from "@/components/catagoies-section/CategoiesSection";
-import { artCategories } from "@/assets/json-data/art-catagories";
 import { useMediaQuery } from "@mantine/hooks";
+import React from "react";
 
 export default function Home(): React.JSX.Element {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
   const span = mobile ? 12 : 6;
+
   return (
     <main className={styles.main}>
       <Container fluid py={10}>
@@ -40,13 +37,10 @@ export default function Home(): React.JSX.Element {
             span={span}
             style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
           >
-            <Image src={Art} alt="art" width={800} height={500} />
+            {/* <Image src={Art} alt="art" width={800} height={500} /> */}
           </Grid.Col>
         </Grid>
       </Container>
-      {artCategories?.map((catagoiesItem) => (
-        <CategoiesSection categoryList={catagoiesItem} key={catagoiesItem.id} />
-      ))}
     </main>
   );
 }

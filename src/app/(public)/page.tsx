@@ -1,45 +1,56 @@
 "use client";
 
 import styles from "@/assets/styles/page.module.css";
-import { Container, Grid, Text, rem, useMantineTheme } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { ArtworkGrid } from "@/components/ArtworkGrid/ArtworkGrid";
+import { Container, Title } from "@mantine/core";
 import React from "react";
 
-export default function Home(): React.JSX.Element {
-  const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
-  const span = mobile ? 12 : 6;
+const mockArtworks = [
+  {
+    _id: "1",
+    title: "Sunset over the Ocean",
+    description: "A beautiful painting of a sunset over the ocean.",
+    dimensions: { height: 24, width: 36, depth: 1.5 },
+    medium: "Oil on canvas",
+    images: ["https://dummyimage.com/50x50/000/fff"],
+    price: 1200,
+    artist: "101",
+    relatedArtworks: ["2", "3"],
+  },
+  {
+    _id: "2",
+    title: "Mountain Landscape",
+    description: "A serene mountain landscape with a lake in the foreground.",
+    dimensions: { height: 18, width: 24, depth: 1 },
+    medium: "Acrylic on canvas",
+    images: ["https://dummyimage.com/50x50/000/fff"],
+    price: 950,
+    artist: "102",
+    relatedArtworks: ["1", "3"],
+  },
+  {
+    _id: "3",
+    title: "Abstract Composition",
+    description: "A vibrant abstract composition with bold colors and shapes.",
+    dimensions: { height: 30, width: 40, depth: 1.5 },
+    medium: "Mixed media on canvas",
+    images: ["https://dummyimage.com/50x50/000/fff"],
+    price: 1500,
+    artist: "103",
+    relatedArtworks: ["1", "2"],
+  },
+];
 
+export default function Home(): React.JSX.Element {
   return (
     <main className={styles.main}>
       <Container fluid py={10}>
-        <Grid justify="center" px={mobile ? rem(50) : rem(200)}>
-          <Grid.Col
-            span={span}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl} fw={800}>
-              The New Creative Economy.
-            </Text>
-            <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-              Share your creations with the world
-            </Text>
-            <Text c={theme.colors.blue[9]} ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-              Collect and sell digital art, powered by the best online tools.
-            </Text>
-          </Grid.Col>
-          <Grid.Col
-            span={span}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-          >
-            {/* <Image src={Art} alt="art" width={800} height={500} /> */}
-          </Grid.Col>
-        </Grid>
+        <Container>
+          <Title order={1} style={{ marginBottom: 20, marginTop: 20 }}>
+            Featured Artworks
+          </Title>
+          <ArtworkGrid artworks={mockArtworks} />
+        </Container>
       </Container>
     </main>
   );

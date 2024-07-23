@@ -1,7 +1,6 @@
 "use client";
 
 import Login from "@/components/login/page";
-import { useUser } from "@/redux";
 import { ROUTES } from "@/utils/constants";
 import {
   Avatar,
@@ -67,8 +66,10 @@ export function Navbar(): React.JSX.Element {
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const router = useRouter();
   const theme = useMantineTheme();
-  const { getUserInfo } = useUser();
-  const user = getUserInfo();
+
+  // TODO: Integration pending
+  // const { getUserInfo } = useUser();
+  // const user = getUserInfo();
 
   const CustomDrawer = (
     <Drawer
@@ -112,7 +113,7 @@ export function Navbar(): React.JSX.Element {
         <Avatar />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>{user?.payload?.name}</Menu.Label>
+        <Menu.Label>John Doe</Menu.Label>
         {[
           { icon: IconSettings, label: "Settings" },
           { icon: IconMessageCircle, label: "Messages" },

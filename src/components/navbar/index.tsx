@@ -119,7 +119,7 @@ export function Navbar(): React.JSX.Element {
           { icon: IconPhoto, label: "Gallery" },
         ].map((item, index) => (
           <Menu.Item
-            key={index}
+            key={item.label.toString() + index}
             leftSection={<item.icon style={{ width: rem(14), height: rem(14) }} />}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}

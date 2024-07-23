@@ -1,4 +1,4 @@
-export const ROUTES = {
+export const ROUTES: any = {
   ABOUTUS: { label: "About Us", path: "/about" },
   ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
   ADMIN: { label: "Admin", path: "/admin" },

@@ -2,7 +2,6 @@ import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
-import Artist from "./artist";
 
 export const UserSchema = new mongoose.Schema(
   {

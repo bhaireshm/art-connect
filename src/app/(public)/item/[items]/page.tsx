@@ -1,21 +1,24 @@
 "use client";
 
-import React from "react";
+import { artCategories as ac } from "@/assets/json-data/art-catagories";
+import { CategoiesSection } from "@/components/catagoies-section/CategoiesSection";
+import { API } from "@/redux";
+import type { AnyObj } from "@/types";
+import { ROUTES } from "@/utils/constants";
 import { Button, Container, Grid, Text, rem, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import Image from "next/image";
-import { artCategories } from "@/assets/json-data/art-catagories";
-import { CategoiesSection } from "@/components/catagoies-section/CategoiesSection";
-import { ROUTES } from "@/utils/constants";
-import { useRouter } from "next/navigation";
 import { IconGardenCart } from "@tabler/icons-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Items = ({
   params: { items },
   searchParams,
+  artCategories = ac,
 }: {
   params: { items: string };
   searchParams: { [key: string]: string };
+  artCategories: AnyObj[];
 }) => {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
@@ -27,7 +30,7 @@ const Items = ({
   const categoiesItem = artCategories
     ?.filter((cat) => cat?.title === items)[0]
     .card_details?.filter(
-      (item) => item.category === searchParams.category && item.id === +searchParams.id
+      (item: any) => item.category === searchParams.category && item.id === +searchParams.id
     )[0];
   return (
     <>
@@ -86,7 +89,7 @@ const Items = ({
             </Button>
           </Grid.Col>
         </Grid>
-        {artCategories?.map((catagoiesItem) => (
+        {artCategories?.map((catagoiesItem: any) => (
           <CategoiesSection categoryList={catagoiesItem} key={catagoiesItem.id} />
         ))}
       </Container>
@@ -95,3 +98,11 @@ const Items = ({
 };
 
 export default Items;
+
+// export const getServerSideProps = async () => {
+//   const res = await API("/api/artworks");
+//   console.log("file: page.tsx:103  getServerSideProps  res", res);
+
+//   const data = (await res.json()) as any;
+//   return { props: { artCategories: data } };
+// };

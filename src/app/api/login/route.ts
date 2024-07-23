@@ -6,12 +6,25 @@ import { JWT } from "@/utils/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest, response: NextResponse) {
-  const formData = await request.formData();
+  const contentType = request.headers.get("content-type");
+  let data: { email: string; password: string };
 
-  const email = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
+  // Accepts both json and/or form-data
 
-  if (!password || !email) return ResponseHandler.error(MESSAGES.INVALID_CREDENTIALS);
+  if (contentType?.includes("application/json")) 
+    data = await request.json();
+   else if (contentType?.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    data = {
+      email: formData.get("email")?.toString() ?? "",
+      password: formData.get("password")?.toString() ?? "",
+    };
+  } else 
+    return NextResponse.json({ error: "Unsupported content type" }, { status: 400 });
+  
+
+  if (!data.password || !data.email) return ResponseHandler.error(MESSAGES.INVALID_CREDENTIALS);
+  const { email, password } = data;
 
   // Check if user exists in user table
   const user = await User.findOne({ email });

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CreateSliceOptions } from "@reduxjs/toolkit";
 
+import { PROJECT_NAME } from "@/utils/constants";
 import { mergeObjects } from "@/utils/helpers";
 
 function rootReducerData(options?: any) {
   let _rootReducerData: CreateSliceOptions = {
     name: "root",
-    initialState: { projectName: "" },
+    initialState: { projectName: PROJECT_NAME },
     reducers: {
       setProjectName: (state, payload) => {
         state.projectName = payload.payload;
@@ -37,3 +38,4 @@ function enableDevTools() {
 }
 
 export { enableDevTools, rootReducerData };
+

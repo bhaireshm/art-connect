@@ -33,8 +33,8 @@ export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get(uid);
+export async function DELETE(req: NextRequest, { params }: Params<typeof uid>) {
+  const userId = params.uid;
   if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
   const user = await User.delete({ _id: userId });

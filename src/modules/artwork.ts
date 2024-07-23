@@ -3,7 +3,7 @@ import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
 
 // 3. Artwork Schema
-const artworkSchema = new Schema({
+const ArtworkSchema = new Schema({
   title: { type: String, required: true },
   description: String,
   dimensions: {
@@ -22,7 +22,7 @@ const artworkSchema = new Schema({
   relatedArtworks: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
 }, DB.getDefaultSchemaOptions());
 
-const Artwork = new DBCrud<typeof artworkSchema>(
-  models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, artworkSchema),
+const Artwork = new DBCrud<typeof ArtworkSchema>(
+  models[SCHEMA_NAMES.ARTWORK] || model(SCHEMA_NAMES.ARTWORK, ArtworkSchema),
 );
 export default Artwork;

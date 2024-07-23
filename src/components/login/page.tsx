@@ -1,25 +1,30 @@
 "use client";
 
-import { useToggle, upperFirst } from "@mantine/hooks";
-import { useForm } from "@mantine/form";
+import { useUser } from "@/redux";
 import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  PaperProps,
-  Button,
-  Divider,
-  Checkbox,
   Anchor,
+  Button,
+  Checkbox,
+  Divider,
+  Group,
+  Paper,
+  PaperProps,
+  PasswordInput,
   Stack,
+  Text,
+  TextInput,
 } from "@mantine/core";
-import { GoogleButton } from "@/components/google-button/GoogleButton";
-import { TwitterButton } from "@/components/twitter-button/TwitterButton";
+import { useForm } from "@mantine/form";
+import { upperFirst, useToggle } from "@mantine/hooks";
+import { redirect } from "next/navigation";
+import { useState } from "react";
 
-export default function Login(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
+export default function Login(props: Readonly<PaperProps>) {
+  const [type, toggle] = useToggle(["login", "users"]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { setUser } = useUser();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -34,20 +39,48 @@ export default function Login(props: PaperProps) {
     },
   });
 
+  const handleSubmit = async (values: any) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const url = `/api/${type === "login" ? "login" : "register"}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || "An error occurred");
+        return;
+      }
+
+      const res = await response.json();
+      console.log("file: page.tsx:68  handleSubmit  response", res);
+
+      setUser(res.data);
+      redirect("/");
+    } catch (_) {
+      setError("Network error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Paper radius="md" p="xl" {...props}>
-      <Text size="lg" fw={500}>
-        Welcome to Art Connect, {type} with
+      <Text size="lg" fw={500} ta="center">
+        Welcome to Art Connect, please {type}
       </Text>
+      <br />
+      <Divider />
+      <br />
 
-      <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Google</GoogleButton>
-        <TwitterButton radius="xl">Twitter</TwitterButton>
-      </Group>
+      {error && <Text color="red">{error}</Text>}
 
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
-
-      <form onSubmit={form.onSubmit(() => {})}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           {type === "register" && (
             <TextInput
@@ -62,7 +95,7 @@ export default function Login(props: PaperProps) {
           <TextInput
             required
             label="Email"
-            placeholder="hello@mantine.dev"
+            placeholder="john@mailinator.com"
             value={form.values.email}
             onChange={(event) => form.setFieldValue("email", event.currentTarget.value)}
             error={form.errors.email && "Invalid email"}
@@ -94,7 +127,7 @@ export default function Login(props: PaperProps) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" radius="xl">
+          <Button type="submit" radius="xl" loading={isLoading}>
             {upperFirst(type)}
           </Button>
         </Group>

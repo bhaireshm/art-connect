@@ -1,14 +1,11 @@
 .footer {
-  margin-top: rem(120px);
-  padding-top: calc(var(--mantine-spacing-xl) * 2);
-  padding-bottom: calc(var(--mantine-spacing-xl) * 2);
   border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
 }
 
 .logo {
   max-width: rem(200px);
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +15,7 @@
 .description {
   margin-top: rem(5px);
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     margin-top: var(--mantine-spacing-xs);
     text-align: center;
   }
@@ -28,7 +25,7 @@
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     flex-direction: column;
     align-items: center;
   }
@@ -38,7 +35,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     display: none;
   }
 }
@@ -61,9 +58,7 @@
 .title {
   font-size: var(--mantine-font-size-lg);
   font-weight: 700;
-  font-family:
-    Greycliff CF,
-    var(--mantine-font-family);
+  font-family: Greycliff CF, var(--mantine-font-family);
   margin-bottom: calc(var(--mantine-spacing-xs) / 2);
 }
 
@@ -71,20 +66,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: var(--mantine-spacing-xl);
   padding-top: var(--mantine-spacing-xl);
   padding-bottom: var(--mantine-spacing-xl);
   border-top: rem(2px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
   margin-left: rem(20);
   margin-right: rem(20);
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     flex-direction: column;
   }
 }
 
 .social {
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: var(--mantine-breakpoint-sm)) {
     margin-top: var(--mantine-spacing-xs);
   }
 }
-

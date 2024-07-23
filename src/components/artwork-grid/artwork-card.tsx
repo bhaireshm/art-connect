@@ -1,9 +1,9 @@
-import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
+import { Badge, Button, Card, Image, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 
 interface ArtworkCardProps {
   artwork: {
-    _id: string;
+    id: string;
     title: string;
     description: string;
     medium: string;
@@ -19,15 +19,15 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
         <Image src={artwork.images[0]} height={160} alt={artwork.title} />
       </Card.Section>
 
-      <Group mt="md" mb="xs">
+      <Stack mt="md" mb="xs">
         <Text fw={500}>{artwork.title}</Text>
-        <Badge color="pink" variant="light">
+        <Badge color="pink" size="sm" variant="light">
           {artwork.medium}
         </Badge>
-      </Group>
+      </Stack>
 
-      <Text size="sm" c="dimmed">
-        {artwork.description.substring(0, 100)}...
+      <Text size="sm" c="dimmed" w={200} truncate="end">
+        {artwork.description}
       </Text>
 
       <Text fw={500} size="lg" mt="md">
@@ -36,7 +36,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
 
       <Button
         component={Link}
-        href={`/artworks/${artwork._id}`}
+        href={`/artworks/${artwork.id}`}
         variant="light"
         color="blue"
         fullWidth

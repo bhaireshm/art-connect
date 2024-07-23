@@ -1,6 +1,5 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Teachers:ital,wght@0,400..800;1,400..800&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=Teachers:ital,wght@0,400..800;1,400..800&display=swap");
 
-/* greek-ext */
 @font-face {
   font-family: "Teachers";
   font-style: italic;
@@ -10,7 +9,7 @@
     format("woff2");
   unicode-range: U+1F00-1FFF;
 }
-/* latin-ext */
+
 @font-face {
   font-family: "Teachers";
   font-style: italic;
@@ -21,7 +20,7 @@
   unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
     U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-/* latin */
+
 @font-face {
   font-family: "Teachers";
   font-style: italic;
@@ -32,7 +31,7 @@
     U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
     U+FFFD;
 }
-/* greek-ext */
+
 @font-face {
   font-family: "Teachers";
   font-style: normal;
@@ -41,7 +40,7 @@
   src: url(https://fonts.gstatic.com/s/teachers/v1/H4ckBXKVncXVmUGsgRYxyL6Agw.woff2) format("woff2");
   unicode-range: U+1F00-1FFF;
 }
-/* latin-ext */
+
 @font-face {
   font-family: "Teachers";
   font-style: normal;
@@ -51,7 +50,7 @@
   unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
     U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-/* latin */
+
 @font-face {
   font-family: "Teachers";
   font-style: normal;
@@ -93,9 +92,8 @@ a {
 }
 
 .flexColoumn {
-  display: "flex";
+  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: "column";
+  flex-direction: column;
 }
-

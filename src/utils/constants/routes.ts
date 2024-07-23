@@ -6,7 +6,7 @@ export const ROUTES = {
   CONTACTUS: { label: "Contact Us", path: "/contact" },
   CREATEITEM: { label: "Create Item", path: "/create" },
   CART: { label: "Cart", path: "/cart" },
-  DISCOVER: { label: "Discover", path: "/discover" },
+  DISCOVER: { label: "Discover", path: "/search" },
   HOME: { label: "Home", path: "/" },
   HOTBID: { label: "Hot Bid", path: "/hotbid" },
   LOGIN: { label: "Login", path: "/login" },

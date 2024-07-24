@@ -1,3 +1,7 @@
+import type { AnyObj } from "@/types";
+import { isEmpty } from "@bhairesh/ez.js";
+import { createHmac, randomBytes } from "crypto";
+
 /**
  * Uses deep merge way to merge objects.
  *
@@ -5,10 +9,6 @@
  * @param {object} obj2
  * @returns {object} merged object
  */
-
-import type { AnyObj } from "@/types";
-import { createHmac, randomBytes } from "crypto";
-
 export function mergeObjects<T extends object>(obj1: AnyObj, obj2: AnyObj): T {
   const o1 = { ...obj1 };
   const o2 = { ...obj2 };
@@ -52,4 +52,11 @@ export function isDevelopment(MODE = "") {
 export function hashData(data: string, salt?: string): string {
   if (!salt) salt = randomBytes(16).toString("hex");
   return createHmac("sha256", salt).update(data).digest("hex");
+}
+
+export function searchParamsToObject(searchParams: URLSearchParams) {
+  const obj = Object.fromEntries(searchParams.entries());
+  if (isEmpty(obj)) return {};
+  return Object.entries(obj)
+    ?.reduce((p: AnyObj, [k, v]) => ({ ...p, [k]: decodeURIComponent(v) }), {});
 }

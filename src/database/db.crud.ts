@@ -3,6 +3,7 @@ import {
   ProjectionType,
   type AggregateOptions,
   type CreateOptions,
+  type FilterQuery,
   type PipelineStage
 } from "mongoose";
 import Database from "./database";
@@ -61,7 +62,7 @@ class DBCrud<T> extends Database {
    * @param options The options to use for creating the document(s).
    * @returns The created document(s).
    */
-  public async create(data: T, options?: CreateOptions): Promise<T | T[]> { // this["m"]["schema"]["paths"]
+  public async create(data: T | T[], options?: CreateOptions): Promise<T | T[]> { // this["m"]["schema"]["paths"]
     await this.connect();
     const isMulti = Array.isArray(data);
     const result = await this.model.create(isMulti ? data : [data], options);
@@ -156,6 +157,28 @@ class DBCrud<T> extends Database {
     await this.connect();
     const result = await this.model.countDocuments(query);
     return result;
+  }
+
+  /**
+   * Paginates documents based on the given query, page number, and limit.
+   *
+   * @param query The query to filter documents.
+   * @param page The page number to fetch.
+   * @param limit The number of documents per page.
+   * @param projection The projection to use for selecting fields.
+   * @returns An object containing the paginated results and total document count.
+   */
+  public async paginate(
+    query: FilterQuery<T>,
+    page: number = 1,
+    limit: number = 10,
+    projection?: ProjectionType<T>
+  ): Promise<{ results: T[]; total: number }> {
+    await this.connect();
+    const skip = (page - 1) * limit;
+    const results = await this.model.find(query, projection).skip(skip).limit(limit).exec();
+    const total = await this.model.countDocuments(query).exec();
+    return { results, total };
   }
 }
 

@@ -8,7 +8,7 @@ import DatabaseError from "@/database/db.error";
 import { Artwork } from "@/modules";
 
 /** /api/artworks/ */
-export async function GET() {
+export async function GET(req: NextRequest) {
   const artworks = await Artwork.findAll({}, { password: 0 });
   return ResponseHandler.success(artworks);
 }

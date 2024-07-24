@@ -2,73 +2,91 @@
 
 import { ArtistInfo } from "@/components/artist-info/artist-info";
 import { RelatedArtworks } from "@/components/artwork-details/related-artworks";
-import { Badge, Container, Grid, Group, Image, Text } from "@mantine/core";
-
-const mockArtwork = {
-  id: "1",
-  title: "Sunset over the Ocean",
-  description:
-    "A beautiful painting of a sunset over the ocean, capturing the warm hues of the sky and the reflections on the water.",
-  dimensions: { height: 24, width: 36, depth: 1.5 },
-  medium: "Oil on canvas",
-  images: ["https://dummyimage.com/150x150/000/fff"],
-  price: 1200,
-  artist: "101",
-  relatedArtworks: [
-    {
-      id: "2",
-      title: "Mountain Landscape",
-      description: "A serene mountain landscape with a lake in the foreground.",
-      dimensions: { height: 18, width: 24, depth: 1 },
-      medium: "Acrylic on canvas",
-      images: ["https://dummyimage.com/150x150/000/fff"],
-      price: 950,
-      artist: "102",
-    },
-    {
-      id: "3",
-      title: "Abstract Composition",
-      description: "A vibrant abstract composition with bold colors and shapes.",
-      dimensions: { height: 30, width: 40, depth: 1.5 },
-      medium: "Mixed media on canvas",
-      images: ["https://dummyimage.com/150x150/000/fff"],
-      price: 1500,
-      artist: "103",
-    },
-  ],
-};
-
-const mockArtist = {
-  id: "101",
-  name: "Jane Doe",
-  bio: "Jane Doe is a contemporary artist known for her vibrant landscapes and seascapes.",
-  background: "https://dummyimage.com/150x150/000/fff",
-};
+import { fetchArtworks, fetchUserById, filterArtworks } from "@/redux";
+import type { Artist, Artwork } from "@/types";
+import { Badge, Container, Grid, Group, Image, Loader, Text } from "@mantine/core";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ArtworkDetails() {
+  const { id } = useParams();
+  const [artwork, setArtwork] = useState<Artwork>();
+  const [artist, setArtist] = useState<Artist>();
+  const [relatedArtworks, setRelatedArtworks] = useState<Artwork["relatedArtworks"]>(
+    artwork?.relatedArtworks ?? []
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadArtworkDetails = async () => {
+      setIsLoading(true);
+      try {
+        const artwork = await fetchArtworks(Array.isArray(id) ? id[0] : id);
+        setArtwork(artwork.data);
+
+        if (artwork?.data?.artist) {
+          const artist = await fetchUserById(artwork.data.artist);
+          setArtist(artist.data);
+        }
+
+        // Fetch 3 related artworks
+        const relatedArtworks = await filterArtworks(1, 3, { medium: artwork.data.medium });
+        setRelatedArtworks(relatedArtworks?.data?.results);
+      } catch (error) {
+        console.error("Failed to fetch artwork details:", error);
+      }
+      setIsLoading(false);
+    };
+
+    if (id) loadArtworkDetails();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <Container>
+        <Loader size="xl" style={{ display: "block", margin: "40px auto" }} />
+      </Container>
+    );
+  }
+
+  if (!artwork) {
+    return (
+      <Container>
+        <Text>Artwork not found</Text>
+      </Container>
+    );
+  }
+
   return (
     <Container mt="md">
       <Grid>
         <Grid.Col span={8}>
-          <Image src={mockArtwork.images[0]} alt={mockArtwork.title} radius="5" />
+          <Image
+            src={artwork.images[0]}
+            alt={artwork.title}
+            radius="5"
+            fallbackSrc="https://dummyimage.com/100x100/000/fff"
+          />
         </Grid.Col>
         <Grid.Col span={4}>
           <Text size="xl" fw={700}>
-            {mockArtwork.title}
+            {artwork.title}
           </Text>
           <Group gap="xs">
-            <Badge color="blue">{mockArtwork.medium}</Badge>
-            <Badge color="green">${mockArtwork.price}</Badge>
+            <Badge color="blue">{artwork.medium}</Badge>
+            <Badge color="green">₹{artwork.price}</Badge>
           </Group>
-          <Text mt="md">{mockArtwork.description}</Text>
+          <Text mt="md">{artwork.description}</Text>
           <Text mt="sm">
-            Dimensions: {mockArtwork.dimensions.height} x {mockArtwork.dimensions.width} x
-            {mockArtwork.dimensions.depth}
+            Dimensions: {artwork.dimensions.height} x {artwork.dimensions.width} x
+            {artwork.dimensions.depth}
           </Text>
-          <ArtistInfo artist={mockArtist} />
+          {artist && <ArtistInfo artist={artist} />}
         </Grid.Col>
       </Grid>
-      <RelatedArtworks artworks={mockArtwork.relatedArtworks} />
+      {relatedArtworks?.length > 0 && typeof relatedArtworks === "object" && (
+        <RelatedArtworks artworks={relatedArtworks} />
+      )}
     </Container>
   );
 }

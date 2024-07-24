@@ -1,44 +1,65 @@
 "use client";
 
 import { ArtworkGrid } from "@/components/artwork-grid/artwork-grid";
-import { Button, Container, Group, Pagination, Select, Text, TextInput } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import React, { useState } from "react";
-
-// Mock data - in a real application, this would come from an API
-const mockArtworks = Array(50)
-  .fill(null)
-  .map((_, index) => ({
-    id: `${index + 1}`,
-    title: `Artwork ${index + 1}`,
-    description: `Description for Artwork ${index + 1}`,
-    medium: ["Oil", "Acrylic", "Watercolor", "Sculpture"][Math.floor(Math.random() * 4)],
-    images: [`https://dummyimage.com/${index + 1}/000/fff`],
-    price: Math.floor(Math.random() * 5000) + 500,
-    artist: `Artist ${Math.floor(index / 10) + 1}`,
-  }));
+import { filterArtworks } from "@/redux";
+import { isEmpty } from "@bhairesh/ez.js";
+import {
+  ActionIcon,
+  Button,
+  Container,
+  Group,
+  Loader,
+  Pagination,
+  Select,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import { IconSearch, IconX } from "@tabler/icons-react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export default function SearchPage(): React.JSX.Element {
   const [searchTerm, setSearchTerm] = useState("");
-  const [medium, setMedium] = useState<string | null>(null);
+  const [medium, setMedium] = useState<string | null>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [artworks, setArtworks] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 12;
 
-  const filteredArtworks = mockArtworks.filter(
-    (artwork) =>
-      artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (!medium || artwork.medium === medium)
-  );
+  useEffect(() => {
+    if (!isEmpty(medium)) loadArtworks({ medium });
+    else loadArtworks();
+  }, [currentPage, medium]);
 
-  const paginatedArtworks = filteredArtworks.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const loadArtworks = async (filter = {}) => {
+    setIsLoading(true);
+    try {
+      const result = await filterArtworks(currentPage, itemsPerPage, filter);
+      setArtworks(result?.data?.results);
+      setTotalPages(Math.ceil(result?.data?.total / itemsPerPage));
+    } catch (error) {
+      console.error("Failed to fetch artworks:", error);
+    }
+    setIsLoading(false);
+  };
 
-  const totalPages = Math.ceil(filteredArtworks.length / itemsPerPage);
+  const handleSearch = useCallback((value: string) => {
+    if (value.length > 2) {
+      setSearchTerm(value);
+      setCurrentPage(1);
+      loadArtworks({ description: value });
+    }
+  }, []);
+
+  const clearFilters = () => {
+    setMedium("");
+    setSearchTerm("");
+    setCurrentPage(1);
+    loadArtworks();
+  };
 
   return (
-    <Container fluid py={6}>
+    <Container fluid py={10}>
       <Container>
         <Text
           fz="40"
@@ -53,35 +74,44 @@ export default function SearchPage(): React.JSX.Element {
           <TextInput
             placeholder="Search artworks"
             value={searchTerm}
-            onChange={(event) => setSearchTerm(event.currentTarget.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === "") {
+                handleSearch(searchTerm);
+              }
+            }}
+            onChange={(event) => setSearchTerm(event.target.value)}
             style={{ flexGrow: 1 }}
             leftSection={<IconSearch size={14} />}
+            rightSection={
+              <ActionIcon variant="subtle" onClick={clearFilters}>
+                <IconX size={14} />
+              </ActionIcon>
+            }
           />
           <Select
-            placeholder="Select medium"
             value={medium}
+            placeholder="Select medium"
             onChange={setMedium}
             data={[
+              { value: "", label: "All" },
               { value: "Oil", label: "Oil" },
               { value: "Acrylic", label: "Acrylic" },
               { value: "Watercolor", label: "Watercolor" },
               { value: "Sculpture", label: "Sculpture" },
             ]}
-            style={{ width: 200 }}
           />
-          <Button
-            onClick={() => {
-              setSearchTerm("");
-              setMedium(null);
-            }}
-          >
-            Clear Filters
-          </Button>
+          <Button onClick={() => handleSearch(searchTerm)}>Search</Button>
         </Group>
-        <ArtworkGrid artworks={paginatedArtworks} />
-        <Group justify="center" mt="xl">
-          <Pagination total={totalPages} value={currentPage} onChange={setCurrentPage} />
-        </Group>
+        {isLoading ? (
+          <Loader size="lg" style={{ display: "block", margin: "40px auto" }} />
+        ) : (
+          <>
+            <ArtworkGrid artworks={artworks} />
+            <Group justify="center" mt="xl">
+              <Pagination total={totalPages} value={currentPage} onChange={setCurrentPage} />
+            </Group>
+          </>
+        )}
       </Container>
     </Container>
   );

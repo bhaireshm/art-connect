@@ -1,11 +1,8 @@
+import type { Artist } from "@/types";
 import { Avatar, Group, Stack, Text } from "@mantine/core";
 
 interface ArtistInfoProps {
-  artist: {
-    name: string;
-    bio: string;
-    background: string;
-  };
+  artist: Artist;
 }
 
 export function ArtistInfo({ artist }: Readonly<ArtistInfoProps>) {

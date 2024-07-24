@@ -1,22 +1,24 @@
+import type { Artwork } from "@/types";
+import { isEmpty } from "@bhairesh/ez.js";
 import { Badge, Button, Card, Image, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 
 interface ArtworkCardProps {
-  artwork: {
-    id: string;
-    title: string;
-    description: string;
-    medium: string;
-    images: string[];
-    price: number;
-  };
+  artwork: Artwork;
 }
 
 export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
+  if (isEmpty(artwork)) return null;
+
   return (
     <Card shadow="sm" padding="lg">
       <Card.Section>
-        <Image src={artwork.images[0]} height={160} alt={artwork.title} />
+        <Image
+          height={160}
+          alt={artwork.title}
+          src={artwork.images[0]}
+          fallbackSrc="https://dummyimage.com/10/000/fff"
+        />
       </Card.Section>
 
       <Stack mt="md" mb="xs">
@@ -31,7 +33,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
       </Text>
 
       <Text fw={500} size="lg" mt="md">
-        ${artwork.price}
+        ₹{artwork.price}
       </Text>
 
       <Button

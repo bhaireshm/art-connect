@@ -1,5 +1,5 @@
 import React from "react";
-import { SimpleGrid } from "@mantine/core";
+import { Container, Loader, SimpleGrid, Skeleton } from "@mantine/core";
 import { ArtworkCard } from "./artwork-card";
 
 interface ArtworkGridProps {
@@ -8,10 +8,12 @@ interface ArtworkGridProps {
 
 export function ArtworkGrid({ artworks }: Readonly<ArtworkGridProps>) {
   return (
-    <SimpleGrid cols={4} spacing="lg" verticalSpacing={{ base: "md", sm: "xl" }}>
-      {artworks.map((artwork) => (
-        <ArtworkCard key={artwork.id} artwork={artwork} />
-      ))}
-    </SimpleGrid>
+    <Container>
+      <SimpleGrid cols={4} spacing="lg" verticalSpacing={{ base: "md", sm: "xl" }}>
+        {artworks?.map((artwork) => (
+          <ArtworkCard key={artwork.id} artwork={artwork} />
+        ))}
+      </SimpleGrid>
+    </Container>
   );
 }

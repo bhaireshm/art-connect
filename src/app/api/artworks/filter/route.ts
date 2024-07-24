@@ -7,7 +7,6 @@ import type { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   const { nextUrl: { searchParams } } = req;
   const query = searchParamsToObject(searchParams);
-  console.log("file: route.ts:10  GET  query", query);
   const { page, limit, ...restQuery } = query;
 
   // Pagination logic

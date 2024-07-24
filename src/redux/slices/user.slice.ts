@@ -1,14 +1,10 @@
+import type { User } from "@/types";
+import { SCHEMA_NAMES } from "@/utils/constants";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "../create-slice";
 import { dispatchActionMethods } from "../hooks";
 
-interface User {
-  email: string;
-  username: string;
-  id: string;
-}
-
-export interface UserSliceState {
+interface UserSliceState {
   token: string | null;
   user: User | null;
 }
@@ -19,7 +15,7 @@ const initialState: UserSliceState = {
 };
 
 export const userSlice = createAppSlice({
-  name: "user",
+  name: SCHEMA_NAMES.USER.toLowerCase(),
   initialState,
   reducers: (create: any) => ({
     // Set user information and token

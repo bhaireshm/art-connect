@@ -1,3 +1,4 @@
+import { SCHEMA_NAMES } from "@/utils/constants";
 import type { ReactNode } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,3 +11,60 @@ export interface Props {
 export type ReadOnlyProps<T = Props> = Readonly<T & Props>;
 
 export type Params<S extends string> = { params: Record<S, string> };
+
+export interface Address {
+  street: String,
+  city: String,
+  state: String,
+  zip: String,
+  country: String,
+}
+
+export interface SocialAccounts {
+  google?: string;
+  facebook?: string;
+}
+
+export interface Profile {
+  firstName?: string;
+  lastName?: string;
+  address?: Address;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  password?: string;
+  socialAccounts?: SocialAccounts;
+  profile?: Profile;
+  type: (typeof SCHEMA_NAMES.USER | typeof SCHEMA_NAMES.ARTIST)[];
+  artistInfo?: Artist;
+}
+
+export interface Dimensions {
+  height: number;
+  width: number;
+  depth: number;
+}
+
+export interface Artwork {
+  title: string;
+  description?: string;
+  dimensions: Dimensions;
+  medium?: string;
+  images: string[];
+  price: number;
+  artist: string;
+  relatedArtworks: Artwork[];
+  id: string;
+}
+
+export interface Artist {
+  id: string;
+  name?: string;
+  bio: string;
+  background?: string;
+  gallery: Artwork["id"];
+  availableArtworks: Artwork["id"];
+}

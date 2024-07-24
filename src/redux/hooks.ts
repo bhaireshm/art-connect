@@ -1,4 +1,4 @@
-import type { Slice } from "@reduxjs/toolkit";
+import type { PayloadAction, Slice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import type { AppDispatch, AppStore, RootState } from "./store";
 
@@ -8,7 +8,7 @@ export const useAppStore = useStore.withTypes<AppStore>();
 
 // Create a generic type for the action hook object
 type ActionHookObject<T extends { [key: string]: any }> = {
-  [K in keyof T]: (payload?: Parameters<T[K]>[1]) => void;
+  [K in keyof T]: (payload?: Parameters<T[K]>[1]) => PayloadAction<T[K]>;
 };
 
 export function dispatchActionMethods<T extends { [key: string]: any }>(slice: Slice) {
@@ -17,13 +17,11 @@ export function dispatchActionMethods<T extends { [key: string]: any }>(slice: S
   const store = useAppStore();
   const state = slice.getInitialState();
   const actions = slice.actions;
-  const disptchedMethods: { [actionName: string]: (data: unknown) => void } = { state };
+  const disptchedMethods: { [actionName: string]: (data: unknown) => PayloadAction<keyof T> } = { state };
 
   Object.keys(actions).forEach((action: string) => {
     disptchedMethods[action] = (data: unknown) => store.dispatch(actions[action](data));
   });
 
-  // actions[`use${camelCase(slice.name.replace(/ /g, ""))}`] = () => disptchedMethods;
-  // console.log("file: hooks.ts:43  disptchedMethods", disptchedMethods);
   return disptchedMethods as ActionHookObject<T>;
 }

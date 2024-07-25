@@ -5,18 +5,18 @@ import type { Artist, Artwork } from "@/types";
 
 interface ArtistInfoProps {
   artist: Artist;
-  artwork: Artwork;
+  artwork?: Artwork;
 }
 
 export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
   const handleAddToWishlist = () => {
     // Implement wishlist functionality
-    console.log("Add to wishlist:", artwork.id);
+    console.log("Add to wishlist:", artwork?.id);
   };
 
   const handleAddToCart = () => {
     // Implement add to cart functionality
-    console.log("Add to cart:", artwork.id);
+    console.log("Add to cart:", artwork?.id);
   };
 
   return (
@@ -30,9 +30,9 @@ export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
           <Text size="sm">{artist.bio}</Text>
         </Stack>
       </Group>
-      <Group mt="md">
+      <Group mt="md" justify="space-evenly">
         <Button leftSection={<IconHeart size={16} />} onClick={handleAddToWishlist}>
-          Add to Wishlist
+          Wishlist
         </Button>
         <Button leftSection={<IconShoppingCart size={16} />} onClick={handleAddToCart}>
           Add to Cart

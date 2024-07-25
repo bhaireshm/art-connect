@@ -2,6 +2,7 @@
 
 import styles from "@/assets/styles/page.module.css";
 import { ArtworkGrid } from "@/components/artwork-grid/artwork-grid";
+import { FeaturesCards } from "@/components/Features";
 import Hero from "@/components/Hero";
 import { filterArtworks } from "@/redux";
 import { Container, Loader, Space, Text } from "@mantine/core";
@@ -25,7 +26,7 @@ export default function Home(): React.JSX.Element {
 
   return (
     <main className={styles.main}>
-      <Container fluid py={10} ta={"center"}>
+      <Container fluid py={10} ta="center">
         {/* Hero Section */}
         <Hero />
 
@@ -50,6 +51,7 @@ export default function Home(): React.JSX.Element {
         {/* <Space h="xl" />
         <TopArtworks /> */}
 
+        <FeaturesCards />
         {/* Call to Action */}
         {/* <Space h="xl" />
         <CallToAction /> */}

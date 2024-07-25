@@ -12,6 +12,7 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
+import { MantineEmotionProvider } from "@mantine/emotion";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -33,11 +34,13 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       </head>
       <body className={quicksand.className}>
         <MantineProvider theme={theme}>
-          <StoreProvider>
-            <Navbar />
-            <main>{children}</main>
-            <FooterLinks />
-          </StoreProvider>
+          <MantineEmotionProvider>
+            <StoreProvider>
+              <Navbar />
+              <main>{children}</main>
+              <FooterLinks />
+            </StoreProvider>
+          </MantineEmotionProvider>
         </MantineProvider>
       </body>
     </html>

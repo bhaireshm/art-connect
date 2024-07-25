@@ -158,7 +158,7 @@ export function Navbar(): React.JSX.Element {
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
-            {["Discover", "CreateItem", "AboutUs"].map((item, index) => (
+            {["Discover", "Artist", "AboutUs"].map((item, index) => (
               <Box
                 key={item.toString() + index}
                 component="div"
@@ -166,7 +166,7 @@ export function Navbar(): React.JSX.Element {
                 className={classes.link}
               >
                 <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                  {item}
+                  {ROUTES[item?.toUpperCase()].label}
                 </Text>
               </Box>
             ))}

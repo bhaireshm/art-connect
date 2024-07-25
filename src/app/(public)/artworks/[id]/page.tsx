@@ -1,7 +1,7 @@
 "use client";
 
-import { ArtistInfo } from "@/components/artist-info/artist-info";
-import { RelatedArtworks } from "@/components/artwork-details/related-artworks";
+import { ArtistInfo } from "@/components/artist";
+import { RelatedArtworks } from "@/components/artwork";
 import { fetchArtworks, fetchUserById, filterArtworks } from "@/redux";
 import type { Artist, Artwork } from "@/types";
 import { Badge, Container, Grid, Group, Image, Loader, Text } from "@mantine/core";
@@ -21,17 +21,17 @@ export default function ArtworkDetails() {
     const loadArtworkDetails = async () => {
       setIsLoading(true);
       try {
-        const artwork = await fetchArtworks(Array.isArray(id) ? id[0] : id);
-        setArtwork(artwork.data);
+        const result = await fetchArtworks(Array.isArray(id) ? id[0] : id);
+        setArtwork(result.data);
 
-        if (artwork?.data?.artist) {
-          const artist = await fetchUserById(artwork.data.artist);
-          setArtist(artist.data);
+        if (result?.data?.artist) {
+          const artistResult = await fetchUserById(result.data.artist);
+          setArtist(artistResult.data);
         }
 
         // Fetch 3 related artworks
-        const relatedArtworks = await filterArtworks(1, 3, { medium: artwork.data.medium });
-        setRelatedArtworks(relatedArtworks?.data?.results);
+        const relatedArtworksResult = await filterArtworks(1, 3, { medium: result.data.medium });
+        setRelatedArtworks(relatedArtworksResult?.data?.results);
       } catch (error) {
         console.error("Failed to fetch artwork details:", error);
       }
@@ -41,21 +41,19 @@ export default function ArtworkDetails() {
     if (id) loadArtworkDetails();
   }, [id]);
 
-  if (isLoading) {
+  if (isLoading)
     return (
       <Container>
         <Loader size="xl" style={{ display: "block", margin: "40px auto" }} />
       </Container>
     );
-  }
 
-  if (!artwork) {
+  if (!artwork)
     return (
       <Container>
         <Text>Artwork not found</Text>
       </Container>
     );
-  }
 
   return (
     <Container mt="md">
@@ -81,8 +79,9 @@ export default function ArtworkDetails() {
             Dimensions: {artwork.dimensions.height} x {artwork.dimensions.width} x
             {artwork.dimensions.depth}
           </Text>
-          {artist && <ArtistInfo artist={artist} />}
+          {artist && <ArtistInfo artwork={artwork} artist={artist} />}
         </Grid.Col>
+        {/* TODO: Button to wishlist */}
       </Grid>
       {relatedArtworks?.length > 0 && typeof relatedArtworks === "object" && (
         <RelatedArtworks artworks={relatedArtworks} />

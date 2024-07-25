@@ -1,6 +1,6 @@
 import type { Artwork } from "@/types";
 import { SimpleGrid, Text } from "@mantine/core";
-import { ArtworkCard } from "../artwork-grid/artwork-card";
+import { ArtworkCard } from "./artwork-card";
 
 interface RelatedArtworksProps {
   artworks: Artwork[];

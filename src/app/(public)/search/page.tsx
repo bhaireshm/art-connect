@@ -1,6 +1,6 @@
 "use client";
 
-import { ArtworkGrid } from "@/components/artwork-grid/artwork-grid";
+import { ArtworkGrid } from "@/components/artwork";
 import { filterArtworks } from "@/redux";
 import { isEmpty } from "@bhairesh/ez.js";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/assets/styles/page.module.css";
-import { ArtworkGrid } from "@/components/artwork-grid/artwork-grid";
+import { ArtworkGrid } from "@/components/artwork";
 import { FeaturesCards } from "@/components/Features";
 import Hero from "@/components/Hero";
 import { filterArtworks } from "@/redux";

@@ -1,8 +1,10 @@
 import "@/assets/styles/globals.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 
@@ -35,6 +37,7 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       <body className={quicksand.className}>
         <MantineProvider theme={theme}>
           <MantineEmotionProvider>
+            <Notifications />
             <StoreProvider>
               <Navbar />
               <main>{children}</main>

@@ -36,6 +36,7 @@ export default function SearchPage(): React.JSX.Element {
     try {
       const result = await filterArtworks(currentPage, itemsPerPage, filter);
       setArtworks(result?.data?.results);
+      // eslint-disable-next-line no-unsafe-optional-chaining
       setTotalPages(Math.ceil(result?.data?.total / itemsPerPage));
     } catch (error) {
       console.error("Failed to fetch artworks:", error);
@@ -75,9 +76,7 @@ export default function SearchPage(): React.JSX.Element {
             placeholder="Search artworks"
             value={searchTerm}
             onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === "") {
-                handleSearch(searchTerm);
-              }
+              if (event.key === "Enter" || event.key === "") handleSearch(searchTerm);
             }}
             onChange={(event) => setSearchTerm(event.target.value)}
             style={{ flexGrow: 1 }}

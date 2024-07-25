@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { Artist } from "@/types";
 import {
   Button,
@@ -14,6 +13,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ArtistsListingPage() {
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -79,7 +80,15 @@ export default function ArtistsListingPage() {
                   <Text size="sm" c="dimmed" lineClamp={2}>
                     {artist.bio}
                   </Text>
-                  <Button variant="light" color="blue" fullWidth mt="md" radius="md">
+                  <Button
+                    component={Link}
+                    href={`/artists/${artist.id}`}
+                    variant="light"
+                    color="blue"
+                    fullWidth
+                    mt="md"
+                    radius="md"
+                  >
                     View Profile
                   </Button>
                 </Card>

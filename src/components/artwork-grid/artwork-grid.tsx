@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Loader, SimpleGrid, Skeleton } from "@mantine/core";
+import { Container, SimpleGrid } from "@mantine/core";
 import { ArtworkCard } from "./artwork-card";
 
 interface ArtworkGridProps {

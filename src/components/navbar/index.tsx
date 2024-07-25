@@ -19,15 +19,10 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconGardenCart,
-  IconMessageCircle,
-  IconPhoto,
-  IconSettings,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconGardenCart, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Logo from "../../assets/images/logo.png";
 import classes from "./navbar.module.css";
 
@@ -115,9 +110,10 @@ export function Navbar(): React.JSX.Element {
       <Menu.Dropdown>
         <Menu.Label>John Doe</Menu.Label>
         {[
-          { icon: IconSettings, label: "Settings" },
-          { icon: IconMessageCircle, label: "Messages" },
-          { icon: IconPhoto, label: "Gallery" },
+          { icon: IconUser, label: "Profile" },
+          // { icon: IconSettings, label: "Settings" },
+          // { icon: IconMessageCircle, label: "Messages" },
+          // { icon: IconPhoto, label: "Gallery" },
         ].map((item, index) => (
           <Menu.Item
             key={item.label.toString() + index}
@@ -125,16 +121,18 @@ export function Navbar(): React.JSX.Element {
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}
           >
-            {item.label}
+            <Link href={`${ROUTES[item.label.toUpperCase()]?.path}/6673151584d2dca2987121a1`}>
+              {ROUTES[item.label.toUpperCase()]?.label}
+            </Link>
           </Menu.Item>
         ))}
-        <Menu.Divider />
+        {/* <Menu.Divider />
         <Menu.Item
           color="red"
           leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
         >
           Delete my account
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu.Dropdown>
     </Menu>
   );

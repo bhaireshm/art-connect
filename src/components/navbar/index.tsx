@@ -21,8 +21,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Logo from "../../assets/images/logo.png";
 import classes from "./navbar.module.css";
 
@@ -61,6 +61,7 @@ export function Navbar(): React.JSX.Element {
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const router = useRouter();
   const theme = useMantineTheme();
+  const navList = ["Discover", "Artist", "Create", "AboutUs", "Contact"];
 
   // TODO: Integration pending
   // const { getUserInfo } = useUser();
@@ -76,7 +77,7 @@ export function Navbar(): React.JSX.Element {
       zIndex={1000000}
     >
       <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-        {["Discover", "CreateItem", "AboutUs"].map((item: any, index) => (
+        {navList.map((item: any, index) => (
           <Box
             key={item.toString() + index}
             component="div"
@@ -156,7 +157,7 @@ export function Navbar(): React.JSX.Element {
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
-            {["Discover", "Artist", "Create", "AboutUs"].map((item, index) => (
+            {navList.map((item, index) => (
               <Box
                 key={item.toString() + index}
                 component="div"

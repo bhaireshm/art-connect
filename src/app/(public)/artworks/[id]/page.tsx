@@ -56,7 +56,7 @@ export default function ArtworkDetails() {
     );
 
   return (
-    <Container mt="md">
+    <Container my="md">
       <Grid>
         <Grid.Col span={8}>
           <Image

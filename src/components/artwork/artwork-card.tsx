@@ -1,6 +1,20 @@
 import type { Artwork } from "@/types";
 import { isEmpty } from "@bhairesh/ez.js";
-import { Badge, Button, Card, Image, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Card,
+  CopyButton,
+  Group,
+  Image,
+  rem,
+  Stack,
+  Text,
+  Tooltip,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconCheck, IconHeart, IconShare } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface ArtworkCardProps {
@@ -8,6 +22,7 @@ interface ArtworkCardProps {
 }
 
 export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
+  const theme = useMantineTheme();
   if (isEmpty(artwork)) return null;
 
   return (
@@ -32,10 +47,6 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
         {artwork.description}
       </Text>
 
-      <Text fw={500} size="lg" mt="md">
-        ₹{artwork.price}
-      </Text>
-
       <Button
         component={Link}
         href={`/artworks/${artwork.id}`}
@@ -47,6 +58,41 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
       >
         View Details
       </Button>
+
+      <Card.Section p="sm">
+        <Group justify="space-between" mx="md">
+          <Text fw={500} size="lg">
+            ₹{artwork.price}
+          </Text>
+          <Group gap={0}>
+            <ActionIcon variant="subtle" color="gray">
+              <IconHeart
+                style={{ width: rem(20), height: rem(20) }}
+                color={theme.colors.red[6]}
+                stroke={1.5}
+              />
+            </ActionIcon>
+
+            <CopyButton value={`${window.location.origin}/artworks/${artwork.id}`} timeout={2000}>
+              {({ copied, copy }) => (
+                <Tooltip label={copied ? "Copied" : "Share"} withArrow position="right">
+                  <ActionIcon color={copied ? "teal" : "gray"} variant="subtle" onClick={copy}>
+                    {copied ? (
+                      <IconCheck style={{ width: rem(16) }} />
+                    ) : (
+                      <IconShare
+                        style={{ width: rem(20), height: rem(20) }}
+                        color={theme.colors.blue[6]}
+                        stroke={1.5}
+                      />
+                    )}
+                  </ActionIcon>
+                </Tooltip>
+              )}
+            </CopyButton>
+          </Group>
+        </Group>
+      </Card.Section>
     </Card>
   );
 }

@@ -6,6 +6,7 @@ import { notifications } from "@mantine/notifications";
 import { useParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
+import classes from "./profile.module.css";
 
 export default function UserProfileEdit() {
   const { uid } = useParams();
@@ -63,7 +64,6 @@ export default function UserProfileEdit() {
       });
       console.log("file: page.tsx:61  handleSubmit  response", await response.json());
       if (!response.ok) throw new Error("Failed to update user profile");
-      // Handle success (e.g., show a success message)
       notifications.show({
         title: "Profile Updated",
         message: response.statusText,
@@ -101,29 +101,35 @@ export default function UserProfileEdit() {
             <TextInput
               required
               label="Email"
+              classNames={classes}
               placeholder="your@email.com"
               {...form.getInputProps("email")}
             />
             {/* <TextInput
               label="Password"
               type="password"
+              classNames={classes}
               placeholder="Enter new password (leave blank to keep current)"
               {...form.getInputProps("password")}
             /> */}
             <Group grow>
               <TextInput
+                required
                 label="First Name"
+                classNames={classes}
                 placeholder="Your first name"
                 {...form.getInputProps("profile.firstName")}
               />
               <TextInput
                 label="Last Name"
+                classNames={classes}
                 placeholder="Your last name"
                 {...form.getInputProps("profile.lastName")}
               />
             </Group>
             <TextInput
               label="Street"
+              classNames={classes}
               placeholder="Street address"
               {...form.getInputProps("profile.address.street")}
             />
@@ -131,22 +137,26 @@ export default function UserProfileEdit() {
               <TextInput
                 label="City"
                 placeholder="City"
+                classNames={classes}
                 {...form.getInputProps("profile.address.city")}
               />
               <TextInput
                 label="State"
                 placeholder="State"
+                classNames={classes}
                 {...form.getInputProps("profile.address.state")}
               />
             </Group>
             <Group grow>
               <TextInput
                 label="ZIP"
+                classNames={classes}
                 placeholder="ZIP code"
                 {...form.getInputProps("profile.address.zip")}
               />
               <TextInput
                 label="Country"
+                classNames={classes}
                 placeholder="Country"
                 {...form.getInputProps("profile.address.country")}
               />

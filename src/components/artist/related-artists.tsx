@@ -9,8 +9,14 @@ interface RelatedArtworksProps {
 export function RelatedArtists({ artists }: Readonly<RelatedArtworksProps>) {
   return (
     <Container>
-      <Text size="xl" fw={700} mt="xl" mb="md">
-        Related Artist
+      <Text
+        fz="40"
+        my={20}
+        fw={900}
+        variant="gradient"
+        gradient={{ from: "blue", to: "cyan", deg: 90 }}
+      >
+        Featured Artists
       </Text>
       <SimpleGrid cols={3} spacing="lg">
         {artists?.map((artist: Artist) => (

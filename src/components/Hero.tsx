@@ -32,7 +32,7 @@ function Hero() {
           Explore a curated collection of original artworks, drawings, and more.
         </Text>
         <Group justify="center">
-          <Button component={Link} href="/search" size="md" variant="filled">
+          <Button component={Link} href="/artworks" size="md" variant="filled">
             Explore Artworks
           </Button>
           <Button component={Link} href="/artists" size="md" variant="outline">

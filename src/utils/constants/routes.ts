@@ -1,13 +1,13 @@
 export const ROUTES: any = {
   HOME: { label: "Home", path: "/" },
-  DISCOVER: { label: "Discover Arts", path: "/search" },
+  DISCOVER: { label: "Discover Arts", path: "/artworks" },
   ARTIST: { label: "Artists", path: "/artists" },
   CREATE: { label: "Create Artwork", path: "/artworks/create" },
   ABOUTUS: { label: "About", path: "/about" },
   CONTACT: { label: "Contact Us", path: "/contact-us" },
   ORDERS: { label: "Orders", path: "/orders" },
   PROFILE: { label: "Profile", path: "/profile" },
-  ARTWORKS: { label: "Artworks", path: "/search" },
+  ARTWORKS: { label: "Artworks", path: "/artworks" },
   
   ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
   ADMIN: { label: "Admin", path: "/admin" },

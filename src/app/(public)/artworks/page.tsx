@@ -2,7 +2,6 @@
 
 import { ArtworkGrid } from "@/components/artwork";
 import { filterArtworks } from "@/redux";
-import { isEmpty } from "@bhairesh/ez.js";
 import {
   ActionIcon,
   Button,
@@ -15,49 +14,70 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
-export default function SearchPage(): React.JSX.Element {
-  const [searchTerm, setSearchTerm] = useState("");
+export default function ArtworksListingPage(): React.JSX.Element {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const artistId = searchParams.get("artist") || "";
+  const page = searchParams.get("page") || "1";
+  const search = searchParams.get("search") || "";
+
+  const [searchTerm, setSearchTerm] = useState(search);
   const [medium, setMedium] = useState<string | null>("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
   const [artworks, setArtworks] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 12;
 
-  useEffect(() => {
-    if (!isEmpty(medium)) loadArtworks({ medium });
-    else loadArtworks();
-  }, [currentPage, medium]);
+  const loadArtworks = useCallback(
+    async (filter = {}) => {
+      setIsLoading(true);
+      try {
+        const result = await filterArtworks(currentPage, itemsPerPage, filter);
+        setArtworks(result?.data?.results);
+        setTotalPages(Math.ceil((result?.data?.total ?? 1) / itemsPerPage));
+      } catch (error) {
+        console.error("Failed to fetch artworks:", error);
+      }
+      setIsLoading(false);
+    },
+    [currentPage]
+  );
 
-  const loadArtworks = async (filter = {}) => {
-    setIsLoading(true);
-    try {
-      const result = await filterArtworks(currentPage, itemsPerPage, filter);
-      setArtworks(result?.data?.results);
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      setTotalPages(Math.ceil(result?.data?.total / itemsPerPage));
-    } catch (error) {
-      console.error("Failed to fetch artworks:", error);
-    }
-    setIsLoading(false);
-  };
-
-  const handleSearch = useCallback((value: string) => {
-    if (value.length > 2) {
-      setSearchTerm(value);
-      setCurrentPage(1);
-      loadArtworks({ description: value });
-    }
-  }, []);
+  const handleSearch = useCallback(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("search", searchTerm);
+    params.set("page", "1");
+    router.push(`/artworks?${params.toString()}`);
+    setCurrentPage(1);
+  }, [router, searchParams, searchTerm]);
 
   const clearFilters = () => {
     setMedium("");
     setSearchTerm("");
     setCurrentPage(1);
-    loadArtworks();
+    router.push("/artworks");
   };
+
+  const handlePageChange = (selectedPage: number) => {
+    setCurrentPage(selectedPage);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", selectedPage.toString());
+    router.push(`/artworks?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    const filter = {
+      ...(medium && { medium }),
+      ...(artistId && { artistId }),
+      ...(search && { description: search }),
+    };
+    loadArtworks(filter);
+  }, [currentPage, medium, artistId, search, loadArtworks]);
 
   return (
     <Container fluid py={10}>
@@ -76,7 +96,7 @@ export default function SearchPage(): React.JSX.Element {
             placeholder="Search artworks"
             value={searchTerm}
             onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === "") handleSearch(searchTerm);
+              if (event.key === "Enter") handleSearch();
             }}
             onChange={(event) => setSearchTerm(event.target.value)}
             style={{ flexGrow: 1 }}
@@ -99,7 +119,7 @@ export default function SearchPage(): React.JSX.Element {
               { value: "Sculpture", label: "Sculpture" },
             ]}
           />
-          <Button onClick={() => handleSearch(searchTerm)}>Search</Button>
+          <Button onClick={handleSearch}>Search</Button>
         </Group>
         {isLoading ? (
           <Loader size="lg" style={{ display: "block", margin: "40px auto" }} />
@@ -107,7 +127,7 @@ export default function SearchPage(): React.JSX.Element {
           <>
             <ArtworkGrid artworks={artworks} />
             <Group justify="center" mt="xl">
-              <Pagination total={totalPages} value={currentPage} onChange={setCurrentPage} />
+              <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />
             </Group>
           </>
         )}

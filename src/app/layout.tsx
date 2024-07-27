@@ -4,6 +4,7 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { MantineEmotionProvider } from "@mantine/emotion";
 import { Notifications } from "@mantine/notifications";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
@@ -14,7 +15,6 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
-import { MantineEmotionProvider } from "@mantine/emotion";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 

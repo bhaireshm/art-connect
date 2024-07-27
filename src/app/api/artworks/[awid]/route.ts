@@ -33,8 +33,8 @@ export async function PUT(req: NextRequest, { params }: Params<typeof awid>) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
-  const awId = req.nextUrl.searchParams.get(awid);
+export async function DELETE(req: NextRequest, { params }: Params<typeof awid>) {
+  const awId = params.awid;
   if (!awId) return ResponseHandler.error({ awId }, "Missing/Invalid artwork ID", 400);
 
   const artwork = await Artwork.delete({ _id: awId });

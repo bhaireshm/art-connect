@@ -1,4 +1,4 @@
-import ResponseHandler from "@/core/response.handler";
+import { ResponseHandler } from "@/core";
 import { User } from "@/modules";
 import { MESSAGES } from "@/utils/constants";
 import { hashData } from "@/utils/helpers";

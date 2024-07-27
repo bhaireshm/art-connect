@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/app/building-your-application/routing/route-handlers#dynamic-route-segments
 import { NextRequest } from "next/server";
 
-import ResponseHandler from "@/core/response.handler";
+import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { User } from "@/modules";
 import { hashData } from "@/utils/helpers";

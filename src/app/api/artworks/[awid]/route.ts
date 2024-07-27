@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 
-import ResponseHandler from "@/core/response.handler";
+import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { Artwork } from "@/modules";
 import type { Params } from "@/types";

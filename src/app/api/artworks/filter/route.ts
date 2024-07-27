@@ -1,4 +1,4 @@
-import ResponseHandler from "@/core/response.handler";
+import { ResponseHandler } from "@/core";
 import { Artwork } from "@/modules";
 import { searchParamsToObject } from "@/utils/helpers";
 import type { NextRequest } from "next/server";

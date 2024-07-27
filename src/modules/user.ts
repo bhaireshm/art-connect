@@ -26,9 +26,13 @@ export const UserSchema = new mongoose.Schema(
       lastName: String,
       address: addressSchema,
     },
-    // orderHistory: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ORDER }],
-    // wishlist: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
-    type: [SCHEMA_NAMES.USER, SCHEMA_NAMES.ARTIST],
+    orderHistory: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ORDER }],
+    wishlist: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
+    type: {
+      type: String,
+      default: SCHEMA_NAMES.USER,
+      enum: [SCHEMA_NAMES.USER, SCHEMA_NAMES.ARTIST],
+    },
     artistInfo: {
       type: Schema.Types.ObjectId,
       ref: SCHEMA_NAMES.ARTIST,

@@ -41,10 +41,19 @@ export interface User {
   username: string;
   email: string;
   password?: string;
-  socialAccounts?: SocialAccounts;
-  profile?: Profile;
+  socialAccounts?: {
+    google?: string;
+    facebook?: string;
+  };
+  profile?: {
+    firstName?: string;
+    lastName?: string;
+    address?: Address;
+  };
+  orderHistory?: string[];
+  wishlist?: string[];
   type: (typeof SCHEMA_NAMES.USER | typeof SCHEMA_NAMES.ARTIST)[];
-  artistInfo?: Artist;
+  artistInfo?: string;
 }
 
 export interface Dimensions {

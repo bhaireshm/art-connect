@@ -8,10 +8,10 @@ export const ROUTES: any = {
   CREATE: { label: "Create Artwork", path: "/artworks/create", requiresAuth: true },
   ORDERS: { label: "Orders", path: "/orders", requiresAuth: true },
   PROFILE: { label: "Profile", path: "/profile", requiresAuth: true },
+  CART: { label: "Cart", path: "/cart", requiresAuth: true },
 
   ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
   ADMIN: { label: "Admin", path: "/admin" },
-  CART: { label: "Cart", path: "/cart" },
   HOTBID: { label: "Hot Bid", path: "/hotbid" },
   LOGIN: { label: "Login", path: "/login" },
   LOGOUT: { label: "Logout", path: "/logout" },

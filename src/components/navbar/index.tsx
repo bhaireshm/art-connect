@@ -41,6 +41,7 @@ export function Navbar(): React.JSX.Element {
     "Discover",
     "Artist",
     isAuthenticated ? "Create" : "",
+    isAuthenticated ? "Cart" : "",
     "AboutUs",
     "Contact",
   ].filter((n) => n);

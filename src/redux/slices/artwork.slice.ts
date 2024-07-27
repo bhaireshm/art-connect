@@ -26,9 +26,7 @@ export const artworksSlice = createAppSlice({
     // Update an existing artwork
     updateArtwork: create?.reducer((state: ArtworksSliceState, action: PayloadAction<Artwork>) => {
       const index = state.artworks.findIndex(artwork => artwork.id === action.payload.id);
-      if (index !== -1) {
-        state.artworks[index] = action.payload;
-      }
+      if (index !== -1) state.artworks[index] = action.payload;
     }),
 
     // Delete an artwork

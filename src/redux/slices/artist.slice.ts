@@ -26,9 +26,7 @@ export const artistsSlice = createAppSlice({
     // Update an existing artist
     updateArtist: create?.reducer((state: ArtistsSliceState, action: PayloadAction<Artist>) => {
       const index = state.artists.findIndex(artist => artist.id === action.payload.id);
-      if (index !== -1) {
-        state.artists[index] = action.payload;
-      }
+      if (index !== -1) state.artists[index] = action.payload;
     }),
 
     // Delete an artist

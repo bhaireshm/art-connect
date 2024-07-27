@@ -41,6 +41,7 @@ export const UserSchema = new mongoose.Schema(
   DB.getDefaultSchemaOptions()
 );
 
+// eslint-disable-next-line func-names
 UserSchema.post("save", async function () {
   if (this.get("type") === SCHEMA_NAMES.ARTIST) {
     // const data: any = {

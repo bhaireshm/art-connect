@@ -52,7 +52,7 @@ export default function UserProfileEdit() {
       }
     };
     fetchUserData();
-  }, [uid]);
+  }, [form, uid]);
 
   const handleSubmit = async (values: any) => {
     setIsLoading(true);

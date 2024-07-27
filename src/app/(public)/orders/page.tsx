@@ -48,16 +48,14 @@ export default function OrderHistory() {
             {orders.map((order: any) => (
               <Table.Tr key={order.id}>
                 <Table.Td>{order.id}</Table.Td>
-                <Table.Td>{new Date(order.orderDate)?.toLocaleDateSTable?.Tring()}</Table.Td>
+                <Table.Td>{new Date(order.orderDate)?.toLocaleDateString()}</Table.Td>
                 <Table.Td>${order.totalCost.toFixed(2)}</Table.Td>
                 <Table.Td>
                   <Badge color={order.orderStatus === "Completed" ? "green" : "blue"}>
                     {order.orderStatus}
                   </Badge>
                 </Table.Td>
-                <Table.Td>
-                  {new Date(order.estimatedDeliveryDate)?.toLocaleDateSTable?.Tring()}
-                </Table.Td>
+                <Table.Td>{new Date(order.estimatedDeliveryDate)?.toLocaleDateString()}</Table.Td>
               </Table.Tr>
             ))}
           </Table.Tbody>

@@ -1,7 +1,9 @@
 "use client";
 
 import { ArtworkGrid } from "@/components/artwork";
-import { filterArtworks } from "@/redux";
+import { API } from "@/core";
+import { API_BASE_URL } from "@/utils/constants";
+import { objectToQueryParams } from "@bhairesh/ez.js";
 import {
   ActionIcon,
   Button,
@@ -32,6 +34,12 @@ export default function ArtworksListingPage(): React.JSX.Element {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 12;
+
+  const filterArtworks = async (pageNo: number, limit: number, filter = {}) => {
+    const searchFilter = { page: pageNo, limit, ...filter };
+    const data = await API(`${API_BASE_URL}/artworks/filter?${objectToQueryParams(searchFilter)}`);
+    return data;
+  };
 
   const loadArtworks = useCallback(
     async (filter = {}) => {

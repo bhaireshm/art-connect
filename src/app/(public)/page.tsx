@@ -10,7 +10,8 @@ import { RelatedArtists } from "@/components/artist";
 import { ArtworkGrid } from "@/components/artwork";
 import { FeaturesCards } from "@/components/Features";
 import Hero from "@/components/Hero";
-import { API, filterArtworks } from "@/redux";
+import { API } from "@/core";
+import { API_BASE_URL } from "@/utils/constants";
 
 export default function Home(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,12 +20,16 @@ export default function Home(): React.JSX.Element {
 
   const fetchFeaturedArtists = () => {
     const searchFilter = { page: 1, limit: 6 };
-    API(`/api/artists/filter?${objectToQueryParams(searchFilter)}`)
-      .then((r) => r.json())
-      .then((d) => {
-        console.log("file: page.tsx:25  .then  d", d);
-        setFeaturedArtists(d.data.results);
-      });
+    API(`/api/artists/filter?${objectToQueryParams(searchFilter)}`).then((d) => {
+      console.log("file: page.tsx:25  .then  d", d);
+      setFeaturedArtists(d.data.results);
+    });
+  };
+
+  const filterArtworks = async (page: number, limit: number, filter = {}) => {
+    const searchFilter = { page, limit, ...filter };
+    const data = await API(`${API_BASE_URL}/artworks/filter?${objectToQueryParams(searchFilter)}`);
+    return data;
   };
 
   useEffect(() => {

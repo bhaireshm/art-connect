@@ -1,17 +1,17 @@
 "use client";
 
+import { API } from "@/core";
 import { Button, Container, Group, Loader, Paper, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useParams } from "next/navigation";
-
 import { useEffect, useState } from "react";
 import classes from "./profile.module.css";
 
 export default function UserProfileEdit() {
   const { uid } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [userFormData, setUserFormData] = useState(null);
 
   const form = useForm({
     initialValues: {
@@ -45,7 +45,7 @@ export default function UserProfileEdit() {
         const response = await fetch(`/api/users/${uid}`);
         if (!response.ok) throw new Error("Failed to fetch artist data");
         const userData = await response.json();
-        setUser(userData.data);
+        setUserFormData(userData.data);
         form.setValues(userData.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -57,13 +57,12 @@ export default function UserProfileEdit() {
   const handleSubmit = async (values: any) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/users/${uid}`, {
+      const response = await API(`/api/users/${uid}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        data: values,
       });
-      console.log("file: page.tsx:61  handleSubmit  response", await response.json());
-      if (!response.ok) throw new Error("Failed to update user profile");
+      if (response.status > 299) throw new Error("Failed to update user profile");
       notifications.show({
         title: "Profile Updated",
         message: response.statusText,
@@ -82,7 +81,7 @@ export default function UserProfileEdit() {
     }
   };
 
-  if (!user) return <Loader size="xl" style={{ display: "block", margin: "40px auto" }} />;
+  if (!userFormData) return <Loader size="xl" style={{ display: "block", margin: "40px auto" }} />;
 
   return (
     <Container size="xs">

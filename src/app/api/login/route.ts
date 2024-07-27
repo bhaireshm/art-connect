@@ -1,8 +1,9 @@
 import { ResponseHandler } from "@/core";
 import { User } from "@/modules";
-import { MESSAGES } from "@/utils/constants";
+import { COOKIE, MESSAGES } from "@/utils/constants";
 import { hashData } from "@/utils/helpers";
 import { JWT } from "@/utils/jwt";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -11,17 +12,17 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
   // Accepts both json and/or form-data
 
-  if (contentType?.includes("application/json")) 
+  if (contentType?.includes("application/json"))
     data = await request.json();
-   else if (contentType?.includes("multipart/form-data")) {
+  else if (contentType?.includes("multipart/form-data")) {
     const formData = await request.formData();
     data = {
       email: formData.get("email")?.toString() ?? "",
       password: formData.get("password")?.toString() ?? "",
     };
-  } else 
+  } else
     return NextResponse.json({ error: "Unsupported content type" }, { status: 400 });
-  
+
 
   if (!data.password || !data.email) return ResponseHandler.error(MESSAGES.INVALID_CREDENTIALS);
   const { email, password } = data;
@@ -49,6 +50,15 @@ export async function POST(request: NextRequest, response: NextResponse) {
     id: user.get("id"),
   };
   const token = await JWT.createJwt(userTokenData);
+
+  // response.cookies.set("Set-Cookie", serialize(COOKIE.name, token, COOKIE.serializeOptions));
+  cookies().set(COOKIE.name, token, {
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 30,
+    sameSite: "strict",
+    httpOnly: true,
+    path: "/",
+  });
 
   return ResponseHandler.success({ token, user: userTokenData }, 200, response);
 }

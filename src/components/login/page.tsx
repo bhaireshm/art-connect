@@ -1,8 +1,7 @@
 import { API } from "@/core";
 import { useUser } from "@/redux";
 import type { LoginProps } from "@/types";
-import { ROUTES } from "@/utils/constants";
-import { isEmpty } from "@bhairesh/ez.js";
+import { PROJECT_NAME, ROUTES } from "@/utils/constants";
 import {
   Anchor,
   Button,
@@ -21,8 +20,11 @@ import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const LOGIN = "login";
+const REGISTER = "register";
+
 export default function Login(props: Readonly<LoginProps>) {
-  const [type, toggle] = useToggle(["login", "register"]);
+  const [type, toggle] = useToggle([LOGIN, REGISTER]);
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
   const router = useRouter();
@@ -30,7 +32,7 @@ export default function Login(props: Readonly<LoginProps>) {
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
+      username: "",
       password: "",
       terms: false,
     },
@@ -44,25 +46,35 @@ export default function Login(props: Readonly<LoginProps>) {
     setIsLoading(true);
 
     try {
-      const url = `/api/${type}`;
+      const url = `/api/${type === REGISTER ? "users" : LOGIN}`;
       const response = await API.post(url, values);
-      const { token, user } = response.data;
+      const data = response.data;
+      if (data?.error) throw new Error(data.error);
 
-      if (isEmpty(token) || isEmpty(user)) throw new Error("Invalid response from server");
+      let userData = {};
+      if (type === "LOGIN") {
+        if (!data?.token || !data?.user) throw new Error("Unable to login");
+        userData = { user: data.user, token: data.token };
+      } else if (type === "REGISTER") {
+        if (!data) throw new Error(data.message || "Unable to register");
+        userData = { user: data.user, token: data.token };
+      }
 
-      setUser({ token, user });
+      setUser(userData);
+      props.onSuccess?.(data.user);
+
       notifications.show({
         title: "Success",
-        message: `${upperFirst(type)} successful`,
         color: "green",
+        message: `${upperFirst(type)} successful`,
       });
-      props.onSuccess?.(user);
+
       router.push(ROUTES.HOME.path);
     } catch (err: any) {
       notifications.show({
         title: "Error",
-        message: err.response?.data?.message || "An error occurred",
         color: "red",
+        message: err.message || "An error occurred",
       });
     } finally {
       setIsLoading(false);
@@ -72,7 +84,7 @@ export default function Login(props: Readonly<LoginProps>) {
   return (
     <Paper radius="md" p="xl">
       <Text size="lg" fw={500} ta="center">
-        Welcome to Art Connect, please {type}
+        Welcome to {PROJECT_NAME},<br /> please {type}
       </Text>
       <br />
       <Divider />
@@ -82,11 +94,12 @@ export default function Login(props: Readonly<LoginProps>) {
         <Stack>
           {type === "register" && (
             <TextInput
-              label="Name"
-              placeholder="Your name"
-              value={form.values.name}
-              onChange={(event) => form.setFieldValue("name", event.currentTarget.value)}
-              radius="md"
+              required
+              label="Username"
+              placeholder="Your username"
+              value={form.values.username}
+              onChange={(event) => form.setFieldValue("username", event.currentTarget.value)}
+              error={form.errors.username && "Invalid username"}
             />
           )}
 
@@ -97,7 +110,6 @@ export default function Login(props: Readonly<LoginProps>) {
             value={form.values.email}
             onChange={(event) => form.setFieldValue("email", event.currentTarget.value)}
             error={form.errors.email && "Invalid email"}
-            radius="md"
           />
 
           <PasswordInput
@@ -107,13 +119,14 @@ export default function Login(props: Readonly<LoginProps>) {
             value={form.values.password}
             onChange={(event) => form.setFieldValue("password", event.currentTarget.value)}
             error={form.errors.password && "Password should include at least 6 characters"}
-            radius="md"
           />
 
           {type === "register" && (
             <Checkbox
+              required
               label="I accept terms and conditions"
               checked={form.values.terms}
+              error={form.errors.terms && "Please accept terms and conditions"}
               onChange={(event) => form.setFieldValue("terms", event.currentTarget.checked)}
             />
           )}
@@ -125,7 +138,7 @@ export default function Login(props: Readonly<LoginProps>) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" radius="xl" loading={isLoading}>
+          <Button type="submit" variant="light" loading={isLoading}>
             {upperFirst(type)}
           </Button>
         </Group>

@@ -23,50 +23,27 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconGardenCart, IconLogout, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Logo from "../../assets/images/logo.png";
 import classes from "./navbar.module.css";
-
-interface CustomButtonProps {
-  title: string;
-  c?: string;
-  bg?: string;
-  radius?: number;
-  onClick?: () => void;
-}
-
-function CustomButton({
-  title,
-  c,
-  bg,
-  radius,
-  onClick,
-}: Readonly<CustomButtonProps>): React.JSX.Element {
-  const theme = useMantineTheme();
-  return (
-    <Button
-      c={c ?? theme.colors.blue[1]}
-      bg={bg ?? theme.colors.blue[9]}
-      radius={radius ?? 50}
-      ff={theme.fontFamily}
-      fs={theme.fontSizes.xl}
-      onClick={onClick}
-    >
-      {title}
-    </Button>
-  );
-}
 
 export function Navbar(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [modalOpened, { open: openLoginModal, close: closeLoginModal }] = useDisclosure(false);
   const router = useRouter();
+  const pathname = usePathname();
   const theme = useMantineTheme();
-  const navList = ["Discover", "Artist", "Create", "AboutUs", "Contact"];
-
   const { selectUser, logout, selectIsAuthenticated } = useUser();
   const user = useAppSelector(selectUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  const navList = [
+    "Discover",
+    "Artist",
+    isAuthenticated ? "Create" : "",
+    "AboutUs",
+    "Contact",
+  ].filter((n) => n);
 
   const CustomDrawer = (
     <Drawer
@@ -92,13 +69,15 @@ export function Navbar(): React.JSX.Element {
         ))}
         <Divider my="sm" />
         <Group justify="center" grow pb="xl" px="md">
-          <CustomButton
-            title="Login"
+          <Button
+            variant="gradient"
             onClick={() => {
               closeDrawer();
               openLoginModal();
             }}
-          />
+          >
+            Login
+          </Button>
         </Group>
       </ScrollArea>
     </Drawer>
@@ -138,8 +117,7 @@ export function Navbar(): React.JSX.Element {
   const CustomModal = (
     <Modal opened={modalOpened} onClose={closeLoginModal} withCloseButton={false}>
       <Login
-        onSuccess={(userInfo) => {
-          console.log("file: index.tsx:146  Navbar  userInfo", userInfo);
+        onSuccess={() => {
           closeLoginModal();
           closeDrawer();
         }}
@@ -150,7 +128,7 @@ export function Navbar(): React.JSX.Element {
   return (
     <Box>
       <header className={classes.header} style={{ backgroundColor: theme.colors.blue[1] }}>
-        <Group justify="space-between" h="100%">
+        <Group justify="space-around" align="center" h="100%">
           <Box
             h="100%"
             component="div"
@@ -205,7 +183,14 @@ export function Navbar(): React.JSX.Element {
                 {CustomMenu}
               </>
             ) : (
-              <CustomButton title="Login" onClick={openLoginModal} />
+              <Button
+                variant="gradient"
+                onClick={() => {
+                  if (pathname !== "/login") openLoginModal();
+                }}
+              >
+                Login
+              </Button>
             )}
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />

@@ -1,6 +1,12 @@
 "use client";
 
-import { Container, Title, Text, Group, Button } from "@mantine/core";
+import { Button, Container, Group, Text, Title } from "@mantine/core";
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandMedium,
+  IconBrandNpm,
+} from "@tabler/icons-react";
 
 export default function Contact() {
   return (
@@ -12,37 +18,49 @@ export default function Contact() {
       <Title order={2} my="lg">
         Get in Touch
       </Title>
-      <Text>Email: support@ourartplatform.com</Text>
-      <Text>Phone: +1 (123) 456-7890</Text>
-      <Text>Address: 123 Art Street, Creativity City, Artland, 12345</Text>
+      <Text>Email: bhairesh97@gmail.com</Text>
+      <Text>Phone: +91 8553963618</Text>
+      <Text>Address: Bengaluru, Karnataka 560061</Text>
 
       <Title order={2} my="lg">
-        Follow Us
+        Follow Me on
       </Title>
       <Group>
         <Button
           component="a"
-          href="https://facebook.com/ourartplatform"
+          href="https://www.linkedin.com/in/bhaireshm/"
           target="_blank"
-          variant="outline"
+          variant="gradient"
+          leftSection={<IconBrandLinkedin style={{ width: "1rem", height: "1rem" }} />}
         >
-          Facebook
+          LinkedIn
         </Button>
         <Button
           component="a"
-          href="https://instagram.com/ourartplatform"
+          href="https://github.com/bhaireshm/"
           target="_blank"
-          variant="outline"
+          variant="gradient"
+          leftSection={<IconBrandGithub style={{ width: "1rem", height: "1rem" }} />}
         >
-          Instagram
+          Github
         </Button>
         <Button
           component="a"
-          href="https://twitter.com/ourartplatform"
+          href="https://bhaireshm.medium.com/"
           target="_blank"
-          variant="outline"
+          variant="gradient"
+          leftSection={<IconBrandMedium style={{ width: "1rem", height: "1rem" }} />}
         >
-          Twitter
+          Medium
+        </Button>
+        <Button
+          component="a"
+          href="https://www.npmjs.com/~bhaireshm"
+          target="_blank"
+          variant="gradient"
+          leftSection={<IconBrandNpm style={{ width: "1rem", height: "1rem" }} />}
+        >
+          NPM
         </Button>
       </Group>
 
@@ -51,8 +69,8 @@ export default function Contact() {
       </Title>
       <Text>
         For any support inquiries or technical issues, please reach out to our support team at
-        support@ourartplatform.com. We are committed to providing prompt and helpful assistance to
-        ensure your experience on our platform is smooth and enjoyable.
+        bhairesh97@gmail.com. We are committed to providing prompt and helpful assistance to ensure
+        your experience on our platform is smooth and enjoyable.
       </Text>
 
       <Title order={2} my="lg">
@@ -60,7 +78,7 @@ export default function Contact() {
       </Title>
       <Text>
         Your feedback is invaluable to us. If you have any suggestions or comments on how we can
-        improve our platform, please let us know at feedback@ourartplatform.com.
+        improve our platform, please let us know at bhairesh97@gmail.com
       </Text>
     </Container>
   );

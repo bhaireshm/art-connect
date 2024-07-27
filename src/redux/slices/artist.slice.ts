@@ -2,7 +2,7 @@ import type { Artist } from "@/types";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "../create-slice";
-import { dispatchActionMethods } from "../hooks";
+import { useSliceMethods } from "../hooks";
 
 interface ArtistsSliceState {
   artists: Artist[];
@@ -57,4 +57,4 @@ export const artistsSlice = createAppSlice({
   },
 });
 
-export const useArtists = () => dispatchActionMethods<typeof artistsSlice.actions>(artistsSlice);
+export const useArtists = () => useSliceMethods<typeof artistsSlice.actions & typeof artistsSlice.selectors>(artistsSlice);

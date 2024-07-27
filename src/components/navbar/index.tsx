@@ -1,6 +1,7 @@
 "use client";
 
 import Login from "@/components/login/page";
+import { useAppSelector, useUser } from "@/redux";
 import { ROUTES } from "@/utils/constants";
 import {
   Avatar,
@@ -19,7 +20,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconGardenCart, IconUser } from "@tabler/icons-react";
+import { IconGardenCart, IconLogout, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -58,14 +59,14 @@ function CustomButton({
 
 export function Navbar(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const [modalOpened, { open: openLoginModal, close: closeLoginModal }] = useDisclosure(false);
   const router = useRouter();
   const theme = useMantineTheme();
   const navList = ["Discover", "Artist", "Create", "AboutUs", "Contact"];
 
-  // TODO: Integration pending
-  // const { getUserInfo } = useUser();
-  // const user = getUserInfo();
+  const { selectUser, logout, selectIsAuthenticated } = useUser();
+  const user = useAppSelector(selectUser);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   const CustomDrawer = (
     <Drawer
@@ -95,7 +96,7 @@ export function Navbar(): React.JSX.Element {
             title="Login"
             onClick={() => {
               closeDrawer();
-              openModal();
+              openLoginModal();
             }}
           />
         </Group>
@@ -106,41 +107,43 @@ export function Navbar(): React.JSX.Element {
   const CustomMenu = (
     <Menu shadow="md" trigger="hover" openDelay={100} closeDelay={400}>
       <Menu.Target>
-        <Avatar />
+        <Avatar
+          // src={user?.avatar}
+          src="https://xsgames.co/randomusers/avatar.php?g=pixel"
+          alt={user?.username}
+        />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>John Doe</Menu.Label>
-        {[
-          { icon: IconUser, label: "Profile" },
-          // { icon: IconSettings, label: "Settings" },
-          // { icon: IconMessageCircle, label: "Messages" },
-          // { icon: IconPhoto, label: "Gallery" },
-        ].map((item, index) => (
-          <Menu.Item
-            key={item.label.toString() + index}
-            leftSection={<item.icon style={{ width: rem(14), height: rem(14) }} />}
-            ff={theme.fontFamily}
-            fs={theme.fontSizes.xl}
-          >
-            <Link href={`${ROUTES[item.label.toUpperCase()]?.path}/6673151584d2dca2987121a1`}>
-              {ROUTES[item.label.toUpperCase()]?.label}
-            </Link>
-          </Menu.Item>
-        ))}
-        {/* <Menu.Divider />
+        <Menu.Label>{user?.username}</Menu.Label>
+        <Menu.Item
+          leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />}
+          component={Link}
+          href={`${ROUTES.PROFILE.path}/${user?.id}`}
+        >
+          Profile
+        </Menu.Item>
         <Menu.Item
           color="red"
-          leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+          leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
+          onClick={() => {
+            logout();
+            router.push(ROUTES.HOME.path);
+          }}
         >
-          Delete my account
-        </Menu.Item> */}
+          Logout
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );
-
   const CustomModal = (
-    <Modal opened={modalOpened} onClose={closeModal} withCloseButton={false}>
-      <Login />
+    <Modal opened={modalOpened} onClose={closeLoginModal} withCloseButton={false}>
+      <Login
+        onSuccess={(userInfo) => {
+          console.log("file: index.tsx:146  Navbar  userInfo", userInfo);
+          closeLoginModal();
+          closeDrawer();
+        }}
+      />
     </Modal>
   );
 
@@ -171,34 +174,39 @@ export function Navbar(): React.JSX.Element {
             ))}
           </Group>
           <Group visibleFrom="sm">
-            <CustomButton title="Login" onClick={openModal} />
-            <Box
-              component="div"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Indicator
-                inline
-                processing
-                size={16}
-                offset={7}
-                position="bottom-end"
-                color={theme.colors.blue[7]}
-                withBorder
-                label={2}
-              >
-                <IconGardenCart
-                  stroke={2}
-                  color={theme.colors.blue[9]}
-                  onClick={() => router.push(ROUTES.CART.path)}
-                />
-              </Indicator>
-            </Box>
-            {CustomMenu}
+            {isAuthenticated ? (
+              <>
+                <Box
+                  component="div"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Indicator
+                    inline
+                    processing
+                    size={16}
+                    offset={7}
+                    position="bottom-end"
+                    color={theme.colors.blue[7]}
+                    withBorder
+                    label={2}
+                  >
+                    <IconGardenCart
+                      stroke={2}
+                      color={theme.colors.blue[9]}
+                      onClick={() => router.push(ROUTES.CART.path)}
+                    />
+                  </Indicator>
+                </Box>
+                {CustomMenu}
+              </>
+            ) : (
+              <CustomButton title="Login" onClick={openLoginModal} />
+            )}
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>

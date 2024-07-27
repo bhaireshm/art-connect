@@ -1,6 +1,8 @@
-"use client";
-
+import { API } from "@/core";
 import { useUser } from "@/redux";
+import type { LoginProps } from "@/types";
+import { ROUTES } from "@/utils/constants";
+import { isEmpty } from "@bhairesh/ez.js";
 import {
   Anchor,
   Button,
@@ -8,7 +10,6 @@ import {
   Divider,
   Group,
   Paper,
-  PaperProps,
   PasswordInput,
   Stack,
   Text,
@@ -16,69 +17,66 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
-import { redirect } from "next/navigation";
+import { notifications } from "@mantine/notifications";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Login(props: Readonly<PaperProps>) {
-  const [type, toggle] = useToggle(["login", "users"]);
+export default function Login(props: Readonly<LoginProps>) {
+  const [type, toggle] = useToggle(["login", "register"]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { setUser } = useUser();
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
       email: "",
       name: "",
       password: "",
-      terms: true,
+      terms: false,
     },
-
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) => (val.length <= 6 ? "Password should include at least 6 characters" : null),
+      password: (val) => (val.length < 6 ? "Password should include at least 6 characters" : null),
     },
   });
 
   const handleSubmit = async (values: any) => {
     setIsLoading(true);
-    setError(null);
 
     try {
-      const url = `/api/${type === "login" ? "login" : "register"}`;
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+      const url = `/api/${type}`;
+      const response = await API.post(url, values);
+      const { token, user } = response.data;
+
+      if (isEmpty(token) || isEmpty(user)) throw new Error("Invalid response from server");
+
+      setUser({ token, user });
+      notifications.show({
+        title: "Success",
+        message: `${upperFirst(type)} successful`,
+        color: "green",
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || "An error occurred");
-        return;
-      }
-
-      const res = await response.json();
-      console.log("file: page.tsx:68  handleSubmit  response", res);
-
-      setUser(res.data);
-      redirect("/");
-    } catch (_) {
-      setError("Network error occurred");
+      props.onSuccess?.(user);
+      router.push(ROUTES.HOME.path);
+    } catch (err: any) {
+      notifications.show({
+        title: "Error",
+        message: err.response?.data?.message || "An error occurred",
+        color: "red",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Paper radius="md" p="xl" {...props}>
+    <Paper radius="md" p="xl">
       <Text size="lg" fw={500} ta="center">
         Welcome to Art Connect, please {type}
       </Text>
       <br />
       <Divider />
       <br />
-
-      {error && <Text color="red">{error}</Text>}
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>

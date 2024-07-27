@@ -12,12 +12,17 @@ export type ReadOnlyProps<T = Props> = Readonly<T & Props>;
 
 export type Params<S extends string> = { params: Record<S, string> };
 
+export type LoginProps = {
+  onSuccess?: (user: User) => void;
+  onError?: (err: any) => void;
+};
+
 export interface Address {
-  street: String,
-  city: String,
-  state: String,
-  zip: String,
-  country: String,
+  street: string,
+  city: string,
+  state: string,
+  zip: string,
+  country: string,
 }
 
 export interface SocialAccounts {

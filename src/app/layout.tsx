@@ -9,6 +9,7 @@ import { Notifications } from "@mantine/notifications";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 
+import { AuthProvider } from "@/components/AuthProvider";
 import { FooterLinks } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { theme } from "@/core";
@@ -37,11 +38,13 @@ export default function RootLayout({ children }: ReadOnlyProps) {
       <body className={quicksand.className}>
         <MantineProvider theme={theme}>
           <MantineEmotionProvider>
-            <Notifications />
             <StoreProvider>
-              <Navbar />
-              <main>{children}</main>
-              <FooterLinks />
+              <AuthProvider>
+                <Notifications />
+                <Navbar />
+                <main>{children}</main>
+                <FooterLinks />
+              </AuthProvider>
             </StoreProvider>
           </MantineEmotionProvider>
         </MantineProvider>

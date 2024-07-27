@@ -2,8 +2,9 @@
 
 import { ArtistInfo } from "@/components/artist";
 import { RelatedArtworks } from "@/components/artwork";
-import { fetchArtworks, fetchUserById, filterArtworks } from "@/redux";
+import { API } from "@/redux";
 import type { Artist, Artwork } from "@/types";
+import { objectToQueryParams } from "@bhairesh/ez.js";
 import { Badge, Container, Grid, Group, Image, Loader, Text } from "@mantine/core";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,6 +17,28 @@ export default function ArtworkDetails() {
     artwork?.relatedArtworks ?? []
   );
   const [isLoading, setIsLoading] = useState(true);
+  const API_BASE_URL = "/api";
+
+  const fetchArtworks = async (aid = "") => {
+    const response = await API(`${API_BASE_URL}/artworks/${aid}`);
+    const data = await response.json();
+    return data;
+  };
+
+  const filterArtworks = async (page: number, limit: number, filter = {}) => {
+    const searchFilter = { page, limit, ...filter };
+    const response = await API(
+      `${API_BASE_URL}/artworks/filter?${objectToQueryParams(searchFilter)}`
+    );
+    const data = await response.json();
+    return data;
+  };
+
+  const fetchUserById = async (userId: string) => {
+    const response = await API(`${API_BASE_URL}/users/${userId}`);
+    const data = await response.json();
+    return data;
+  };
 
   useEffect(() => {
     const loadArtworkDetails = async () => {

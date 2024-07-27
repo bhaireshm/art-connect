@@ -2,32 +2,33 @@
 
 import { Container, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function About() {
   return (
     <Container my="lg">
       <Title order={1} ta="center" my="lg">
-        About Us
+        About Me
       </Title>
       <Text>
-        Welcome to our innovative online art marketplace, a comprehensive platform designed to
+        Welcome to my innovative online art marketplace, a comprehensive platform designed to
         facilitate the sale and promotion of artworks. Our mission is to bridge the gap between
         artists and art enthusiasts, providing a seamless and secure digital space for showcasing
         and purchasing unique pieces of art.
       </Text>
 
       <Title order={2} my="lg">
-        Our Vision
+        My Vision
       </Title>
       <Text>
-        We aim to empower artists by giving them a personalized space to exhibit their portfolios,
+        I aim to empower artists by giving them a personalized space to exhibit their portfolios,
         connect with a broader audience, and streamline the art-selling process. By combining an
         intuitive user experience with robust e-commerce capabilities, we offer a dynamic
         marketplace for both artists and collectors.
       </Text>
 
       <Title order={2} my="lg">
-        What We Offer
+        What I Offer
       </Title>
       <List
         spacing="sm"
@@ -62,7 +63,7 @@ export default function About() {
       </List>
 
       <Title order={2} my="lg">
-        Technologies We Use
+        Technologies I Used
       </Title>
       <Text>
         Our platform is built using modern technologies to ensure a high-quality user experience:
@@ -91,17 +92,44 @@ export default function About() {
         Our Commitment
       </Title>
       <Text>
-        We are committed to adhering to best practices in web development, including responsiveness,
+        I are committed to adhering to best practices in web development, including responsiveness,
         accessibility, and performance optimization. Our goal is to continuously improve and scale
-        our platform to accommodate a growing user base and an expanding catalog of artworks.
+        my platform to accommodate a growing user base and an expanding catalog of artworks.
       </Text>
 
       <Title order={2} my="lg">
-        Join Us
+        Documentation links
+      </Title>
+      <List spacing="sm" size="md" center>
+        <List.Item>
+          <Link target="_blank" href="https://github.com/bhaireshm/art-connect">
+            <Text>
+              Project&apos;s GitHub:&nbsp;
+              <Text variant="gradient">https://github.com/bhaireshm/art-connect</Text>
+            </Text>
+          </Link>
+        </List.Item>
+        <List.Item>
+          <Link
+            target="_blank"
+            href="https://documenter.getpostman.com/view/6552648/2sA3XLG4eV#intro"
+          >
+            <Text>
+              API&apos;s Documentation:&nbsp;
+              <Text variant="gradient">
+                https://documenter.getpostman.com/view/6552648/2sA3XLG4eV#intro
+              </Text>
+            </Text>
+          </Link>
+        </List.Item>
+      </List>
+
+      <Title order={2} my="lg">
+        Join Me on the Journey
       </Title>
       <Text>
         Whether you are an artist looking to showcase your work or a collector seeking unique
-        pieces, our platform offers the tools and features to meet your needs. Join us in
+        pieces, this platform offers the tools and features to meet your needs. Join us in
         revolutionizing the online art marketplace and connecting with the vibrant world of art.
       </Text>
     </Container>

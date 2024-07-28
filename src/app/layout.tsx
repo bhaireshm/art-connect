@@ -9,8 +9,7 @@ import { Notifications } from "@mantine/notifications";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 
-import { FooterLinks } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import { CartProvider, Footer, Navbar } from "@/components";
 import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
@@ -28,6 +27,7 @@ export default function RootLayout({ children }: ReadOnlyProps) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon/favicon.ico" />
+        <link rel="icon" sizes="192x192" href="/favicon/android-chrome-192x192.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
@@ -38,10 +38,12 @@ export default function RootLayout({ children }: ReadOnlyProps) {
         <MantineProvider theme={theme}>
           <MantineEmotionProvider>
             <StoreProvider>
-              <Notifications />
-              <Navbar />
-              <main>{children}</main>
-              <FooterLinks />
+              <CartProvider>
+                <Notifications />
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </CartProvider>
             </StoreProvider>
           </MantineEmotionProvider>
         </MantineProvider>

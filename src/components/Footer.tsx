@@ -1,12 +1,12 @@
 "use client";
 
+import Logo from "@/assets/images/logo.png";
+import classes from "@/assets/styles/footer.module.css";
+import { ActionIcon, Box, Container, Group, rem, Text, useMantineTheme } from "@mantine/core";
+import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from "@tabler/icons-react";
 import Image from "next/image";
-import { Text, Container, ActionIcon, Group, rem, useMantineTheme, Box } from "@mantine/core";
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
-import classes from "./Footer.module.css";
-import Logo from "../../assets/images/logo.png";
 
-export function FooterLinks() {
+export function Footer() {
   const theme = useMantineTheme();
 
   return (

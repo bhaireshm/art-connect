@@ -25,6 +25,8 @@ export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
     if (artwork) {
       const updatedWishlist = [...(user?.wishlist || []), artwork.id];
       updateUserInfo({ wishlist: updatedWishlist });
+      // call /api/users/{uid} to save the wishlist
+      
     }
   };
 

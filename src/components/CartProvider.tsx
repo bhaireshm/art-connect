@@ -5,7 +5,7 @@ import { useUser } from "@/redux/slices/user.slice";
 import type { Artwork } from "@/types";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface CartItem {
   artwork: Artwork;
@@ -27,7 +27,6 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within a CartProvider");
-
   return context;
 };
 
@@ -90,19 +89,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const totalCost = cart.reduce((total, item) => total + item.artwork.price * item.quantity, 0);
 
-  return (
-    <CartContext.Provider
-      value={{
-        cart,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        totalCost,
-        isLoading,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      cart,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      totalCost,
+      isLoading,
+    }),
+    [cart, isLoading, totalCost]
   );
+
+  return <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>;
 };

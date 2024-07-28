@@ -1,3 +1,6 @@
+"use client";
+
+import { useAppSelector, useUser } from "@/redux";
 import type { Artwork } from "@/types";
 import { isEmpty } from "@bhairesh/ez.js";
 import {
@@ -16,6 +19,7 @@ import {
 } from "@mantine/core";
 import { IconCheck, IconHeart, IconShare } from "@tabler/icons-react";
 import Link from "next/link";
+// import { useRouter } from "next/router";
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -23,7 +27,26 @@ interface ArtworkCardProps {
 
 export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
   const theme = useMantineTheme();
+  const { selectUser, updateUserInfo } = useUser();
+  const user = useAppSelector(selectUser);
+  // const router = useRouter();
+
   if (isEmpty(artwork)) return null;
+
+  const handleAddToWishlist = () => {
+    // if (!user) {
+    //   router.push("/login");
+    //   return;
+    // }
+    if (artwork) {
+      const updatedWishlist = [...(user?.wishlist || []), artwork.id];
+      console.log(
+        "file: artwork-card.tsx:41  handleAddToWishlist  updatedWishlist",
+        updatedWishlist
+      );
+      updateUserInfo({ wishlist: updatedWishlist });
+    }
+  };
 
   return (
     <Card shadow="sm" padding="lg">
@@ -65,7 +88,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
             ₹{artwork.price}
           </Text>
           <Group gap={0}>
-            <ActionIcon variant="subtle" color="gray">
+            <ActionIcon variant="subtle" color="gray" onClick={handleAddToWishlist}>
               <IconHeart
                 style={{ width: rem(20), height: rem(20) }}
                 color={theme.colors.red[6]}

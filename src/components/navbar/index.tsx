@@ -1,6 +1,6 @@
 "use client";
 
-import Login from "@/components/login/page";
+import { Login } from "@/components";
 import { useAppSelector, useUser } from "@/redux";
 import { ROUTES } from "@/utils/constants";
 import {
@@ -26,8 +26,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "../../assets/images/logo.png";
-import classes from "./navbar.module.css";
 import { useCart } from "../CartProvider";
+import classes from "./navbar.module.css";
 
 export function Navbar(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);

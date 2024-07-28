@@ -6,10 +6,7 @@ import { objectToQueryParams } from "@bhairesh/ez.js";
 import { Container, Loader, Space, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
-import { RelatedArtists } from "@/components/artist";
-import { ArtworkGrid } from "@/components/artwork";
-import { FeaturesCards } from "@/components/Features";
-import Hero from "@/components/Hero";
+import { ArtworkGrid, FeaturesCards, Hero, RelatedArtists } from "@/components";
 import { API } from "@/core";
 import { API_BASE_URL } from "@/utils/constants";
 
@@ -21,7 +18,6 @@ export default function Home(): React.JSX.Element {
   const fetchFeaturedArtists = () => {
     const searchFilter = { page: 1, limit: 6 };
     API(`/api/artists/filter?${objectToQueryParams(searchFilter)}`).then((d) => {
-      console.log("file: page.tsx:25  .then  d", d);
       setFeaturedArtists(d.data.results);
     });
   };
@@ -37,7 +33,6 @@ export default function Home(): React.JSX.Element {
 
     filterArtworks(1, 8)
       .then((result) => {
-        console.log("file: page.tsx:55  loadFeaturedArtworks  data", result);
         setIsLoading(false);
         setFeaturedArtworks(result?.data?.results);
       })

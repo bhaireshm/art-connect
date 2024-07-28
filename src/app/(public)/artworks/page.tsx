@@ -1,6 +1,6 @@
 "use client";
 
-import { ArtworkGrid } from "@/components/artwork";
+import { ArtworkGrid } from "@/components";
 import { API } from "@/core";
 import { API_BASE_URL } from "@/utils/constants";
 import { objectToQueryParams } from "@bhairesh/ez.js";
@@ -23,9 +23,9 @@ export default function ArtworksListingPage(): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const artistId = searchParams.get("artist") || "";
-  const page = searchParams.get("page") || "1";
-  const search = searchParams.get("search") || "";
+  const artistId = searchParams.get("artist") ?? "";
+  const page = searchParams.get("page") ?? "1";
+  const search = searchParams.get("search") ?? "";
 
   const [searchTerm, setSearchTerm] = useState(search);
   const [medium, setMedium] = useState<string | null>("");

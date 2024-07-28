@@ -1,7 +1,8 @@
-import React from "react";
-import { Avatar, Group, Stack, Text, Button } from "@mantine/core";
-import { IconHeart, IconShoppingCart } from "@tabler/icons-react";
+import { useAppSelector, useUser } from "@/redux";
 import type { Artist, Artwork } from "@/types";
+import { Avatar, Button, Group, Stack, Text } from "@mantine/core";
+import { IconHeart, IconShoppingCart } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 interface ArtistInfoProps {
   artist: Artist;
@@ -9,14 +10,29 @@ interface ArtistInfoProps {
 }
 
 export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
+  const { selectUser, updateUserInfo } = useUser();
+  const user = useAppSelector(selectUser);
+  const router = useRouter();
+
   const handleAddToWishlist = () => {
-    // Implement wishlist functionality
-    console.log("Add to wishlist:", artwork?.id);
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    console.log("file: artist-info.tsx:25  handleAddToWishlist  artwork", artwork);
+    if (artwork) {
+      const updatedWishlist = [...(user?.wishlist || []), artwork.id];
+      updateUserInfo({ wishlist: updatedWishlist });
+    }
   };
 
   const handleAddToCart = () => {
-    // Implement add to cart functionality
-    console.log("Add to cart:", artwork?.id);
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    if (artwork) router.push("/cart");
+    // Note: Actual cart functionality will be implemented in a separate CartProvider
   };
 
   return (

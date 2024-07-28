@@ -1,6 +1,6 @@
 "use client";
 
-import Login from "@/components/login/page";
+import { Login } from "@/components";
 import { Container } from "@mantine/core";
 
 function LoginPage() {

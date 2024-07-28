@@ -1,7 +1,6 @@
 "use client";
 
-import { ArtistInfo } from "@/components/artist";
-import { RelatedArtworks } from "@/components/artwork";
+import { ArtistInfo, RelatedArtworks } from "@/components";
 import { API } from "@/core";
 import type { Artist, Artwork } from "@/types";
 import { API_BASE_URL } from "@/utils/constants";

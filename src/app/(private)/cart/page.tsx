@@ -1,5 +1,5 @@
-import React from "react";
+import { Cart } from "@/components";
 
-export default function page(): React.JSX.Element {
-  return <div>page</div>;
+export default function CartPage() {
+  return <Cart />;
 }

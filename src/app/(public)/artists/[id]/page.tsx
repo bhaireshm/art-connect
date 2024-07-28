@@ -1,6 +1,6 @@
 "use client";
 
-import { ArtworkCard } from "@/components/artwork";
+import { ArtworkCard } from "@/components";
 import type { Artist, Artwork } from "@/types";
 import { Button, Container, Grid, Group, Image, Loader, Paper, Text, Title } from "@mantine/core";
 import { IconPalette, IconShoppingCart } from "@tabler/icons-react";

@@ -11,7 +11,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
   let data: { email: string; password: string };
 
   // Accepts both json and/or form-data
-
   if (contentType?.includes("application/json"))
     data = await request.json();
   else if (contentType?.includes("multipart/form-data")) {
@@ -50,15 +49,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     id: user.get("id"),
   };
   const token = await JWT.createJwt(userTokenData);
-
-  // response.cookies.set("Set-Cookie", serialize(COOKIE.name, token, COOKIE.serializeOptions));
-  cookies().set(COOKIE.name, token, {
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 30,
-    sameSite: "strict",
-    httpOnly: true,
-    path: "/",
-  });
+  cookies().set(COOKIE.name, token, COOKIE.serializeOptions);
 
   return ResponseHandler.success({ token, user: userTokenData }, 200, response);
 }

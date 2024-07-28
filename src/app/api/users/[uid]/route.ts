@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest, { params }: Params<typeof uid>) {
     if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
     const data = await req.json();
-    const user = await User.update(userId, data);
+    const user = await User.updateById(userId, data);
     if (!user) return ResponseHandler.error(userId, "User not found", 404);
 
     return ResponseHandler.success(user, "User details updated");

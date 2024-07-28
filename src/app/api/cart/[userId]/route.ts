@@ -5,7 +5,12 @@ import DatabaseError from "@/database/db.error";
 import { Cart } from "@/modules";
 import { NextRequest } from "next/server";
 
-/** /api/cart/[userId] */
+/**
+ * Get Cart
+ * GET /api/cart/[userId]
+ * 
+ * Retrieves the cart details for a specific user, including the items and the total cost. 
+ */
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
     const cart = await Cart.findOne({ user: params.userId });

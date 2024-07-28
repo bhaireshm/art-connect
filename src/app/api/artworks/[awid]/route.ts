@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest, { params }: Params<typeof awid>) {
     if (!awId) return ResponseHandler.error({ awId }, "Missing/Invalid artwork ID", 400);
 
     const data = await req.json();
-    const artwork = await Artwork.update(awId, data);
+    const artwork = await Artwork.updateById(awId, data);
     if (!artwork) return ResponseHandler.error(awId, "Artwork not found", 404);
 
     return ResponseHandler.success(artwork, "Artwork details updated");

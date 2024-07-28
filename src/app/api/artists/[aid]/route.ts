@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest, { params }: Params<typeof aid>) {
     if (!artistId) return ResponseHandler.error({ artistId }, "Missing/Invalid artist ID", 400);
 
     const data = await req.json();
-    const artist = await Artist.update(artistId, data);
+    const artist = await Artist.updateById(artistId, data);
     if (!artist) return ResponseHandler.error(artistId, "Artist not found", 404);
 
     return ResponseHandler.success(artist, "Artist details updated");

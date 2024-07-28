@@ -4,9 +4,11 @@ import {
   type AggregateOptions,
   type CreateOptions,
   type FilterQuery,
+  type MongooseUpdateQueryOptions,
   type PipelineStage,
   type PopulateOptions,
-  type UpdateOneModel
+  type QueryOptions,
+  type UpdateQuery
 } from "mongoose";
 import Database from "./database";
 
@@ -78,10 +80,18 @@ class DBCrud<T> extends Database {
    * @param data The data to use for updating the document.
    * @returns The updated document.
    */
-  public async update(id: string, data: Partial<T>, options?: UpdateOneModel) {
+  public async updateById(id: string, data: Partial<T>, options?: QueryOptions) {
     await this.connect();
     const result = await this.model
       .findByIdAndUpdate(id, data, { new: true, runValidators: true, ...options })
+      .exec();
+    return result;
+  }
+
+  public async update(query: QueryOptions, data: Partial<T> | UpdateQuery<T>, options?: MongooseUpdateQueryOptions) {
+    await this.connect();
+    const result = await this.model
+      .updateOne(query, data, { new: true, runValidators: true, ...options })
       .exec();
     return result;
   }

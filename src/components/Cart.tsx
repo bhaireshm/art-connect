@@ -1,6 +1,16 @@
 "use client";
 
-import { Button, Group, Loader, Stack, Table, Text, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Container,
+  Group,
+  Loader,
+  Stack,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core";
 import { IconMinus, IconPlus, IconTrash } from "@tabler/icons-react";
 import React from "react";
 import { useCart } from "./CartProvider";
@@ -26,55 +36,59 @@ export default function Cart() {
     );
 
   return (
-    <Stack>
-      <Table>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Artwork</Table.Th>
-            <Table.Th>Price</Table.Th>
-            <Table.Th>Quantity</Table.Th>
-            <Table.Th>Total</Table.Th>
-            <Table.Th>Actions</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {cart.map((item) => (
-            <Table.Tr key={item.artwork.id}>
-              <Table.Td>{item.artwork.title}</Table.Td>
-              <Table.Td>${item.artwork.price.toFixed(2)}</Table.Td>
-              <Table.Td>
-                <Group>
-                  <Button
-                    size="xs"
-                    onClick={() => updateQuantity(item.artwork.id, item.quantity - 1)}
-                  >
-                    <IconMinus size={16} />
-                  </Button>
-                  <Text>{item.quantity}</Text>
-                  <Button
-                    size="xs"
-                    onClick={() => updateQuantity(item.artwork.id, item.quantity + 1)}
-                  >
-                    <IconPlus size={16} />
-                  </Button>
-                </Group>
-              </Table.Td>
-              <Table.Td>${(item.artwork.price * item.quantity).toFixed(2)}</Table.Td>
-              <Table.Td>
-                <Button color="red" onClick={() => removeFromCart(item.artwork.id)}>
-                  <IconTrash size={16} />
-                </Button>
-              </Table.Td>
+    <Container my="md">
+      <Stack>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Artwork</Table.Th>
+              <Table.Th>Price</Table.Th>
+              <Table.Th>Quantity</Table.Th>
+              <Table.Th>Total</Table.Th>
+              <Table.Th>Actions</Table.Th>
             </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-      <Group justify="space-between">
-        <Text size="xl" fw={700}>
-          Total: ₹{totalCost.toFixed(2)}
-        </Text>
-        <Button size="lg">Proceed to Checkout</Button>
-      </Group>
-    </Stack>
+          </Table.Thead>
+          <Table.Tbody>
+            {cart.map((item) => (
+              <Table.Tr key={item.artwork.id}>
+                <Table.Td>{item.artwork.title}</Table.Td>
+                <Table.Td>₹{item.artwork.price.toFixed(2)}</Table.Td>
+                <Table.Td>
+                  <Group>
+                    <ActionIcon
+                      size="xs"
+                      onClick={() => updateQuantity(item.artwork.id, item.quantity - 1)}
+                    >
+                      <IconMinus size={16} />
+                    </ActionIcon>
+                    <Text>{item.quantity}</Text>
+                    <ActionIcon
+                      size="xs"
+                      onClick={() => updateQuantity(item.artwork.id, item.quantity + 1)}
+                    >
+                      <IconPlus size={16} />
+                    </ActionIcon>
+                  </Group>
+                </Table.Td>
+                <Table.Td>₹{(item.artwork.price * item.quantity).toFixed(2)}</Table.Td>
+                <Table.Td>
+                  <ActionIcon color="red" onClick={() => removeFromCart(item.artwork.id)}>
+                    <IconTrash size={16} />
+                  </ActionIcon>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+        <Group justify="space-between">
+          <Text size="xl" fw={700}>
+            Total: ₹{totalCost.toFixed(2)}
+          </Text>
+          <Button size="md" variant="outline">
+            Proceed to Checkout
+          </Button>
+        </Group>
+      </Stack>
+    </Container>
   );
 }

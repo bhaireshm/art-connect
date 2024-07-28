@@ -1,44 +1,13 @@
 "use client";
 
-import { useAppSelector, useUser } from "@/redux";
-import type { Artist, Artwork } from "@/types";
-import { Avatar, Button, Group, Stack, Text } from "@mantine/core";
-import { IconHeart, IconShoppingCart } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import type { Artist } from "@/types";
+import { Avatar, Group, Stack, Text } from "@mantine/core";
 
 interface ArtistInfoProps {
   artist: Artist;
-  artwork?: Artwork;
 }
 
-export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
-  const { selectUser, updateUserInfo } = useUser();
-  const user = useAppSelector(selectUser);
-  const router = useRouter();
-
-  const handleAddToWishlist = () => {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-    console.log("file: artist-info.tsx:25  handleAddToWishlist  artwork", artwork);
-    if (artwork) {
-      const updatedWishlist = [...(user?.wishlist || []), artwork.id];
-      updateUserInfo({ wishlist: updatedWishlist });
-      // call /api/users/{uid} to save the wishlist
-      
-    }
-  };
-
-  const handleAddToCart = () => {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-    if (artwork) router.push("/cart");
-    // Note: Actual cart functionality will be implemented in a separate CartProvider
-  };
-
+export function ArtistInfo({ artist }: Readonly<ArtistInfoProps>) {
   return (
     <Stack mt="xl">
       <Group align="flex-start">
@@ -49,14 +18,6 @@ export function ArtistInfo({ artist, artwork }: Readonly<ArtistInfoProps>) {
           </Text>
           <Text size="sm">{artist.bio}</Text>
         </Stack>
-      </Group>
-      <Group mt="md" justify="space-evenly">
-        <Button leftSection={<IconHeart size={16} />} onClick={handleAddToWishlist}>
-          Wishlist
-        </Button>
-        <Button leftSection={<IconShoppingCart size={16} />} onClick={handleAddToCart}>
-          Add to Cart
-        </Button>
       </Group>
     </Stack>
   );

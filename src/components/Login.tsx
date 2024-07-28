@@ -3,7 +3,7 @@
 import { API } from "@/core";
 import { useUser } from "@/redux";
 import type { LoginProps } from "@/types";
-import { PROJECT_NAME, ROUTES } from "@/utils/constants";
+import { COOKIE, PROJECT_NAME, ROUTES } from "@/utils/constants";
 import {
   Anchor,
   Button,
@@ -19,6 +19,7 @@ import {
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -49,21 +50,25 @@ export default function Login(props: Readonly<LoginProps>) {
 
     try {
       const url = `/api/${type === REGISTER ? "users" : LOGIN}`;
-      const response = await API.post(url, values);
-      const data = response.data;
-      if (data?.error) throw new Error(data.error);
+      const response = (await API.post(url, values)).data;
+
+      if (response.error) throw new Error(response.error);
 
       let userData = {};
       if (type === LOGIN) {
-        if (!data?.token || !data?.user) throw new Error("Unable to login");
-        userData = { user: data.user, token: data.token };
+        if (!response.token || !response.user) throw new Error("Unable to login");
+        userData = { user: response.user, token: response.token };
       } else if (type === REGISTER) {
-        if (!data) throw new Error(data.message || "Unable to register");
-        userData = { user: data.user, token: data.token };
+        if (!response) throw new Error(response.message || "Unable to register");
+        userData = { user: response.user, token: response.token };
       }
 
+      // Set the token in the cookie
+      setCookie(COOKIE.name, response.token, COOKIE.serializeOptions);
+      localStorage.setItem(COOKIE.name, response.token);
+
       setUser(userData);
-      props.onSuccess?.(data.user);
+      props.onSuccess?.(response.user);
 
       notifications.show({
         title: "Success",

@@ -51,7 +51,7 @@ export interface User {
     address?: Address;
   };
   orderHistory?: string[];
-  wishlist?: string[];
+  wishlist?: string[] | Artwork[];
   type: (typeof SCHEMA_NAMES.USER | typeof SCHEMA_NAMES.ARTIST)[];
   artistInfo?: string;
 }

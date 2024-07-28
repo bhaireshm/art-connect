@@ -1,12 +1,35 @@
+import { COOKIE } from "@/utils/constants";
 import axios from "axios";
+import { getCookie } from "cookies-next";
 
 const API = axios.create();
 
 // Add a request interceptor
-// Attach token
-API.interceptors.request.use((config) => config, (error) => Promise.reject(error));
+API.interceptors.request.use(
+  (config) => {
+    // Get the token from the cookie
+    const token = getCookie(COOKIE.name);
+
+    // If token exists, add it to the headers
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Add a response interceptor
-API.interceptors.response.use((response) => response.data, (error) => Promise.reject(error));
+API.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Try a different method of Clear the token and redirect to login
+      document.cookie = `${COOKIE.name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export { API };
+

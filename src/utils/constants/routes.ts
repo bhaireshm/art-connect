@@ -9,6 +9,7 @@ export const ROUTES: any = {
   ORDERS: { label: "Orders", path: "/orders", requiresAuth: true },
   PROFILE: { label: "Profile", path: "/profile", requiresAuth: true },
   CART: { label: "Cart", path: "/cart", requiresAuth: true },
+  WISHLIST: { label: "Wishlist", path: "/wishlist", requiresAuth: true },
 
   ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
   ADMIN: { label: "Admin", path: "/admin" },

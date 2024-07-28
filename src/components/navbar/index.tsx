@@ -4,6 +4,7 @@ import Login from "@/components/login/page";
 import { useAppSelector, useUser } from "@/redux";
 import { ROUTES } from "@/utils/constants";
 import {
+  ActionIcon,
   Avatar,
   Box,
   Burger,
@@ -20,12 +21,13 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconGardenCart, IconLogout, IconUser } from "@tabler/icons-react";
+import { IconGardenCart, IconHeart, IconLogout, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "../../assets/images/logo.png";
 import classes from "./navbar.module.css";
+import { useCart } from "../CartProvider";
 
 export function Navbar(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
@@ -36,12 +38,12 @@ export function Navbar(): React.JSX.Element {
   const { selectUser, logout, selectIsAuthenticated } = useUser();
   const user = useAppSelector(selectUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const { cart } = useCart();
 
   const navList = [
     "Discover",
     "Artist",
     isAuthenticated ? "Create" : "",
-    isAuthenticated ? "Cart" : "",
     "AboutUs",
     "Contact",
   ].filter((n) => n);
@@ -155,14 +157,19 @@ export function Navbar(): React.JSX.Element {
           <Group visibleFrom="sm">
             {isAuthenticated ? (
               <>
-                <Box
-                  component="div"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
+                <ActionIcon
+                  variant="transparent"
+                  color="gray"
+                  onClick={async () => {
+                    router.push(ROUTES.WISHLIST.path);
                   }}
+                >
+                  <IconHeart stroke={2} color={theme.colors.blue[9]} />
+                </ActionIcon>
+                <ActionIcon
+                  variant="transparent"
+                  color="gray"
+                  onClick={() => router.push(ROUTES.CART.path)}
                 >
                   <Indicator
                     inline
@@ -172,15 +179,11 @@ export function Navbar(): React.JSX.Element {
                     position="bottom-end"
                     color={theme.colors.blue[7]}
                     withBorder
-                    label={2}
+                    label={cart.length} // get the cart count
                   >
-                    <IconGardenCart
-                      stroke={2}
-                      color={theme.colors.blue[9]}
-                      onClick={() => router.push(ROUTES.CART.path)}
-                    />
+                    <IconGardenCart stroke={2} color={theme.colors.blue[9]} />
                   </Indicator>
-                </Box>
+                </ActionIcon>
                 {CustomMenu}
               </>
             ) : (

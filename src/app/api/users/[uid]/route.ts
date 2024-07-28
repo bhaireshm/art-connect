@@ -8,7 +8,7 @@ import type { Params } from "@/types";
 const uid = "uid";
 
 export async function GET(req: NextRequest, { params }: Params<typeof uid>) {
-  const userId = params.uid;
+  const userId = params.uid;  
   if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
   const user = await User.findById(userId, { password: 0 });

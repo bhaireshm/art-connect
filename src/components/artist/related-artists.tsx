@@ -18,7 +18,11 @@ export function RelatedArtists({ artists }: Readonly<RelatedArtworksProps>) {
       >
         Featured Artists
       </Text>
-      <SimpleGrid cols={3} spacing="lg">
+      <SimpleGrid
+        spacing="md"
+        cols={{ base: 1, xs: 2, sm: 3, md: 3, lg: 3 }}
+        verticalSpacing={{ base: "md", sm: "xl" }}
+      >
         {artists?.map((artist: Artist) => (
           <ArtistCard key={artist.id} artist={artist} />
         ))}

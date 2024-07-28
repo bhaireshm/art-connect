@@ -8,7 +8,11 @@ interface ArtworkGridProps {
 export function ArtworkGrid({ artworks }: Readonly<ArtworkGridProps>) {
   return (
     <Container>
-      <SimpleGrid cols={4} spacing="lg" verticalSpacing={{ base: "md", sm: "xl" }}>
+      <SimpleGrid
+        spacing="md"
+        cols={{ base: 1, xs: 2, sm: 3, md: 4, lg: 4 }}
+        verticalSpacing={{ base: "md", sm: "xl" }}
+      >
         {artworks?.map((artwork) => (
           <ArtworkCard key={artwork.id} artwork={artwork} />
         ))}

@@ -4,7 +4,9 @@ import {
   type AggregateOptions,
   type CreateOptions,
   type FilterQuery,
-  type PipelineStage
+  type PipelineStage,
+  type PopulateOptions,
+  type UpdateOneModel
 } from "mongoose";
 import Database from "./database";
 
@@ -76,10 +78,10 @@ class DBCrud<T> extends Database {
    * @param data The data to use for updating the document.
    * @returns The updated document.
    */
-  public async update(id: string, data: Partial<T>) {
+  public async update(id: string, data: Partial<T>, options?: UpdateOneModel) {
     await this.connect();
     const result = await this.model
-      .findByIdAndUpdate(id, data, { new: true, runValidators: true })
+      .findByIdAndUpdate(id, data, { new: true, runValidators: true, ...options })
       .exec();
     return result;
   }
@@ -179,6 +181,20 @@ class DBCrud<T> extends Database {
     const results = await this.model.find(query, projection).skip(skip).limit(limit).exec();
     const total = await this.model.countDocuments(query).exec();
     return { results, total };
+  }
+
+  /**
+   * Populates a document or documents with related data.
+   *
+   * @param query The query to use for finding the document(s).
+   * @param path The path to the field to populate.
+   * @param options The options to use for populating the field.
+   * @returns The populated document(s).
+   */
+  public async populate(query: FilterQuery<T>, path: string, options?: PopulateOptions): Promise<T | T[]> {
+    await this.connect();
+    const result = await this.model.find(query).populate(path, options).exec();
+    return result;
   }
 }
 

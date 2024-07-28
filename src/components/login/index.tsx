@@ -1,3 +1,5 @@
+"use client";
+
 import { API } from "@/core";
 import { useUser } from "@/redux";
 import type { LoginProps } from "@/types";

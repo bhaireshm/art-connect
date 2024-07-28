@@ -1,3 +1,5 @@
+"use client";
+
 import { useAppSelector, useUser } from "@/redux";
 import type { Artist, Artwork } from "@/types";
 import { Avatar, Button, Group, Stack, Text } from "@mantine/core";

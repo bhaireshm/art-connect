@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge, Card, Container, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { createStyles } from "@mantine/emotion";
 import { IconCookie, IconGauge, IconUser } from "@tabler/icons-react";

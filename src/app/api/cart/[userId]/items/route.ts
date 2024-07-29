@@ -14,7 +14,7 @@ import { NextRequest } from "next/server";
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
     const data = await req.json();
-    const cart = await Cart.update({ user: params.userId }, data);
+    const cart = await Cart.update({ user: params.userId }, data, { upsert: true, new: true });
     return ResponseHandler.success(cart, 201);
   } catch (error) {
     const err = new DatabaseError(error);
@@ -32,7 +32,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { userId: s
   try {
     const cart = await Cart.update(
       { user: params.userId },
-      { $set: { items: [] } },
+      { $set: { items: [], totalCost: 0 } },
       { new: true }
     );
     return ResponseHandler.success(cart);

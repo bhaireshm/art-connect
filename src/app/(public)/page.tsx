@@ -1,7 +1,5 @@
 "use client";
 
-import styles from "@/assets/styles/page.module.css";
-
 import { objectToQueryParams } from "@bhairesh/ez.js";
 import { Container, Loader, Space, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
@@ -42,44 +40,42 @@ export default function Home(): React.JSX.Element {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <Container fluid py={10} ta="center">
-        {/* Hero Section */}
-        <Hero />
+    <Container py={10} ta="center">
+      {/* Hero Section */}
+      <Hero />
 
-        {/* Artwork Grid Section */}
-        <Text
-          fz="40"
-          my={20}
-          fw={900}
-          variant="gradient"
-          gradient={{ from: "blue", to: "cyan", deg: 90 }}
-        >
-          Featured Artworks
-        </Text>
-        {featuredArtworks?.length === 0 && isLoading ? (
-          <Loader />
-        ) : (
-          <ArtworkGrid artworks={featuredArtworks} />
-        )}
-        <Space h="xl" />
+      {/* Artwork Grid Section */}
+      <Text
+        fz="40"
+        my={20}
+        fw={900}
+        variant="gradient"
+        gradient={{ from: "blue", to: "cyan", deg: 90 }}
+      >
+        Featured Artworks
+      </Text>
+      {featuredArtworks?.length === 0 && isLoading ? (
+        <Loader />
+      ) : (
+        <ArtworkGrid artworks={featuredArtworks} />
+      )}
+      <Space h="xl" />
 
-        {featuredArtists?.length === 0 && isLoading ? (
-          <Loader />
-        ) : (
-          <RelatedArtists artists={featuredArtists} />
-        )}
-        <Space h="xl" />
+      {featuredArtists?.length === 0 && isLoading ? (
+        <Loader />
+      ) : (
+        <RelatedArtists artists={featuredArtists} />
+      )}
+      <Space h="xl" />
 
-        {/* Top artworks */}
-        {/* <Space h="xl" />
+      {/* Top artworks */}
+      {/* <Space h="xl" />
         <TopArtworks /> */}
 
-        <FeaturesCards />
-        {/* Call to Action */}
-        {/* <Space h="xl" />
+      <FeaturesCards />
+      {/* Call to Action */}
+      {/* <Space h="xl" />
         <CallToAction /> */}
-      </Container>
-    </main>
+    </Container>
   );
 }

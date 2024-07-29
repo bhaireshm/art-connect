@@ -2,6 +2,7 @@ import "@/assets/styles/globals.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import styles from "@/assets/styles/page.module.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { MantineEmotionProvider } from "@mantine/emotion";
@@ -39,9 +40,9 @@ export default function RootLayout({ children }: ReadOnlyProps) {
           <MantineEmotionProvider>
             <StoreProvider>
               <CartProvider>
-                <Notifications />
+                <Notifications position="bottom-center" />
                 <Navbar />
-                <main>{children}</main>
+                <main className={styles.main}>{children}</main>
                 <Footer />
               </CartProvider>
             </StoreProvider>

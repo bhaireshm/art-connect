@@ -88,58 +88,62 @@ export default function ArtworksListingPage(): React.JSX.Element {
   }, [currentPage, medium, artistId, search, loadArtworks]);
 
   return (
-    <Container fluid py={10}>
-      <Container>
-        <Text
-          fz="40"
-          my={20}
-          fw={900}
-          variant="gradient"
-          gradient={{ from: "blue", to: "cyan", deg: 90 }}
-        >
-          Search Artworks
-        </Text>
-        <Group mb="md">
-          <TextInput
-            placeholder="Search artworks"
-            value={searchTerm}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") handleSearch();
-            }}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            style={{ flexGrow: 1 }}
-            leftSection={<IconSearch size={14} />}
-            rightSection={
-              <ActionIcon variant="subtle" onClick={clearFilters}>
-                <IconX size={14} />
-              </ActionIcon>
-            }
-          />
-          <Select
-            value={medium}
-            placeholder="Select medium"
-            onChange={setMedium}
-            data={[
-              { value: "", label: "All" },
-              { value: "Oil", label: "Oil" },
-              { value: "Acrylic", label: "Acrylic" },
-              { value: "Watercolor", label: "Watercolor" },
-              { value: "Sculpture", label: "Sculpture" },
-            ]}
-          />
-          <Button onClick={handleSearch}>Search</Button>
-        </Group>
-        {isLoading ? (
-          <Loader size="lg" style={{ display: "block", margin: "40px auto" }} />
-        ) : (
-          <>
-            <ArtworkGrid artworks={artworks} />
-            <Group justify="center" mt="xl">
-              <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />
-            </Group>
-          </>
-        )}
-      </Container>
+    <Container py="10">
+      <Text
+        fz="40"
+        my={20}
+        fw={900}
+        variant="gradient"
+        gradient={{ from: "blue", to: "cyan", deg: 90 }}
+      >
+        Search Artworks
+      </Text>
+      <Group mb="md">
+        <TextInput
+          placeholder="Search artworks"
+          value={searchTerm}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") handleSearch();
+          }}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          style={{ flexGrow: 1 }}
+          leftSection={<IconSearch size={14} />}
+          rightSection={
+            <ActionIcon variant="subtle" onClick={clearFilters}>
+              <IconX size={14} />
+            </ActionIcon>
+          }
+        />
+        <Select
+          value={medium}
+          placeholder="Select medium"
+          onChange={setMedium}
+          data={[
+            { value: "", label: "All" },
+            { value: "Oil", label: "Oil" },
+            { value: "Acrylic", label: "Acrylic" },
+            { value: "Watercolor", label: "Watercolor" },
+            { value: "Sculpture", label: "Sculpture" },
+          ]}
+        />
+        <Button onClick={handleSearch}>Search</Button>
+      </Group>
+      {isLoading ? (
+        <Loader size="lg" style={{ display: "block", margin: "40px auto" }} />
+      ) : (
+        <>
+          <ArtworkGrid artworks={artworks} />
+          <Group justify="center" mt="xl">
+            <Pagination
+              size="sm"
+              withEdges
+              total={totalPages}
+              value={currentPage}
+              onChange={handlePageChange}
+            />
+          </Group>
+        </>
+      )}
     </Container>
   );
 }

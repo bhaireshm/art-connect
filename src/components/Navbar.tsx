@@ -136,7 +136,12 @@ export function Navbar(): React.JSX.Element {
             h="100%"
             component="div"
             onClick={() => router.push(ROUTES.HOME.path)}
-            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
           >
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>

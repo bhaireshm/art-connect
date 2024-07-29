@@ -6,20 +6,19 @@ import { isEmpty } from "@bhairesh/ez.js";
 import {
   ActionIcon,
   Badge,
-  Button,
   Card,
   CopyButton,
+  Divider,
   Group,
   Image,
-  rem,
   Stack,
   Text,
   Tooltip,
   useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconHeart, IconShare } from "@tabler/icons-react";
-import Link from "next/link";
-// import { useRouter } from "next/router";
+import { IconCheck, IconHeart, IconShare, IconShoppingCartPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useCart } from "../CartProvider";
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -27,13 +26,16 @@ interface ArtworkCardProps {
 
 export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
   const theme = useMantineTheme();
+  const router = useRouter();
   const { selectUser, updateUserInfo } = useUser();
   const user = useAppSelector(selectUser);
-  // const router = useRouter();
+  const { addToCart } = useCart();
 
   if (isEmpty(artwork)) return null;
 
   const handleAddToWishlist = () => {
+    // TODO: Check user before updating
+    // const router = useRouter();
     // if (!user) {
     //   router.push("/login");
     //   return;
@@ -45,11 +47,20 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
         updatedWishlist
       );
       updateUserInfo({ wishlist: updatedWishlist });
+      // TODO: call api to update user's wishlist
     }
   };
 
   return (
-    <Card shadow="sm" padding="lg">
+    <Card
+      shadow="sm"
+      radius="sm"
+      padding="md"
+      style={{ cursor: "pointer" }}
+      onClick={() => {
+        router.push(`/artworks/${artwork.id}`);
+      }}
+    >
       <Card.Section>
         <Image
           height={160}
@@ -59,56 +70,56 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
         />
       </Card.Section>
 
-      <Stack mt="md" mb="xs">
+      <Stack my="sm" align="flex-start" justify="space-around" gap="xs">
         <Text fw={500}>{artwork.title}</Text>
-        <Badge color="pink" size="sm" variant="light">
+        <Text size="sm" c="dimmed" ta="left" w={200} truncate="end">
+          {artwork.description}
+        </Text>
+        <Badge color="pink" size="xs" radius="xs" variant="light">
           {artwork.medium}
         </Badge>
       </Stack>
 
-      <Text size="sm" c="dimmed" w={200} truncate="end">
-        {artwork.description}
-      </Text>
-
-      <Button
-        component={Link}
-        href={`/artworks/${artwork.id}`}
-        variant="light"
-        color="blue"
-        fullWidth
-        mt="md"
-        radius="md"
-      >
-        View Details
-      </Button>
-
-      <Card.Section p="sm">
-        <Group justify="space-between" mx="md">
-          <Text fw={500} size="lg">
+      <Divider />
+      <Card.Section p="xs">
+        <Group justify="space-between" mx="sm">
+          <Text fw={500} size="md">
             ₹{artwork.price}
           </Text>
           <Group gap={0}>
-            <ActionIcon variant="subtle" color="gray" onClick={handleAddToWishlist}>
-              <IconHeart
-                style={{ width: rem(20), height: rem(20) }}
-                color={theme.colors.red[6]}
-                stroke={1.5}
-              />
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(artwork);
+              }}
+            >
+              <IconShoppingCartPlus size="18" color={theme.colors.blue[6]} />
+            </ActionIcon>
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToWishlist();
+              }}
+            >
+              <IconHeart size="18" color={theme.colors.red[6]} />
             </ActionIcon>
 
             <CopyButton value={`${window.location.origin}/artworks/${artwork.id}`} timeout={2000}>
               {({ copied, copy }) => (
                 <Tooltip label={copied ? "Copied" : "Share"} withArrow position="right">
-                  <ActionIcon color={copied ? "teal" : "gray"} variant="subtle" onClick={copy}>
-                    {copied ? (
-                      <IconCheck style={{ width: rem(16) }} />
-                    ) : (
-                      <IconShare
-                        style={{ width: rem(20), height: rem(20) }}
-                        color={theme.colors.blue[6]}
-                        stroke={1.5}
-                      />
-                    )}
+                  <ActionIcon
+                    color={copied ? "teal" : "gray"}
+                    variant="subtle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      copy();
+                    }}
+                  >
+                    {copied ? <IconCheck /> : <IconShare size="18" color={theme.colors.blue[6]} />}
                   </ActionIcon>
                 </Tooltip>
               )}

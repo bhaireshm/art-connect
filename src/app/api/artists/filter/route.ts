@@ -7,15 +7,28 @@ import type { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   const { nextUrl: { searchParams } } = req;
   const query = searchParamsToObject(searchParams);
-  const { page, limit, ...restQuery } = query;
+  const { page, limit, searchTerm = "", ...restQuery } = query;
 
   // Pagination logic
   if (page || limit) {
-    const { results, total } = await Artist.paginate({ ...restQuery }, parseInt(page, 10), parseInt(limit, 10));
+    let pipeline = {};
+
+    if (searchTerm) {
+      const regex = { $regex: `.*${searchTerm}.*`, $options: "i" };
+      pipeline = {
+        $or: [
+          { title: regex },
+          { description: regex },
+          { medium: regex }
+        ]
+      };
+    } else pipeline = restQuery;
+
+    const { results, total } = await Artist.paginate(pipeline, parseInt(page, 10), parseInt(limit, 10));
     return ResponseHandler.success({ results, total, page, limit });
   }
 
   // Filtering logic without pagination
-  const artworks = await Artist.findAll({ ...restQuery });
-  return ResponseHandler.success(artworks);
+  const artists = await Artist.findAll(restQuery);
+  return ResponseHandler.success(artists);
 }

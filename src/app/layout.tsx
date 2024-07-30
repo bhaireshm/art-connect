@@ -40,7 +40,7 @@ export default function RootLayout({ children }: ReadOnlyProps) {
           <MantineEmotionProvider>
             <StoreProvider>
               <CartProvider>
-                <Notifications position="bottom-center" />
+                <Notifications />
                 <Navbar />
                 <main className={styles.main}>{children}</main>
                 <Footer />

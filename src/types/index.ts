@@ -69,7 +69,7 @@ export interface Artwork {
   medium?: string;
   images: string[];
   price: number;
-  artist: string;
+  artist: Artist;
   relatedArtworks: Artwork[];
   id: string;
 }
@@ -81,4 +81,22 @@ export interface Artist {
   background?: string;
   gallery: Artwork["id"];
   availableArtworks: Artwork["id"];
+}
+
+export interface Cart {
+  id: string;
+  user: string;
+  items: CartItemType[];
+  totalCost: number;
+}
+
+export interface CartItemType {
+  artwork: Artwork;
+  quantity: number;
+}
+
+export interface CartItemProps {
+  item: CartItemType;
+  onRemove: () => void;
+  onUpdateQuantity: (newQuantity: number) => void;
 }

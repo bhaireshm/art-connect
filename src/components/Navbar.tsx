@@ -26,7 +26,7 @@ import { IconGardenCart, IconHeart, IconLogout, IconUser } from "@tabler/icons-r
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCart } from "./CartProvider";
+import { useCart } from "./cart";
 import Login from "./Login";
 
 export function Navbar(): React.JSX.Element {

@@ -1,8 +1,7 @@
 export * from "./artist";
 export * from "./artwork";
 export * from "./CallToAction";
-export { default as Cart } from "./Cart";
-export { CartProvider, useCart } from "./CartProvider";
+export * from "./cart";
 export * from "./Features";
 export * from "./Footer";
 export { default as Hero } from "./Hero";

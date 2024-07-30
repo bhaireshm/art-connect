@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { IconCheck, IconHeart, IconShare, IconShoppingCartPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { useCart } from "../CartProvider";
+import { useCart } from "../cart";
 
 interface ArtworkCardProps {
   artwork: Artwork;

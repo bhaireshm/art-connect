@@ -3,6 +3,7 @@
 import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { Cart } from "@/modules";
+import { STATUS_TEXT } from "@/utils/constants";
 import { NextRequest } from "next/server";
 
 /** 
@@ -14,8 +15,44 @@ import { NextRequest } from "next/server";
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
     const data = await req.json();
-    const cart = await Cart.update({ user: params.userId }, data, { upsert: true, new: true });
-    return ResponseHandler.success(cart, 201);
+    const { items, totalCost }: any = data;
+
+    const operations = items.map((item: any) => ({
+      updateOne: {
+        filter: {
+          user: params.userId,
+          "items.artwork": item.artwork
+        },
+        update: {
+          $set: { "items.$.quantity": item.quantity }
+        },
+        upsert: false
+      }
+    }));
+
+    operations.push({
+      updateOne: {
+        filter: { user: params.userId },
+        update: {
+          $setOnInsert: { user: params.userId },
+          $set: { totalCost },
+          $addToSet: {
+            items: {
+              $each: items.map((item: { artwork: any; quantity: any; }) => ({
+                artwork: item.artwork,
+                quantity: item.quantity
+              }))
+            }
+          }
+        },
+        upsert: true
+      }
+    });
+
+    await Cart.m.bulkWrite(operations);
+
+    const updatedCart = await Cart.findOne({ user: params.userId });
+    return ResponseHandler.success(updatedCart, STATUS_TEXT.CREATED);
   } catch (error) {
     const err = new DatabaseError(error);
     return ResponseHandler.error(err, err.code);

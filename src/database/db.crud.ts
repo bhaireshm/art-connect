@@ -102,9 +102,9 @@ class DBCrud<T> extends Database {
    * @param data The data to use for updating the documents.
    * @returns The result of the update operation.
    */
-  public async updateMany(data: Partial<T>[]) {
+  public async updateMany(filter: FilterQuery<T>, data: Partial<T>[], options?: MongooseUpdateQueryOptions) {
     await this.connect();
-    const result = await this.model.updateMany(data, { new: true }).exec();
+    const result = await this.model.updateMany(filter, data, { new: true, ...options }).exec();
     return result;
   }
 
@@ -201,7 +201,7 @@ class DBCrud<T> extends Database {
    * @param options The options to use for populating the field.
    * @returns The populated document(s).
    */
-  public async populate(query: FilterQuery<T>, path: string, options?: PopulateOptions): Promise<T | T[]> {
+  public async populate(query: FilterQuery<T>, path: string | string[], options?: PopulateOptions): Promise<T | T[]> {
     await this.connect();
     const result = await this.model.find(query).populate(path, options).exec();
     return result;

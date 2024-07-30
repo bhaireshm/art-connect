@@ -3,9 +3,7 @@
 import { API } from "@/core";
 import { useAppSelector, useUser } from "@/redux";
 import type { Artwork } from "@/types";
-import { COOKIE } from "@/utils/constants";
 import { notifications } from "@mantine/notifications";
-import { getCookie } from "cookies-next";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface CartItem {
@@ -36,17 +34,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(false);
   const { selectUser } = useUser();
   const user = useAppSelector(selectUser);
-  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
+  // const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
 
   useEffect(() => {
     const loadCart = async () => {
       setIsLoading(true);
       try {
-        const token = getCookie(COOKIE.name);
-        const response = await API.get(`/api/cart/${user?.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.data.status === 200 && response.data.data) setCart(response.data.data);
+        // TODO: replace id with user.id
+        const response = await API.get(`/api/cart/${user?.id}`);
+        if (response?.data?.length) setCart(response.data[0]?.items || []);
       } catch (error) {
         console.error("Error loading cart:", error);
         notifications.show({
@@ -59,12 +55,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    if (isAuthenticated && user) loadCart();
-  }, [isAuthenticated, user]);
+    // if (isAuthenticated && user)
+    loadCart();
+  }, []); // isAuthenticated, user
 
   const contextValue = useMemo(() => {
     const addToCart = async (artwork: Artwork) => {
-      console.log("file: CartProvider.tsx:67  addToCart  artwork", artwork);
+      // TODO: auth check pending
       // if (!isAuthenticated) {
       //   notifications.show({
       //     color: "red",
@@ -77,7 +74,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await API.post(`/api/cart/${user?.id}/items`, {
           items: [{ artwork: artwork.id, quantity: 1 }],
-          totalCost,
+          totalCost: cart.reduce(
+            (total, item) => total + item.artwork.price * item.quantity,
+            artwork.price
+          ),
         });
 
         setCart((prevCart) => {
@@ -94,12 +94,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           autoClose: 2000,
           message: "Item added to cart",
         });
-      } catch (error) {
-        console.error("Error adding to cart:", error);
+      } catch ({ response, ...restErr }: any) {
         notifications.show({
           color: "red",
           autoClose: 5000,
-          message: "Unable to add item to cart",
+          title: response?.name ?? "",
+          message: response?.statusText ?? "Unable to add item to cart",
         });
       }
     };

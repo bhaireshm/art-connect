@@ -1,8 +1,21 @@
 "use client";
 
 import { ArtworkCard } from "@/components";
+import { API } from "@/core";
 import type { Artist, Artwork } from "@/types";
-import { Button, Container, Grid, Group, Image, Loader, Paper, Text, Title } from "@mantine/core";
+import { isEmpty } from "@bhairesh/ez.js";
+import {
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Group,
+  Image,
+  Loader,
+  Paper,
+  Text,
+  Title,
+} from "@mantine/core";
 import { IconPalette, IconShoppingCart } from "@tabler/icons-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -18,17 +31,13 @@ export default function ArtistDetailsPage() {
     const fetchArtistDetails = async () => {
       setIsLoading(true);
       try {
-        const artistResponse = await fetch(`/api/artists/${id}`);
-        const artworksResponse = await fetch(`/api/artworks?artist=${id}`);
+        const artistResponse = await API.get(`/api/artists/${id}`);
+        if (isEmpty(artistResponse.data)) throw new Error("Failed to fetch artist details");
+        setArtist(artistResponse.data);
 
-        if (!artistResponse.ok || !artworksResponse.ok)
-          throw new Error("Failed to fetch artist details or artworks");
-
-        const artistData = await artistResponse.json();
-        const artworksData = await artworksResponse.json();
-
-        setArtist(artistData.data);
-        setArtworks(artworksData.data);
+        const artworksResponse = await API.get(`/api/artworks/filter?page=1&limit=8&artist=${id}`);
+        if (isEmpty(artworksResponse.data)) throw new Error("Failed to fetch artist's artworks");
+        setArtworks(artworksResponse.data.results);
       } catch (error) {
         console.error("Error fetching artist details:", error);
       } finally {
@@ -40,12 +49,11 @@ export default function ArtistDetailsPage() {
   }, [id]);
 
   if (isLoading) return <Loader size="xl" style={{ display: "block", margin: "40px auto" }} />;
-
   if (!artist) return <Text>Artist not found</Text>;
 
   return (
     <Container size="xl" py="xl">
-      <Paper shadow="xs" p="xl" mb="xl">
+      <Paper p="xl" mb="xl">
         <Grid>
           <Grid.Col span={{ xs: 12, md: 4 }}>
             <Image
@@ -79,7 +87,9 @@ export default function ArtistDetailsPage() {
         </Grid>
       </Paper>
 
-      <Title order={2} mb="xl">
+      <Divider />
+
+      <Title order={2} my="lg">
         Gallery
       </Title>
       <Grid>

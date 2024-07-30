@@ -32,6 +32,7 @@ export default function UserProfileEdit() {
           country: "",
         },
       },
+      // TODO: add user-type
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),

@@ -5,7 +5,7 @@ import CartItem from "./CartItem";
 import { useCart } from "./CartProvider";
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity, totalCost, isLoading } = useCart();
+  const { cart, removeFromCart, updateQuantity, totalCost, isLoading, clearCart } = useCart();
 
   if (isLoading)
     return (
@@ -24,6 +24,11 @@ export default function Cart() {
   return (
     <Container my="md">
       <Stack>
+        <Group justify="flex-end">
+          <Button variant="transparent" component="text" size="xs" onClick={clearCart}>
+            Clear Cart
+          </Button>
+        </Group>
         {cart.map((item) => (
           <CartItem
             key={item.artwork.id}
@@ -32,7 +37,7 @@ export default function Cart() {
             onUpdateQuantity={(newQuantity) => updateQuantity(item.artwork.id, newQuantity)}
           />
         ))}
-        <Divider mt="lg" />
+        <Divider />
         <Group justify="space-between">
           <Button size="sm" variant="light">
             Proceed to Checkout

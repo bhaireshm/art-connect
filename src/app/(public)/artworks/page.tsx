@@ -25,7 +25,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
 
   const artistId = searchParams.get("artist") ?? "";
   const page = searchParams.get("page") ?? "1";
-  const search = searchParams.get("search") ?? "";
+  const search = searchParams.get("searchTerm") ?? "";
 
   const [searchTerm, setSearchTerm] = useState(search);
   const [medium, setMedium] = useState<string | null>("");
@@ -58,7 +58,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams(searchParams);
-    params.set("search", searchTerm);
+    params.set("searchTerm", searchTerm);
     params.set("page", "1");
     router.push(`/artworks?${params.toString()}`);
     setCurrentPage(1);
@@ -82,7 +82,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
     const filter = {
       ...(medium && { medium }),
       ...(artistId && { artistId }),
-      ...(search && { description: search }),
+      ...(search && { searchTerm: search }),
     };
     loadArtworks(filter);
   }, [currentPage, medium, artistId, search, loadArtworks]);

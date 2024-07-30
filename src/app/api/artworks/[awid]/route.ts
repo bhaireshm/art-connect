@@ -1,9 +1,11 @@
-import { type NextRequest } from "next/server";
+"use server";
 
 import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { Artwork } from "@/modules";
 import type { Params } from "@/types";
+import { isEmpty } from "@bhairesh/ez.js";
+import { type NextRequest } from "next/server";
 
 const awid = "awid";
 
@@ -11,8 +13,8 @@ export async function GET(req: NextRequest, { params }: Params<typeof awid>) {
   const awId = params.awid;
   if (!awId) return ResponseHandler.error({ awId }, "Missing/Invalid artwork ID", 400);
 
-  const artwork = await Artwork.findById(awId);
-  if (!artwork) return ResponseHandler.error({ artwork, awId }, "Artwork not found", 404);
+  const artwork = await Artwork.populate({ _id: awId }, "artist"); // , "relatedArtworks" 
+  if (isEmpty(artwork)) return ResponseHandler.error({ artwork, awId }, "Artwork not found", 404);
 
   return ResponseHandler.success(artwork);
 }

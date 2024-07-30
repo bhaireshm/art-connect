@@ -174,22 +174,22 @@ class DBCrud<T> extends Database {
   /**
    * Paginates documents based on the given query, page number, and limit.
    *
-   * @param query The query to filter documents.
+   * @param filter The query to filter documents.
    * @param page The page number to fetch.
    * @param limit The number of documents per page.
    * @param projection The projection to use for selecting fields.
    * @returns An object containing the paginated results and total document count.
    */
   public async paginate(
-    query: FilterQuery<T>,
+    filter: FilterQuery<T>,
     page: number = 1,
     limit: number = 10,
     projection?: ProjectionType<T>
   ): Promise<{ results: T[]; total: number }> {
     await this.connect();
     const skip = (page - 1) * limit;
-    const results = await this.model.find(query, projection).skip(skip).limit(limit).exec();
-    const total = await this.model.countDocuments(query).exec();
+    const results = await this.model.find(filter, projection).skip(skip).limit(limit).exec();
+    const total = await this.model.countDocuments(filter).exec();
     return { results, total };
   }
 
@@ -203,6 +203,7 @@ class DBCrud<T> extends Database {
    */
   public async populate(query: FilterQuery<T>, path: string | string[], options?: PopulateOptions): Promise<T | T[]> {
     await this.connect();
+    // ! multiple paths not working check this
     const result = await this.model.find(query).populate(path, options).exec();
     return result;
   }

@@ -72,7 +72,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
 
       <Stack my="sm" align="flex-start" justify="space-around" gap="xs">
         <Text fw={500}>{artwork.title}</Text>
-        <Text size="sm" c="dimmed" ta="left" w={200} truncate="end">
+        <Text size="sm" c="dimmed" ta="left" w={200} truncate="end" title={artwork.description}>
           {artwork.description}
         </Text>
         <Badge color="pink" size="xs" radius="xs" variant="light">

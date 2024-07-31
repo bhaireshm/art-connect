@@ -1,5 +1,5 @@
 import type { User } from "@/types";
-import { SCHEMA_NAMES } from "@/utils/constants";
+import { COOKIE, SCHEMA_NAMES } from "@/utils/constants";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "../create-slice";
 import { useSliceMethods } from "../hooks";
@@ -24,6 +24,9 @@ export const userSlice = createAppSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.isAuthenticated = true;
+
+      // Save to localStorage
+      localStorage.setItem(COOKIE.name, JSON.stringify(action.payload));
     }),
 
     updateUserInfo: create?.reducer((state: UserSliceState, action: PayloadAction<Partial<User>>) => {
@@ -34,6 +37,9 @@ export const userSlice = createAppSlice({
       state.token = null;
       state.user = null;
       state.isAuthenticated = false;
+
+      // Remove from localStorage
+      localStorage.removeItem(COOKIE.name);
     }),
 
     checkAuthStatus: create?.reducer((state: UserSliceState) => {

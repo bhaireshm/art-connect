@@ -2,13 +2,13 @@ import type { CartItemProps } from "@/types";
 import { ActionIcon, Box, Card, CloseButton, Flex, Group, Image, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 
-export default function CartItem({ item, onRemove, onUpdateQuantity }: CartItemProps) {
+export default function CartItem({ item, onRemove, onUpdateQuantity }: Readonly<CartItemProps>) {
   return (
     <Card withBorder padding="sm" radius="md">
       <Card.Section>
         <Flex align="flex-start">
           <Image
-            src={item.artwork.images[0] || "https://placeholder.com/150"}
+            src={item.artwork?.images[0] ?? "https://placeholder.com/150"}
             height={150}
             width={150}
             alt={item.artwork.title}
@@ -20,9 +20,11 @@ export default function CartItem({ item, onRemove, onUpdateQuantity }: CartItemP
                 <Text size="sm" c="dimmed">
                   {item.artwork.description}
                 </Text>
-                <Text size="xs" c="dimmed">
-                  Sold by: {item.artwork.artist.name}
-                </Text>
+                {item.artwork?.artist?.name && (
+                  <Text size="xs" c="dimmed">
+                    Sold by: {item.artwork.artist.name}
+                  </Text>
+                )}
               </Box>
               <CloseButton onClick={onRemove} aria-label="Remove item" />
             </Flex>

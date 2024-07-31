@@ -2,36 +2,32 @@
 
 import { useAppSelector, useUser } from "@/redux";
 import { COOKIE } from "@/utils/constants";
-import { parse } from "cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export default function PrivatePagesLayout({ children }: AuthProviderProps) {
+export default function PrivatePagesLayout({ children }: Readonly<AuthProviderProps>) {
   const { checkAuthStatus, selectIsAuthenticated, setUser } = useUser();
   const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    const cookies = parse(COOKIE.name);
-    if (cookies[COOKIE.name]) {
-      const userToken = cookies[COOKIE.name];
-      setUser(userToken);
+    const token = localStorage.getItem(COOKIE.name);
+    if (token) {
+      checkAuthStatus();
+      setUser(JSON.parse(token));
     }
-  }, [setUser]);
+  }, [checkAuthStatus, setUser]);
 
   useEffect(() => {
-    checkAuthStatus();
-  }, [checkAuthStatus]);
-
-  useEffect(() => {
-    const pathName = window.location.pathname;
-    if (!isAuthenticated) router.push("/login");
+    if (!isAuthenticated && pathName !== "/login") router.push("/login");
     else if (isAuthenticated && pathName === "/login") router.push("/");
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, pathName, router, searchParams]);
 
   return <>{children}</>;
 }

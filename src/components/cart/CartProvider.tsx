@@ -30,11 +30,11 @@ export const useCart = () => {
 };
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItemType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { selectUser } = useUser();
   const user = useAppSelector(selectUser);
-  // const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
+  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
 
   useEffect(() => {
     const loadCart = async () => {
@@ -55,9 +55,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    // if (isAuthenticated && user)
-    loadCart();
-  }, []); // isAuthenticated, user
+    if (isAuthenticated && !isEmpty(user)) loadCart();
+  }, [isAuthenticated, user]);
 
   const contextValue = useMemo(() => {
     const addToCart = async (artwork: Artwork) => {

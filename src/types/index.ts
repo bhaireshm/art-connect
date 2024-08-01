@@ -83,7 +83,17 @@ export interface Artist {
   availableArtworks: Artwork["id"];
 }
 
-export interface Cart {
+export interface CartContextType {
+  cart: CartItemType[];
+  addToCart: (artwork: Artwork) => void;
+  removeFromCart: (artworkId: string) => void;
+  updateQuantity: (artworkId: string, quantity: number) => void;
+  clearCart: () => void;
+  totalCost: number;
+  isLoading: boolean;
+}
+
+export interface CartType {
   id: string;
   user: string;
   items: CartItemType[];
@@ -91,11 +101,12 @@ export interface Cart {
 }
 
 export interface CartItemType {
+  id: string;
   artwork: Artwork;
   quantity: number;
 }
 
-export interface CartItemProps {
+export interface CartItemComponentProps {
   item: CartItemType;
   onRemove: () => void;
   onUpdateQuantity: (newQuantity: number) => void;

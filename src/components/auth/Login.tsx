@@ -1,5 +1,6 @@
 "use client";
 
+import classes from "@/assets/styles/auth.module.css";
 import { API } from "@/core";
 import { useUser } from "@/redux";
 import type { LoginProps } from "@/types";
@@ -15,6 +16,7 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
@@ -49,7 +51,7 @@ export default function Login(props: Readonly<LoginProps>) {
     setIsLoading(true);
 
     try {
-      const url = `/api/${type === REGISTER ? "users" : LOGIN}`;
+      const url = `/api/auth/${type}`;
       const response = (await API.post(url, values)).data;
 
       if (response.error) throw new Error(response.error);
@@ -90,8 +92,11 @@ export default function Login(props: Readonly<LoginProps>) {
 
   return (
     <Paper radius="md" p="xl">
-      <Text size="lg" fw={500} ta="center">
-        Welcome to {PROJECT_NAME},<br /> please {type}
+      <Title className={classes.title} ta="center">
+        Welcome to {PROJECT_NAME},
+      </Title>
+      <Text c="dimmed" fz="sm" ta="center">
+        enter details to {type}
       </Text>
       <br />
       <Divider />
@@ -109,7 +114,6 @@ export default function Login(props: Readonly<LoginProps>) {
               error={form.errors.username && "Invalid username"}
             />
           )}
-
           <TextInput
             required
             label="Email"
@@ -121,6 +125,7 @@ export default function Login(props: Readonly<LoginProps>) {
 
           <PasswordInput
             required
+            rightSection
             label="Password"
             placeholder="Your password"
             value={form.values.password}
@@ -128,27 +133,32 @@ export default function Login(props: Readonly<LoginProps>) {
             error={form.errors.password && "Password should include at least 6 characters"}
           />
 
-          {type === "register" && (
-            <Checkbox
-              required
-              label="I accept terms and conditions"
-              checked={form.values.terms}
-              error={form.errors.terms && "Please accept terms and conditions"}
-              onChange={(event) => form.setFieldValue("terms", event.currentTarget.checked)}
-            />
-          )}
-        </Stack>
+          <Group justify="space-between" className={classes.controls}>
+            {type === "register" && (
+              <Checkbox
+                required
+                label="I accept terms and conditions"
+                checked={form.values.terms}
+                error={form.errors.terms && "Please accept terms and conditions"}
+                onChange={(event) => form.setFieldValue("terms", event.currentTarget.checked)}
+              />
+            )}
+            {type === LOGIN && (
+              <Anchor size="xs" ta="center" href={ROUTES.FORGOT_PASSWORD.path}>
+                Forgot password?
+              </Anchor>
+            )}
+            <Button type="submit" variant="light" loading={isLoading}>
+              {upperFirst(type)}
+            </Button>
+          </Group>
 
-        <Group justify="space-between" mt="xl">
-          <Anchor component="button" type="button" c="dimmed" onClick={() => toggle()} size="xs">
-            {type === "register"
+          <Anchor type="button" ta="center" onClick={() => toggle()} size="xs">
+            {type === REGISTER
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" variant="light" loading={isLoading}>
-            {upperFirst(type)}
-          </Button>
-        </Group>
+        </Stack>
       </form>
     </Paper>
   );

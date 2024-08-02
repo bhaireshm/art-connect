@@ -3,7 +3,8 @@
 import Logo from "@/assets/images/logo.png";
 import classes from "@/assets/styles/navbar.module.css";
 import { useAppSelector, useUser } from "@/redux";
-import { ROUTES } from "@/utils/constants";
+import { ROUTES, SCHEMA_NAMES } from "@/utils/constants";
+import { titleCase } from "@bhairesh/ez.js";
 import {
   ActionIcon,
   Avatar,
@@ -22,31 +23,32 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconGardenCart, IconHeart, IconLogout, IconUser } from "@tabler/icons-react";
+import { IconGardenCart, IconHeart, IconLogout, IconPalette, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Login from "./auth/Login";
 import { useCart } from "./cart";
-import Login from "./Login";
 
 export function Navbar(): React.JSX.Element {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [modalOpened, { open: openLoginModal, close: closeLoginModal }] = useDisclosure(false);
+  const theme = useMantineTheme();
   const router = useRouter();
   const pathname = usePathname();
-  const theme = useMantineTheme();
+  const { cart } = useCart();
   const { selectUser, logout, selectIsAuthenticated } = useUser();
+
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [modalOpened, { open: openLoginModal, close: closeLoginModal }] = useDisclosure(false);
   const user = useAppSelector(selectUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  const { cart } = useCart();
 
-  const navList = [
-    "Discover",
-    "Artist",
-    isAuthenticated ? "Create" : "",
-    "AboutUs",
-    "Contact",
-  ].filter((n) => n);
+  const navList: { label: string; path: string; requiresAuth?: boolean }[] = [
+    ROUTES.DISCOVER,
+    ROUTES.ARTIST,
+    user?.type === SCHEMA_NAMES.ARTIST ? ROUTES.CREATE : { label: "", path: "" },
+    ROUTES.ABOUTUS,
+    ROUTES.CONTACT,
+  ].filter((n) => n.path !== "");
 
   const CustomDrawer = (
     <Drawer
@@ -58,16 +60,16 @@ export function Navbar(): React.JSX.Element {
       zIndex={1000000}
     >
       <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-        {navList.map((item: any, index) => (
+        {navList.map((item) => (
           <Box
-            key={item.toString() + index}
+            key={item.path}
             component="div"
-            onClick={() => router.push(ROUTES[item?.toUpperCase()]?.path)}
+            onClick={() => router.push(item.path)}
             className={classes.link}
             ff={theme.fontFamily}
             fs={theme.fontSizes.xl}
           >
-            {item}
+            {item.label}
           </Box>
         ))}
         <Divider my="sm" />
@@ -90,13 +92,13 @@ export function Navbar(): React.JSX.Element {
     <Menu shadow="md" trigger="hover" openDelay={100} closeDelay={400}>
       <Menu.Target>
         <Avatar
-          // src={user?.avatar}
-          src="https://xsgames.co/randomusers/avatar.php?g=pixel"
-          alt={user?.username}
+          src={null}
+          // src="https://xsgames.co/randomusers/avatar.php?g=pixel"
+          alt={titleCase(user?.profile?.firstName ?? user?.username ?? "")}
         />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>{user?.username}</Menu.Label>
+        <Menu.Label>{titleCase(user?.profile?.firstName ?? user?.username ?? "")}</Menu.Label>
         <Menu.Item
           leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />}
           component={Link}
@@ -104,6 +106,15 @@ export function Navbar(): React.JSX.Element {
         >
           Profile
         </Menu.Item>
+        {user?.type === "Artists" && (
+          <Menu.Item
+            leftSection={<IconPalette style={{ width: rem(14), height: rem(14) }} />}
+            component={Link}
+            href={`${ROUTES.ARTWORKS.path}?artist=${user?.id}`}
+          >
+            My Artworks
+          </Menu.Item>
+        )}
         <Menu.Item
           color="red"
           leftSection={<IconLogout style={{ width: rem(14), height: rem(14) }} />}
@@ -146,15 +157,15 @@ export function Navbar(): React.JSX.Element {
             <Image height={100} width={100} src={Logo} alt="logo" />
           </Box>
           <Group h="100%" gap={20} visibleFrom="sm">
-            {navList.map((item, index) => (
+            {navList.map((item) => (
               <Box
-                key={item.toString() + index}
+                key={item.path}
                 component="div"
-                onClick={() => router.push(ROUTES[item?.toUpperCase()].path)}
+                onClick={() => router.push(item.path)}
                 className={classes.link}
               >
                 <Text ff={theme.fontFamily} fs={theme.fontSizes.xl}>
-                  {ROUTES[item?.toUpperCase()].label}
+                  {item.label}
                 </Text>
               </Box>
             ))}
@@ -195,7 +206,7 @@ export function Navbar(): React.JSX.Element {
               <Button
                 variant="gradient"
                 onClick={() => {
-                  if (pathname !== "/login") openLoginModal();
+                  if (pathname !== ROUTES.LOGIN.path) openLoginModal();
                 }}
               >
                 Login

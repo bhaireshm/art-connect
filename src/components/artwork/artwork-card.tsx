@@ -37,7 +37,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
     // TODO: Check user before updating
     // const router = useRouter();
     // if (!user) {
-    //   router.push("/login");
+    //   router.push(ROUTES.LOGIN.path);
     //   return;
     // }
     if (artwork) {

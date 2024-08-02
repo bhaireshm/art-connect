@@ -1,4 +1,4 @@
-import { COOKIE } from "@/utils/constants";
+import { COOKIE, ROUTES } from "@/utils/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 const allowedOrigins = ["https://*.github.com", "http://localhost"];
@@ -32,9 +32,9 @@ export async function middleware(request: NextRequest) {
 
   const userToken = request.cookies.get(COOKIE.name);
   // const userToken = cookies().get(COOKIE.name)?.value;
-  const loginUrl = new URL("/login", request.url);
+  const loginUrl = new URL(ROUTES.LOGIN.path, request.url);
 
-  if (!userToken && !request.nextUrl.pathname.startsWith("/login"))
+  if (!userToken && !request.nextUrl.pathname.startsWith(ROUTES.LOGIN.path))
     return NextResponse.redirect(loginUrl);
 
   if (!userToken) return NextResponse.redirect(loginUrl);
@@ -43,5 +43,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/(?!api)", "/cart", "/wishlist"],
+  matcher: ["/(?!api)", ROUTES.CART.path, ROUTES.WISHLIST.path],
 };

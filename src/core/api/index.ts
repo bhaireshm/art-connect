@@ -1,4 +1,4 @@
-import { COOKIE } from "@/utils/constants";
+import { COOKIE, ROUTES } from "@/utils/constants";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 
@@ -25,7 +25,7 @@ API.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Try a different method of Clear the token and redirect to login
       document.cookie = `${COOKIE.name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      window.location.href = "/login";
+      window.location.href = ROUTES.LOGIN.path;
     }
     return Promise.reject(error);
   }

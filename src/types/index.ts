@@ -1,4 +1,3 @@
-import { SCHEMA_NAMES } from "@/utils/constants";
 import type { ReactNode } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +51,7 @@ export interface User {
   };
   orderHistory?: string[];
   wishlist?: string[] | Artwork[];
-  type: (typeof SCHEMA_NAMES.USER | typeof SCHEMA_NAMES.ARTIST)[];
+  type: "Users" | "Artists";
   artistInfo?: string;
 }
 

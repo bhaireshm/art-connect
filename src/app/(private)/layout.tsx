@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector, useUser } from "@/redux";
-import { COOKIE } from "@/utils/constants";
+import { COOKIE, ROUTES } from "@/utils/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
@@ -25,8 +25,8 @@ export default function PrivatePagesLayout({ children }: Readonly<AuthProviderPr
   }, [checkAuthStatus, setUser]);
 
   useEffect(() => {
-    if (!isAuthenticated && pathName !== "/login") router.push("/login");
-    else if (isAuthenticated && pathName === "/login") router.push("/");
+    if (!isAuthenticated && pathName !== ROUTES.LOGIN.path) router.push(ROUTES.LOGIN.path);
+    else if (isAuthenticated && pathName === ROUTES.LOGIN.path) router.push(ROUTES.HOME.path);
   }, [isAuthenticated, pathName, router, searchParams]);
 
   return <>{children}</>;

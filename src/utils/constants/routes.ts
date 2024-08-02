@@ -1,4 +1,4 @@
-export const ROUTES: any = {
+export const ROUTES = {
   HOME: { label: "Home", path: "/", requiresAuth: false },
   DISCOVER: { label: "Discover Arts", path: "/artworks", requiresAuth: false },
   ARTIST: { label: "Artists", path: "/artists", requiresAuth: false },
@@ -10,12 +10,14 @@ export const ROUTES: any = {
   PROFILE: { label: "Profile", path: "/profile", requiresAuth: true },
   CART: { label: "Cart", path: "/cart", requiresAuth: true },
   WISHLIST: { label: "Wishlist", path: "/wishlist", requiresAuth: true },
+  LOGIN: { label: "Login", path: "/auth/login", requiresAuth: false },
+  LOGOUT: { label: "Logout", path: "/logout", requiresAuth: true },
+  FORGOT_PASSWORD: { label: "Forgot Password", path: "/auth/forgot-password", requiresAuth: false },
+  RESET_PASSWORD: { label: "Reset Password", path: "/auth/reset-password", requiresAuth: true },
+  ADD_TO_CART: { label: "Add to Cart", path: "/addtocart", requiresAuth: true },
 
-  ADD_TO_CART: { label: "Add to Cart", path: "/addtocart" },
   ADMIN: { label: "Admin", path: "/admin" },
   HOTBID: { label: "Hot Bid", path: "/hotbid" },
-  LOGIN: { label: "Login", path: "/login" },
-  LOGOUT: { label: "Logout", path: "/logout" },
   SIGNUP: { label: "Signup", path: "/signup" },
   CATEGORIES: { label: "Categories", path: "/categories" },
 };

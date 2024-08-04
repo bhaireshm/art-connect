@@ -4,11 +4,9 @@ import { Schema, model, models } from "mongoose";
 
 export const ArtistSchema = new Schema(
   {
-    name: {
-      type: String,
-    },
-    bio: { type: String, required: true },
-    background: String,
+    name: { type: String, required: true },
+    bio: { type: String },
+    background: String, // image
     gallery: [{ type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK }],
     availableArtworks: [
       { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.ARTWORK },

@@ -38,7 +38,7 @@ export async function DELETE(req: NextRequest, { params }: Params<typeof uid>) {
   if (!userId) return ResponseHandler.error({ userId }, "Missing/Invalid user ID", 400);
 
   const user = await User.delete({ _id: userId });
-  if (user.deletedCount) return ResponseHandler.error({ user }, "User not found", 404);
+  if (user.deletedCount === 0) return ResponseHandler.error({ user }, "User not found", 404);
 
   return ResponseHandler.success(user, "User deleted", 202);
 }

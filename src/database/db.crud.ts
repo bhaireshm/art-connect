@@ -66,11 +66,11 @@ class DBCrud<T> extends Database {
    * @param options The options to use for creating the document(s).
    * @returns The created document(s).
    */
-  public async create(data: T | T[], options?: CreateOptions): Promise<T | T[]> { // this["m"]["schema"]["paths"]
+  public async create(data: T | Array<T>, options?: CreateOptions) {
     await this.connect();
     const isMulti = Array.isArray(data);
     const result = await this.model.create(isMulti ? data : [data], options);
-    return isMulti ? result : result[0];
+    return isMulti ? result : result[0].toJSON();
   }
 
   /**

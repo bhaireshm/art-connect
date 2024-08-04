@@ -1,7 +1,9 @@
 import { DB, DBCrud } from "@/database";
+import { User as UserType } from "@/types";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import mongoose, { model, models, Schema } from "mongoose";
 import { addressSchema } from "./address";
+import Artist from "./artist";
 
 export const UserSchema = new mongoose.Schema(
   {
@@ -36,28 +38,32 @@ export const UserSchema = new mongoose.Schema(
     artistInfo: {
       type: Schema.Types.ObjectId,
       ref: SCHEMA_NAMES.ARTIST,
-      // eslint-disable-next-line object-shorthand, func-names
-      // required: function () {
-      //   return this.type === SCHEMA_NAMES.ARTIST;
-      // },
     }, // artistInfoId if type is "Artist"
   },
   DB.getDefaultSchemaOptions()
 );
 
-// eslint-disable-next-line func-names
-UserSchema.post("save", async function () {
-  if (this.get("type") === SCHEMA_NAMES.ARTIST) {
-    // const data: any = {
-    //   name: this.get("username"),
-    //   bio: "some bio info",
-    // }
-    // const artist = await Artist.create(data);
-    // if (artist) this.set("artistInfo", artist.get("id"));
-  }
-});
-
 const User = new DBCrud<typeof UserSchema>(
   models[SCHEMA_NAMES.USER] || model(SCHEMA_NAMES.USER, UserSchema),
 );
+
 export default User;
+
+type UpdateArtistInfoTypes = {
+  type: UserType["type"];
+  userId: string;
+  payload: any;
+};
+
+export async function updateArtistInfo({ type, userId, payload }: UpdateArtistInfoTypes) {
+  if (type === SCHEMA_NAMES.ARTIST) {
+    const artist: any = await Artist.create(payload);
+
+    if (artist?.id) {
+      const userUpdateData: any = { "artistInfo": artist.id };
+      User.updateById(userId, userUpdateData).then(() => {
+        console.log("user's type is artist, updating artistInfoId to", artist.id);
+      });
+    }
+  }
+};

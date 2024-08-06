@@ -33,7 +33,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
   // Hash the password
   const storedPassword = user.get("password");
   const hashedPassword = hashData(password, email);
-  console.log("file: route.ts:36  POST  hashedPassword", hashedPassword);
 
   // Verify the password with the stored user.password
   if (storedPassword !== hashedPassword)

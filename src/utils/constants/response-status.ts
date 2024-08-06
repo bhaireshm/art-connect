@@ -136,3 +136,19 @@ export const STATUS_TEXT: { [st: string]: number } = {
   NOT_EXTENDED: 510,
   NETWORK_AUTHENTICATION_REQUIRED: 511,
 };
+
+
+export function getStatus(key: keyof typeof STATUS_TEXT | keyof typeof STATUS_CODES): { code: number; text: string } {
+  const out = { code: 500, text: "" };
+
+  if (typeof key === "string" && key in STATUS_TEXT) {
+    const st = STATUS_TEXT[key];
+    out.code = st;
+    out.text = STATUS_CODES[st];
+  } else if (typeof key === "number" && key in STATUS_CODES) {
+    out.code = key;
+    out.text = STATUS_CODES[key];
+  }
+
+  return out;
+}

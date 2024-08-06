@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export type AnyObj = Record<string, any>;
 
 export interface Props {
-  readonly children: ReactNode;
+  readonly children?: ReactNode;
 }
 
 export type ReadOnlyProps<T = Props> = Readonly<T & Props>;

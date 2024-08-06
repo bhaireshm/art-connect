@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: Params<typeof aid>) {
   const artistId = params.aid;
   if (!artistId) return ResponseHandler.error({ artistId }, "Missing/Invalid artist ID", 400);
 
-  const artist = await Artist.findById(artistId, { password: 0 });
+  const artist = await Artist.findById(artistId);
   if (!artist) return ResponseHandler.error({ artist, artistId }, "Artist not found", 404);
 
   return ResponseHandler.success(artist);

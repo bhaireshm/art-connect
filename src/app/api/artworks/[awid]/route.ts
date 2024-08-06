@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: Params<typeof awid>) {
   const awId = params.awid;
   if (!awId) return ResponseHandler.error({ awId }, "Missing/Invalid artwork ID", 400);
 
-  const artwork = await Artwork.populate({ _id: awId }, "artist"); // , "relatedArtworks" 
+  const artwork = await Artwork.populate({ _id: awId }, ["artist", "relatedArtworks"]);
   if (isEmpty(artwork)) return ResponseHandler.error({ artwork, awId }, "Artwork not found", 404);
 
   return ResponseHandler.success(artwork);

@@ -201,10 +201,9 @@ class DBCrud<T> extends Database {
    * @param options The options to use for populating the field.
    * @returns The populated document(s).
    */
-  public async populate(query: FilterQuery<T>, path: string | string[], options?: PopulateOptions): Promise<T | T[]> {
+  public async populate(query: FilterQuery<T>, path: string[] | PopulateOptions): Promise<T | T[]> {
     await this.connect();
-    // ! multiple paths not working check this
-    const result = await this.model.find(query).populate(path, options).exec();
+    const result = await this.model.find(query).populate(path).exec();
     return result;
   }
 }

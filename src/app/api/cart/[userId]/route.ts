@@ -14,14 +14,19 @@ import { NextRequest } from "next/server";
  */
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
-    const cart = await Cart.m.findOne({ user: params.userId }).populate({
-      path: "items.artwork",
-      model: SCHEMA_NAMES.ARTWORK,
-      populate: {
-        path: "artist",
-        model: SCHEMA_NAMES.ARTIST
+    const cart = await Cart.populate({ user: params.userId },
+      {
+        path: "items.artwork",
+        model: SCHEMA_NAMES.ARTWORK,
+        populate: {
+          path: "artist",
+          model: SCHEMA_NAMES.ARTIST
+        }
       }
-    });
+      // TODO: item.id not getting
+      // .projection({ _id: 0, id: "$_id" });
+    );
+
     return ResponseHandler.success(cart);
   } catch (error) {
     const err = new DatabaseError(error);

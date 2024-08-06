@@ -9,7 +9,7 @@ import { Artist } from "@/modules";
 
 /** /api/artists/ */
 export async function GET() {
-  const artists = await Artist.findAll({}, { password: 0 });
+  const artists = await Artist.populate({}, ["availableArtworks", "gallery"]);
   return ResponseHandler.success(artists);
 }
 

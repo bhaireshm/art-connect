@@ -20,7 +20,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     data = await request.json();
   else if (contentType?.includes("multipart/form-data")) {
     const formData = await request.formData();
-    data = formData.entries().map(([k, v]) => ({ [k]: v }));
+    data = Array.from(formData.entries()).map(([k, v]) => ({ [k]: v }));
   } else
     return NextResponse.json({ error: "Unsupported content type" }, { status: 400 });
 

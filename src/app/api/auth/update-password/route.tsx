@@ -7,9 +7,9 @@ import { JWT } from "@/utils/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * POST /api/auth/reset-password
+ * POST /api/auth/update-password
  *
- * This route is used for both forgot password and reset/update password.
+ * This route is used for both forgot password and reset password.
  */
 export async function POST(request: NextRequest, response: NextResponse) {
   const contentType = request.headers.get("content-type");
@@ -68,7 +68,7 @@ async function generateResetToken(userId: string): Promise<string> {
 async function sendResetEmail(email: string, token: string) {
   const resetLink = `${
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  }/auth/reset-password?token=${token}`;
+  }/auth/update-password?token=${token}`;
   const subject = `${PROJECT_NAME} - Reset Your Password`;
   const html = `
     <h1>Reset Your Password</h1>

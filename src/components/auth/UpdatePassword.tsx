@@ -58,12 +58,12 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
     try {
       let response;
       if (isResetMode)
-        response = await API.post("/api/auth/reset-password", {
+        response = await API.post("/api/auth/update-password", {
           method: "POST",
           data: { newPassword: values.newPassword, resetToken: searchParams.get("token") },
         });
       else
-        response = await API.post("/api/auth/reset-password", {
+        response = await API.post("/api/auth/update-password", {
           method: "POST",
           data: { email: values.email },
         });
@@ -100,6 +100,7 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
       <Divider />
 
       <Paper p={30} radius="md">
+        Text code in SUCCESS AND ERROR
         <form onSubmit={form.onSubmit(handleSubmit)}>
           {isResetMode ? (
             <>

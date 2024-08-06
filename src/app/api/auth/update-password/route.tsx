@@ -24,14 +24,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
   const { email, newPassword, resetToken } = data;
 
-  // Check if user exists
-  const user = await User.findOne({ email });
-  if (!user) return ResponseHandler.error(null, MESSAGES.USER_NOT_FOUND, 404);
-
   // If resetToken is provided, it's a password reset request
   if (resetToken) {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) return ResponseHandler.error(null, MESSAGES.USER_NOT_FOUND, 404);
+
     // Verify reset token
-    const isValidToken = await verifyResetToken(user.id, resetToken);
+    const isValidToken = await verifyResetToken(email, resetToken);
     if (!isValidToken) return ResponseHandler.error(null, MESSAGES.INVALID_TOKEN, 400);
 
     // Update password
@@ -39,20 +39,21 @@ export async function POST(request: NextRequest, response: NextResponse) {
     await User.updateById(user.id, { password: hashedPassword } as any);
 
     // TODO: remove/reset token from header/cookie/localstorage
+    // ...
 
     return ResponseHandler.success({ message: MESSAGES.USER_PASSWORD_CHANGED }, 200, response);
   }
 
   // If no resetToken, it's a forgot password request, Generate and send reset token
-  const newResetToken = await generateResetToken(user.id);
+  const newResetToken = await generateResetToken(email);
   const mailResponse = await sendResetEmail(email, newResetToken);
-  return ResponseHandler.success(mailResponse?.message || MESSAGES.USER_PASSWORD_RESET);
+  return ResponseHandler.success(null, mailResponse?.message || MESSAGES.USER_PASSWORD_RESET);
 }
 
-async function verifyResetToken(userId: string, token: string): Promise<boolean> {
+async function verifyResetToken(data: string, token: string): Promise<boolean> {
   try {
     const verified = await JWT.verifyJwt(token);
-    return verified.payload.sub === userId;
+    return verified.payload.sub === data;
   } catch (error) {
     console.error("Error verifying reset token:", error);
     return false;
@@ -68,7 +69,7 @@ async function generateResetToken(userId: string): Promise<string> {
 async function sendResetEmail(email: string, token: string) {
   const resetLink = `${
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  }/auth/update-password?token=${token}`;
+  }/auth/reset-password?token=${token}&email=${email}`;
   const subject = `${PROJECT_NAME} - Reset Your Password`;
   const html = `
     <h1>Reset Your Password</h1>

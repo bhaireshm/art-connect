@@ -21,7 +21,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean }>) {
@@ -29,10 +29,12 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
-      email: "",
+      email: searchParams.get("email") ?? "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -51,36 +53,36 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
   }, [searchParams]);
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("file: ResetPassword.tsx:52  handleSubmit  values", values);
     setIsLoading(true);
     setMessage("");
 
     try {
-      let response;
+      let data = {};
+
       if (isResetMode)
-        response = await API.post("/api/auth/update-password", {
-          method: "POST",
-          data: { newPassword: values.newPassword, resetToken: searchParams.get("token") },
-        });
-      else
-        response = await API.post("/api/auth/update-password", {
-          method: "POST",
-          data: { email: values.email },
-        });
+        data = {
+          email: values.email,
+          newPassword: values.newPassword,
+          resetToken: searchParams.get("token"),
+        };
+      else data = { email: values.email };
 
-      console.log("file: ResetPassword.tsx:70  handleSubmit  response", response);
-      let msg;
-      if (response.status) {
-        msg =
-          response.data.message ||
-          (isResetMode
-            ? "Password updated successfully."
-            : "Reset email sent. Please check your inbox.");
+      const response: any = await API.post("/api/auth/update-password", data);
 
+      const msg =
+        response?.error ||
+        response.message ||
+        (isResetMode
+          ? "Password updated successfully, please wait page will redirect to login page..."
+          : "Reset email sent. Please check your inbox.");
+
+      if (!msg) setMessage("An error occurred. Please try again.");
+      else {
+        setMessage(msg);
         form.reset();
-      } else msg = response.data.error || "An error occurred. Please try again.";
+      }
 
-      setMessage(msg);
+      if (isResetMode) setTimeout(() => router.push(ROUTES.LOGIN.path), 3000);
     } catch (error) {
       setMessage("An error occurred. Please try again.");
     } finally {
@@ -100,62 +102,68 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
       <Divider />
 
       <Paper p={30} radius="md">
-        Text code in SUCCESS AND ERROR
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          {isResetMode ? (
-            <>
-              <PasswordInput
-                label="New Password"
-                placeholder="Enter your new password"
+        {pathname === ROUTES.RESET_PASSWORD.path && !searchParams.get("token") ? (
+          <Text ta="center" c="red" fz="xl">
+            Invalid token / expired token.
+          </Text>
+        ) : (
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            {isResetMode ? (
+              <>
+                <PasswordInput
+                  label="New Password"
+                  placeholder="Enter your new password"
+                  required
+                  {...form.getInputProps("newPassword")}
+                  mb="md"
+                />
+                <PasswordInput
+                  label="Confirm New Password"
+                  placeholder="Confirm your new password"
+                  required
+                  {...form.getInputProps("confirmPassword")}
+                />
+              </>
+            ) : (
+              <TextInput
+                label="Your email"
+                placeholder="me@example.com"
                 required
-                {...form.getInputProps("newPassword")}
-                mb="md"
+                {...form.getInputProps("email")}
               />
-              <PasswordInput
-                label="Confirm New Password"
-                placeholder="Confirm your new password"
-                required
-                {...form.getInputProps("confirmPassword")}
-              />
-            </>
-          ) : (
-            <TextInput
-              label="Your email"
-              placeholder="me@example.com"
-              required
-              {...form.getInputProps("email")}
-            />
-          )}
-          {message && (
-            <Text
-              c={message.toLowerCase().includes("error") ? "red" : "green"}
-              mt="sm"
-              size="xs"
-              fz="sm"
-            >
-              {message}
-            </Text>
-          )}
-          <Group mt="lg">
-            {!isResetMode && (
-              <Anchor size="sm" href={ROUTES.LOGIN.path}>
-                <Center inline>
-                  <IconArrowLeft style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
-                  <Box ml={5}>Back to the login page</Box>
-                </Center>
-              </Anchor>
             )}
-            <Button
-              type="submit"
-              variant="light"
-              flex="1 1 auto"
-              className={classes.control}
-              loading={isLoading}
-            >
-              {isResetMode ? "Reset Password" : "Verify Email"}
-            </Button>
-          </Group>
-        </form>
+            {message && (
+              <Text
+                c={message.toLowerCase().includes("error") ? "red" : "green"}
+                mt="sm"
+                size="xs"
+                fz="sm"
+                fw={600}
+              >
+                {message}
+              </Text>
+            )}
+            <Group mt="lg">
+              {!isResetMode && (
+                <Anchor size="sm" href={ROUTES.LOGIN.path}>
+                  <Center inline>
+                    <IconArrowLeft style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+                    <Box ml={5}>Back to the login page</Box>
+                  </Center>
+                </Anchor>
+              )}
+              <Button
+                type="submit"
+                variant="light"
+                flex="1 1 auto"
+                className={classes.control}
+                loading={isLoading}
+              >
+                {isResetMode ? "Reset Password" : "Verify Email"}
+              </Button>
+            </Group>
+          </form>
+        )}
       </Paper>
     </Container>
   );

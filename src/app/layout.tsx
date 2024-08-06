@@ -1,8 +1,8 @@
 import "@/assets/styles/globals.css";
+import styles from "@/assets/styles/page.module.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
-import styles from "@/assets/styles/page.module.css";
 
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { MantineEmotionProvider } from "@mantine/emotion";
@@ -15,6 +15,7 @@ import { theme } from "@/core";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
+import { Suspense } from "react";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -36,18 +37,20 @@ export default function RootLayout({ children }: ReadOnlyProps) {
         <ColorSchemeScript />
       </head>
       <body className={quicksand.className}>
-        <MantineProvider theme={theme}>
-          <MantineEmotionProvider>
-            <StoreProvider>
-              <CartProvider>
-                <Notifications />
-                <Navbar />
-                <main className={styles.main}>{children}</main>
-                <Footer />
-              </CartProvider>
-            </StoreProvider>
-          </MantineEmotionProvider>
-        </MantineProvider>
+        <Suspense fallback={<div style={{ textAlign: "center", margin: "50px" }}>Loading...</div>}>
+          <MantineProvider theme={theme}>
+            <MantineEmotionProvider>
+              <StoreProvider>
+                <CartProvider>
+                  <Notifications />
+                  <Navbar />
+                  <main className={styles.main}>{children}</main>
+                  <Footer />
+                </CartProvider>
+              </StoreProvider>
+            </MantineEmotionProvider>
+          </MantineProvider>
+        </Suspense>
       </body>
     </html>
   );

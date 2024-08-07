@@ -1,12 +1,12 @@
 "use client";
 
+import classes from "@/assets/styles/profile.module.css";
 import { API } from "@/core";
 import { Button, Container, Group, Loader, Paper, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import classes from "./profile.module.css";
 
 export default function UserProfileEdit() {
   const { uid } = useParams();
@@ -53,6 +53,7 @@ export default function UserProfileEdit() {
       }
     };
     fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid]);
 
   const handleSubmit = async (values: any) => {

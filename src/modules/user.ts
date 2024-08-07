@@ -39,6 +39,7 @@ export const UserSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: SCHEMA_NAMES.ARTIST,
     }, // artistInfoId if type is "Artist"
+    // TODO: enable email option to send mails
   },
   DB.getDefaultSchemaOptions()
 );

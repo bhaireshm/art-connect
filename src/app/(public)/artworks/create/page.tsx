@@ -76,6 +76,7 @@ export default function CreateArtworkForm() {
         message: response.statusText,
         autoClose: 2000,
       });
+      form.reset();
     } catch (error) {
       console.error("Error creating artwork:", error);
       notifications.show({

@@ -1,15 +1,19 @@
+import type {
+  AggregateOptions,
+  CreateOptions,
+  FilterQuery,
+  MongooseUpdateQueryOptions,
+  PipelineStage,
+  PopulateOptions,
+  QueryOptions,
+  UpdateQuery
+} from "mongoose";
 import {
   Model,
+  MongooseBulkWriteOptions,
   ProjectionType,
-  type AggregateOptions,
-  type CreateOptions,
-  type FilterQuery,
-  type MongooseUpdateQueryOptions,
-  type PipelineStage,
-  type PopulateOptions,
-  type QueryOptions,
-  type UpdateQuery
 } from "mongoose";
+
 import Database from "./database";
 
 /**
@@ -66,11 +70,11 @@ class DBCrud<T> extends Database {
    * @param options The options to use for creating the document(s).
    * @returns The created document(s).
    */
-  public async create(data: T | Array<T>, options?: CreateOptions) {
+  public async create(data: any, options?: CreateOptions) {
     await this.connect();
     const isMulti = Array.isArray(data);
     const result = await this.model.create(isMulti ? data : [data], options);
-    return isMulti ? result : result[0].toJSON();
+    return isMulti ? result : result[0];
   }
 
   /**
@@ -204,6 +208,36 @@ class DBCrud<T> extends Database {
   public async populate(query: FilterQuery<T>, path: string[] | PopulateOptions): Promise<T | T[]> {
     await this.connect();
     const result = await this.model.find(query).populate(path).exec();
+    return result;
+  }
+
+  /**
+   * Performs a bulk write operation on the model.
+   *
+   * @param operations An array of bulk write operations.
+   * @returns The result of the bulk write operation.
+   */
+  public async bulkWrite(operations: any[], options?: MongooseBulkWriteOptions) {
+    await this.connect();
+    const result = await this.model.bulkWrite(operations, options);
+    return result;
+  }
+
+  /**
+   * Finds a document and updates it.
+   *
+   * @param query The query to use for finding the document.
+   * @param data The data to use for updating the document.
+   * @param options The options to use for the update operation.
+   * @returns The updated document.
+   */
+  public async findOneAndUpdate(
+    query: FilterQuery<T>,
+    data: Partial<T> | UpdateQuery<T>,
+    options?: MongooseUpdateQueryOptions
+  ): Promise<T | null> {
+    await this.connect();
+    const result = await this.model.findOneAndUpdate(query, data, { new: true, runValidators: true, ...options }).exec();
     return result;
   }
 }

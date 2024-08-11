@@ -5,6 +5,7 @@ export const SCHEMA_NAMES = Object.freeze({
   ADDRESS: "Addresses",
   ORDER: "Orders",
   CART: "Carts",
+  CART_ITEM: "CartItems",
   PAGE_CONTENT: "PageContents",
   ADMIN_DASHBOARD: "AdminDashboard",
 });

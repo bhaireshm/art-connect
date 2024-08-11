@@ -6,12 +6,12 @@ import { useUser } from "@/redux/slices/user.slice";
 import type { Artwork } from "@/types";
 import { API_BASE_URL } from "@/utils/constants";
 import { Button, Card, Container, Image, SimpleGrid, Text } from "@mantine/core";
-import { useCart } from "./CartProvider";
+import { useEffect } from "react";
+import { useCart } from "./cart";
 
 export default function Wishlist() {
   const { selectUser, updateUserInfo } = useUser();
   const user = useAppSelector(selectUser);
-  console.log("file: Wishlist.tsx:14  Wishlist  user", user);
   const { addToCart } = useCart();
 
   const removeFromWishlist = (artworkId: string) => {
@@ -26,18 +26,31 @@ export default function Wishlist() {
     removeFromWishlist(artwork.id);
   };
 
-  const fetchArtworks = async (aid = "") => {
-    const data = await API(`${API_BASE_URL}/artworks/${aid}`);
+  const fetchWishlishedArtworks = async (uid: string) => {
+    const data = await API(`${API_BASE_URL}/wishlist/${uid}`);
+    console.log("file: Wishlist.tsx:32  fetchWishlishedArtworks  data", data);
     return data.data;
   };
 
+  useEffect(() => {
+    if (user)
+      fetchWishlishedArtworks(user.id)
+        .then((users) => {
+          console.log("file: Wishlist.tsx:38  .then  users", users);
+          updateUserInfo({ wishlist: users.wishlist });
+        })
+        .catch((error) => {
+          console.error("Error fetching wishlist:", error);
+        });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <Container>
+    <Container my="lg">
       <SimpleGrid cols={3} spacing="md">
-        {user?.wishlist?.map(async (artworkId) => {
-          const artwork: Artwork = await fetchArtworks(artworkId);
-          return (
-            <Card key={artworkId} shadow="sm" padding="lg">
+        {user?.wishlist?.map((artwork) =>
+          typeof artwork === "string" ? null : (
+            <Card key={artwork.id} shadow="sm" padding="lg">
               <Card.Section>
                 <Image src={artwork?.images[0]} height={160} alt={artwork.title} />
               </Card.Section>
@@ -60,8 +73,8 @@ export default function Wishlist() {
                 Remove from Wishlist
               </Button>
             </Card>
-          );
-        })}
+          )
+        )}
       </SimpleGrid>
     </Container>
   );

@@ -1,8 +1,9 @@
 "use client";
 
+import { API } from "@/core";
 import { useAppSelector, useUser } from "@/redux";
 import type { Artwork } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { ROUTES } from "@/utils/constants";
 import {
   ActionIcon,
   Badge,
@@ -31,23 +32,24 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
   const user = useAppSelector(selectUser);
   const { addToCart } = useCart();
 
-  if (isEmpty(artwork)) return null;
-
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = async () => {
     // TODO: Check user before updating
-    // const router = useRouter();
-    // if (!user) {
-    //   router.push(ROUTES.LOGIN.path);
-    //   return;
-    // }
-    if (artwork) {
+    if (!user) {
+      router.push(ROUTES.LOGIN.path);
+      return;
+    }
+    if (user && artwork) {
       const updatedWishlist = [...(user?.wishlist || []), artwork.id];
       console.log(
         "file: artwork-card.tsx:41  handleAddToWishlist  updatedWishlist",
         updatedWishlist
       );
       updateUserInfo({ wishlist: updatedWishlist });
-      // TODO: call api to update user's wishlist
+
+      await API(`/api/users/${user.id}`, {
+        method: "PUT",
+        data: { wishlist: updatedWishlist },
+      });
     }
   };
 

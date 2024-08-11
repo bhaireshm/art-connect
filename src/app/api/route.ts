@@ -16,6 +16,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const data = await req.json();
   const result = { ...data };//await createSampleData(data);
+  // const result = await Artwork.updateMany({},
+  //   {
+  //     images: ["https://picsum.photos/512"]
+  //   }
+  //   ,
+  //   { maxTimeMS: 60000, allowDiskUse: true }
+  // );
 
   return ResponseHandler.success({
     message: "Sample data created successfully!",

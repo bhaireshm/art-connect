@@ -13,6 +13,8 @@ API.interceptors.request.use(
     // If token exists, add it to the headers
     if (token) config.headers.Authorization = `Bearer ${token}`;
 
+    if (!config.headers.getContentType()) config.headers.setContentType("application/json");
+
     return config;
   },
   (error) => Promise.reject(error)

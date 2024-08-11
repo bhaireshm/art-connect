@@ -95,8 +95,7 @@ class DBCrud<T> extends Database {
   public async update(query: QueryOptions, data: Partial<T> | UpdateQuery<T>, options?: MongooseUpdateQueryOptions) {
     await this.connect();
     const result = await this.model
-      .updateOne(query, data, { new: true, runValidators: true, ...options })
-      .exec();
+      .updateOne(query, data, { new: true, runValidators: true, ...options });
     return result;
   }
 
@@ -106,9 +105,9 @@ class DBCrud<T> extends Database {
    * @param data The data to use for updating the documents.
    * @returns The result of the update operation.
    */
-  public async updateMany(filter: FilterQuery<T>, data: Partial<T>[], options?: MongooseUpdateQueryOptions) {
+  public async updateMany(filter: FilterQuery<T>, data: any, options?: MongooseUpdateQueryOptions) {
     await this.connect();
-    const result = await this.model.updateMany(filter, data, { new: true, ...options }).exec();
+    const result = await this.model.updateMany(filter, data, { new: true, ...options });
     return result;
   }
 
@@ -133,7 +132,7 @@ class DBCrud<T> extends Database {
    */
   public async findOne(query: any, projection?: ProjectionType<T>) {
     await this.connect();
-    const result = await this.model.findOne(query, projection).exec();
+    const result = await this.model.findOne(query, projection);
     return result;
   }
 
@@ -146,7 +145,7 @@ class DBCrud<T> extends Database {
    */
   public async findById(id: string, projection?: ProjectionType<T>) {
     await this.connect();
-    const result = await this.model.findById(id, projection).exec();
+    const result = await this.model.findById(id, projection);
     return result;
   }
 
@@ -207,7 +206,7 @@ class DBCrud<T> extends Database {
    */
   public async populate(query: FilterQuery<T>, path: string[] | PopulateOptions): Promise<T | T[]> {
     await this.connect();
-    const result = await this.model.find(query).populate(path).exec();
+    const result = await this.model.find(query).populate(path);
     return result;
   }
 

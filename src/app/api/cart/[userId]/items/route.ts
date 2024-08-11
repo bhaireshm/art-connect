@@ -2,58 +2,61 @@
 
 import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
-import { Cart } from "@/modules";
+import { Cart, CartItem } from "@/modules";
 import { STATUS_TEXT } from "@/utils/constants";
+import { Types } from "mongoose";
 import { NextRequest } from "next/server";
 
 /** 
  * Add Item to Cart
  * POST /api/cart/[userId]/items
  * 
- * Adds an item to the user's cart. The request body should contain the artwork ID and the quantity.
+ * Adds or updates items in the user's cart. The request body should contain the artwork IDs and quantities.
  */
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
     const data = await req.json();
     const { items, totalCost }: any = data;
 
-    const operations = items.map((item: any) => ({
-      updateOne: {
-        filter: {
-          user: params.userId,
-          "items.artwork": item.artwork
-        },
-        update: {
-          $set: { "items.$.quantity": item.quantity }
-        },
-        upsert: false
+    const userId = new Types.ObjectId(params.userId);
+
+    // Find existing cart or create a new one
+    const cart: any = await Cart.findOneAndUpdate({ user: userId }, { user: userId, items: [], totalCost: 0 });
+
+    // Process each item
+    for (const item of items) {
+      const artworkId = new Types.ObjectId(item.artwork);
+
+      // Check if the item already exists in the cart
+      const existingItemIndex = cart.items.findIndex((cartItem: any) =>
+        cartItem.artwork.toString() === artworkId.toString()
+      );
+
+      if (existingItemIndex > -1)
+        // Update existing item
+        cart.items[existingItemIndex].quantity = item.quantity;
+      else {
+        // Create new CartItem
+        const newCartItem: any = await CartItem.create({
+          artwork: artworkId,
+          quantity: item.quantity
+        });
+        cart.items.push(newCartItem._id);
       }
-    }));
+    }
 
-    operations.push({
-      updateOne: {
-        filter: { user: params.userId },
-        update: {
-          $setOnInsert: { user: params.userId },
-          $set: { totalCost },
-          $addToSet: {
-            items: {
-              $each: items.map((item: { artwork: any; quantity: any; }) => ({
-                artwork: item.artwork,
-                quantity: item.quantity
-              }))
-            }
-          }
-        },
-        upsert: true
-      }
-    });
+    // Update total cost
+    cart.totalCost = totalCost;
 
-    await Cart.m.bulkWrite(operations);
+    // Save the updated cart
+    await cart.save();
 
-    const updatedCart = await Cart.findOne({ user: params.userId });
-    return ResponseHandler.success(updatedCart, STATUS_TEXT.CREATED);
+    // Populate the items in the updated cart
+    await cart.populate("items");
+
+    return ResponseHandler.success(cart, STATUS_TEXT.CREATED);
   } catch (error) {
+    console.error(error);
     const err = new DatabaseError(error);
     return ResponseHandler.error(err, err.code);
   }

@@ -1,10 +1,9 @@
 "use client";
 
 import { API } from "@/core";
-import { useAppSelector } from "@/redux";
-import { useUser } from "@/redux/slices/user.slice";
+import { useUser } from "@/hooks";
 import type { Artwork } from "@/types";
-import { API_BASE_URL, ROUTES } from "@/utils/constants";
+import { ROUTES } from "@/utils/constants";
 import {
   ActionIcon,
   Card,
@@ -14,6 +13,7 @@ import {
   Image,
   SimpleGrid,
   Text,
+  Title,
   Tooltip,
 } from "@mantine/core";
 import { IconHeartX, IconShoppingCartPlus } from "@tabler/icons-react";
@@ -22,22 +22,21 @@ import { useEffect } from "react";
 import { useCart } from "./cart";
 
 export default function Wishlist() {
-  const { selectUser, updateUserInfo } = useUser();
-  const user = useAppSelector(selectUser);
+  const { user, updateUserInfo } = useUser();
   const { addToCart } = useCart();
   const router = useRouter();
 
   const removeFromWishlist = async (artworkId: string) => {
-    if (user?.wishlist) {
-      const updatedWishlist = user.wishlist.filter((id) => id !== artworkId);
-      updateUserInfo({ wishlist: updatedWishlist });
+    if (user?.id)
+      try {
+        const response = await API.delete(`/api/wishlist/${user.id}`, {
+          params: { artworkId },
+        });
 
-      // Delete from user's wishlist
-      await API(`/api/users/${user.id}`, {
-        method: "PUT",
-        data: { wishlist: updatedWishlist },
-      });
-    }
+        if (response?.data?.wishlist?.length) updateUserInfo({ wishlist: response.data.wishlist });
+      } catch (error) {
+        console.error("Error removing artwork from wishlist:", error);
+      }
   };
 
   const handleAddToCart = (artwork: Artwork) => {
@@ -46,21 +45,28 @@ export default function Wishlist() {
   };
 
   const fetchWishlishedArtworks = async (uid: string) => {
-    const result = await API(`${API_BASE_URL}/wishlist/${uid}`);
+    const result = await API(`api/wishlist/${uid}`);
     return result.data;
   };
 
   useEffect(() => {
-    if (user)
-      fetchWishlishedArtworks(user.id)
-        .then((userdata) => {
-          updateUserInfo({ wishlist: userdata.wishlist });
-        })
-        .catch((error) => {
-          console.error("Error fetching wishlist:", error);
-        });
+    if (!user?.id) return;
+    fetchWishlishedArtworks(user.id)
+      .then((userdata) => {
+        updateUserInfo({ wishlist: userdata.wishlist });
+      })
+      .catch((error) => {
+        console.error("Error fetching wishlist:", error);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (user?.wishlist?.length === 0)
+    return (
+      <Group justify="center" py="xl">
+        <Title>Your wishlist is empty.</Title>
+      </Group>
+    );
 
   return (
     <Container my="lg">

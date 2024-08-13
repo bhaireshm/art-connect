@@ -1,16 +1,21 @@
-import type { CartItemProps } from "@/types";
+import type { CartItemComponentProps } from "@/types";
 import { ActionIcon, Box, Card, CloseButton, Flex, Group, Image, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 
-export default function CartItem({ item, onRemove, onUpdateQuantity }: Readonly<CartItemProps>) {
+export default function CartItem({
+  item,
+  onRemove,
+  onUpdateQuantity,
+}: Readonly<CartItemComponentProps>) {
   return (
     <Card withBorder padding="sm" radius="md">
       <Card.Section>
         <Flex align="flex-start">
           <Image
-            src={item.artwork?.images[0] ?? "https://placeholder.com/150"}
+            src={item.artwork?.images[0]}
             height={150}
             width={150}
+            fallbackSrc="https://placeholder.com/150"
             alt={item.artwork.title}
           />
           <Box m="md" style={{ flex: 1 }}>
@@ -43,21 +48,6 @@ export default function CartItem({ item, onRemove, onUpdateQuantity }: Readonly<
               </Group>
               <Box>
                 <Text fw={700}>₹{item.artwork.price.toFixed(2)}</Text>
-                {/* {item.artwork.price && (
-                  <Flex align="center">
-                    <Text size="sm" style={{ textDecoration: "line-through" }} c="dimmed" mr={5}>
-                      ₹{item.artwork.price.toFixed(2)}
-                    </Text>
-                    <Badge color="pink">
-                      {(
-                        ((item.artwork.originalPrice - item.artwork.price) /
-                          item.artwork.originalPrice) *
-                        100
-                      ).toFixed(0)}
-                      % OFF
-                    </Badge>
-                  </Flex>
-                )} */}
               </Box>
             </Flex>
           </Box>

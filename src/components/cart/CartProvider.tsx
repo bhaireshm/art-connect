@@ -1,25 +1,11 @@
 "use client";
 
+import { useAuth } from "@/context/AuthProvider";
 import { API } from "@/core";
-import { useAppSelector, useUser } from "@/redux";
-import type { Artwork } from "@/types";
+import type { Artwork, CartContextType } from "@/types";
+import { isEmpty } from "@bhairesh/ez.js";
 import { notifications } from "@mantine/notifications";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-
-interface CartItem {
-  artwork: Artwork;
-  quantity: number;
-}
-
-interface CartContextType {
-  cart: CartItem[];
-  addToCart: (artwork: Artwork) => void;
-  removeFromCart: (artworkId: string) => void;
-  updateQuantity: (artworkId: string, quantity: number) => void;
-  clearCart: () => void;
-  totalCost: number;
-  isLoading: boolean;
-}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -29,22 +15,18 @@ export const useCart = () => {
   return context;
 };
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItemType[]>([]);
+export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
+  const [cart, setCart] = useState<CartContextType["cart"]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { selectUser } = useUser();
-  const user = useAppSelector(selectUser);
-  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     const loadCart = async () => {
       setIsLoading(true);
       try {
-        // TODO: replace id with user.id
         const response = await API.get(`/api/cart/${user?.id}`);
         if (response?.data?.length) setCart(response.data[0]?.items || []);
       } catch (error) {
-        console.error("Error loading cart:", error);
         notifications.show({
           color: "red",
           autoClose: 5000,
@@ -56,19 +38,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     if (isAuthenticated && !isEmpty(user)) loadCart();
-  }, [isAuthenticated, user]);
+  }, [user, isAuthenticated]);
 
   const contextValue = useMemo(() => {
     const addToCart = async (artwork: Artwork) => {
-      // TODO: auth check pending
-      // if (!isAuthenticated) {
-      //   notifications.show({
-      //     color: "red",
-      //     autoClose: 5000,
-      //     message: "Please login to add items to your cart",
-      //   });
-      //   return;
-      // }
+      if (!isAuthenticated) {
+        notifications.show({
+          color: "red",
+          autoClose: 5000,
+          message: "Please login to add items to your cart",
+        });
+        return;
+      }
 
       try {
         await API.post(`/api/cart/${user?.id}/items`, {
@@ -85,7 +66,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             return prevCart.map((item) =>
               item.artwork.id === artwork.id ? { ...item, quantity: item.quantity + 1 } : item
             );
-          return [...prevCart, { artwork, quantity: 1 }];
+          return [...prevCart, { id: "", artwork, quantity: 1 }];
         });
 
         notifications.show({
@@ -181,7 +162,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       totalCost,
       isLoading,
     };
-  }, [cart, isLoading, user?.id]);
+  }, [cart, isAuthenticated, isLoading, user]);
 
   return <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>;
-};
+}

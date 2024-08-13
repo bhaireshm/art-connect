@@ -1,7 +1,7 @@
 "use client";
 
+import { useAuth } from "@/context";
 import { API } from "@/core";
-import { useUser } from "@/hooks";
 import type { Artwork } from "@/types";
 import { ROUTES } from "@/utils/constants";
 import {
@@ -22,7 +22,7 @@ import { useEffect } from "react";
 import { useCart } from "./cart";
 
 export default function Wishlist() {
-  const { user, updateUserInfo } = useUser();
+  const { user, updateUserInfo } = useAuth();
   const { addToCart } = useCart();
   const router = useRouter();
 
@@ -61,6 +61,18 @@ export default function Wishlist() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (user)
+      fetchWishlishedArtworks(user.id)
+        .then((userdata) => {
+          updateUserInfo({ wishlist: userdata.wishlist });
+        })
+        .catch((error) => {
+          console.error("Error fetching wishlist:", error);
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (user?.wishlist?.length === 0)
     return (
       <Group justify="center" py="xl">
@@ -71,9 +83,9 @@ export default function Wishlist() {
   return (
     <Container my="lg">
       <SimpleGrid cols={3} spacing="md">
-        {user?.wishlist?.map((artwork) =>
+        {user?.wishlist?.map((artwork: Artwork | string) =>
           typeof artwork === "string" ? null : (
-            <Card key={artwork.id} shadow="sm" padding="lg">
+            <Card key={artwork?.id} shadow="sm" padding="lg">
               <Card.Section>
                 <Image src={artwork?.images[0]} height={160} alt={artwork.title} />
               </Card.Section>

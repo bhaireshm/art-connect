@@ -50,7 +50,7 @@ export interface User {
     address?: Address;
   };
   orderHistory?: string[];
-  wishlist?: string[] | Artwork[];
+  wishlist?: string[];
   type: "Users" | "Artists";
   artistInfo?: string;
 }

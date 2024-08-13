@@ -2,7 +2,7 @@
 
 import Logo from "@/assets/images/logo.png";
 import classes from "@/assets/styles/navbar.module.css";
-import { useAppSelector, useUser } from "@/redux";
+import { useAuth } from "@/context";
 import { ROUTES, SCHEMA_NAMES } from "@/utils/constants";
 import { titleCase } from "@bhairesh/ez.js";
 import {
@@ -34,13 +34,11 @@ export function Navbar(): React.JSX.Element {
   const theme = useMantineTheme();
   const router = useRouter();
   const pathname = usePathname();
+  const { user, logout, isAuthenticated } = useAuth();
   const { cart } = useCart();
-  const { selectUser, logout, selectIsAuthenticated } = useUser();
 
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [modalOpened, { open: openLoginModal, close: closeLoginModal }] = useDisclosure(false);
-  const user = useAppSelector(selectUser);
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   const navList: { label: string; path: string; requiresAuth?: boolean }[] = [
     ROUTES.DISCOVER,

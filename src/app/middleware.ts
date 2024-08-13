@@ -1,4 +1,3 @@
-import { COOKIE, ROUTES } from "@/utils/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 const allowedOrigins = ["https://*.github.com", "http://localhost"];
@@ -11,8 +10,6 @@ export async function middleware(request: NextRequest) {
   const origin = request.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
   const isPreflight = request.method === "OPTIONS";
-
-  console.log("Middleware....");
 
   if (isPreflight) {
     const preflightHeaders = {
@@ -30,18 +27,16 @@ export async function middleware(request: NextRequest) {
     response.headers.set(key, value)
   );
 
-  const userToken = request.cookies.get(COOKIE.name);
-  // const userToken = cookies().get(COOKIE.name)?.value;
-  const loginUrl = new URL(ROUTES.LOGIN.path, request.url);
-
-  if (!userToken && !request.nextUrl.pathname.startsWith(ROUTES.LOGIN.path))
-    return NextResponse.redirect(loginUrl);
-
-  if (!userToken) return NextResponse.redirect(loginUrl);
+  // Authenticate user
+  // const userToken = request.cookies.get(COOKIE.name) || localStorage.getItem(SCHEMA_NAMES.USER);
+  // const loginUrl = new URL(ROUTES.LOGIN.path, request.url);
+  // if (!userToken && !request.nextUrl.pathname.startsWith(ROUTES.LOGIN.path))
+  //   return NextResponse.redirect(loginUrl);
+  // if (!userToken) return NextResponse.redirect(loginUrl);
 
   return response;
 }
 
 export const config = {
-  matcher: ["/(?!api)", ROUTES.CART.path, ROUTES.WISHLIST.path],
+  matcher: ["/(?!api)"],
 };

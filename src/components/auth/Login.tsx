@@ -1,10 +1,10 @@
 "use client";
 
 import classes from "@/assets/styles/auth.module.css";
+import { useAuth } from "@/context";
 import { API } from "@/core";
-import { useUser } from "@/redux";
-import type { LoginProps } from "@/types";
-import { COOKIE, PROJECT_NAME, ROUTES } from "@/utils/constants";
+import type { LoginProps, User } from "@/types";
+import { COOKIE, PROJECT_NAME, ROUTES, SCHEMA_NAMES } from "@/utils/constants";
 import {
   Anchor,
   Button,
@@ -31,7 +31,7 @@ const REGISTER = "register";
 export default function Login(props: Readonly<LoginProps>) {
   const [type, toggle] = useToggle([LOGIN, REGISTER]);
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useUser();
+  const { setUser } = useAuth();
   const router = useRouter();
 
   const form = useForm({
@@ -67,9 +67,9 @@ export default function Login(props: Readonly<LoginProps>) {
 
       // Set the token in the cookie
       setCookie(COOKIE.name, response.token, COOKIE.serializeOptions);
-      localStorage.setItem(COOKIE.name, response.token);
+      response.user && localStorage?.setItem(SCHEMA_NAMES.USER, JSON.stringify(userData));
 
-      setUser(userData);
+      setUser(response.user as User);
       props.onSuccess?.(response.user);
 
       notifications.show({

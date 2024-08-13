@@ -11,8 +11,8 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 
 import { CartProvider, Footer, Navbar } from "@/components";
+import { AuthProvider } from "@/context";
 import { theme } from "@/core";
-import { UserProvider } from "@/hooks";
 import { StoreProvider } from "@/redux/store-provider";
 import type { ReadOnlyProps } from "@/types";
 import { PROJECT_NAME } from "@/utils/constants";
@@ -41,16 +41,16 @@ export default function RootLayout({ children }: ReadOnlyProps) {
         <Suspense fallback={<div style={{ textAlign: "center", margin: "50px" }}>Loading...</div>}>
           <MantineProvider theme={theme}>
             <MantineEmotionProvider>
-              <UserProvider>
-                <StoreProvider>
+              <StoreProvider>
+                <AuthProvider>
                   <CartProvider>
                     <Notifications />
                     <Navbar />
                     <main className={styles.main}>{children}</main>
                     <Footer />
                   </CartProvider>
-                </StoreProvider>
-              </UserProvider>
+                </AuthProvider>
+              </StoreProvider>
             </MantineEmotionProvider>
           </MantineProvider>
         </Suspense>

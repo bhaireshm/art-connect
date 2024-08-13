@@ -96,7 +96,11 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
                 handleAddToWishlist();
               }}
             >
-              <IconHeart size="18" color={theme.colors.red[6]} />
+              <IconHeart
+                size="18"
+                // fill={user?.wishlist?.includes(artwork.id) ? theme.colors.red[6] : "none"}
+                color={theme.colors.red[6]}
+              />
             </ActionIcon>
 
             <CopyButton value={`${window.location.origin}/artworks/${artwork.id}`} timeout={2000}>

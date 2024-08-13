@@ -1,18 +1,23 @@
 "use client";
 
-import { ArtistInfo, RelatedArtworks } from "@/components";
+import { ArtistInfo, RelatedArtworks, useCart } from "@/components";
+import { useAuth } from "@/context/AuthProvider";
 import { API } from "@/core";
-import type { Artist, Artwork } from "@/types";
+import type { Artwork } from "@/types";
 import { API_BASE_URL } from "@/utils/constants";
 import { objectToQueryParams } from "@bhairesh/ez.js";
-import { Badge, Container, Grid, Group, Image, Loader, Text } from "@mantine/core";
+import { Badge, Button, Container, Divider, Grid, Group, Image, Loader, Text } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconHeart, IconShoppingCart } from "@tabler/icons-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ArtworkDetails() {
   const { id } = useParams();
+  const { user, updateUserInfo, isAuthenticated } = useAuth();
+  const { addToCart } = useCart();
+
   const [artwork, setArtwork] = useState<Artwork>();
-  const [artist, setArtist] = useState<Artist>();
   const [relatedArtworks, setRelatedArtworks] = useState<Artwork["relatedArtworks"]>(
     artwork?.relatedArtworks ?? []
   );
@@ -29,9 +34,44 @@ export default function ArtworkDetails() {
     return data;
   };
 
-  const fetchUserById = async (userId: string) => {
-    const data = await API(`${API_BASE_URL}/users/${userId}`);
-    return data;
+  const checkIsAuthenticated = () => {
+    try {
+      if (!isAuthenticated) throw new Error("Please login to add items to your cart");
+      if (!user) throw new Error("User information not found");
+      if (!artwork) throw new Error("Artwork information not found");
+      return true;
+    } catch (error: any) {
+      notifications.show({
+        color: "red",
+        autoClose: 5000,
+        message: error.message,
+      });
+      return false;
+    }
+  };
+
+  const handleAddToWishlist = async () => {
+    checkIsAuthenticated();
+    if (!artwork) return;
+    if (!user) return;
+
+    try {
+      const updatedWishlist = [...[...(user.wishlist ?? [])], artwork.id];
+
+      await API(`/api/users/${user?.id}`, {
+        method: "PUT",
+        data: { wishlist: updatedWishlist },
+      });
+
+      updateUserInfo({ wishlist: updatedWishlist });
+    } catch (error) {
+      console.log("handleAddToWishlist", error);
+    }
+  };
+
+  const handleAddToCart = () => {
+    checkIsAuthenticated();
+    if (artwork) addToCart(artwork);
   };
 
   useEffect(() => {
@@ -39,16 +79,15 @@ export default function ArtworkDetails() {
       setIsLoading(true);
       try {
         const result = await fetchArtworks(Array.isArray(id) ? id[0] : id);
-        setArtwork(result.data);
+        if (result.data.length) {
+          setArtwork(result.data[0]);
 
-        if (result?.data?.artist) {
-          const artistResult = await fetchUserById(result.data.artist);
-          setArtist(artistResult.data);
+          // Fetch only 3 related artworks
+          const relatedArtworksResult = await filterArtworks(1, 3, {
+            medium: result.data[0].medium,
+          });
+          setRelatedArtworks(relatedArtworksResult?.data?.results);
         }
-
-        // Fetch 3 related artworks
-        const relatedArtworksResult = await filterArtworks(1, 3, { medium: result.data.medium });
-        setRelatedArtworks(relatedArtworksResult?.data?.results);
       } catch (error) {
         console.error("Failed to fetch artwork details:", error);
       }
@@ -67,8 +106,10 @@ export default function ArtworkDetails() {
 
   if (!artwork)
     return (
-      <Container>
-        <Text>Artwork not found</Text>
+      <Container py="md">
+        <Text ta="center" c="red" size="xl" fw="600">
+          Artwork not found
+        </Text>
       </Container>
     );
 
@@ -87,18 +128,46 @@ export default function ArtworkDetails() {
           <Text size="xl" fw={700}>
             {artwork.title}
           </Text>
-          <Group gap="xs">
-            <Badge color="blue">{artwork.medium}</Badge>
-            <Badge color="green">₹{artwork.price}</Badge>
-          </Group>
+          <Badge color="green">₹{artwork.price}</Badge>
           <Text mt="md">{artwork.description}</Text>
           <Text mt="sm">
             Dimensions: {artwork.dimensions.height} x {artwork.dimensions.width} x
             {artwork.dimensions.depth}
           </Text>
-          {artist && <ArtistInfo artwork={artwork} artist={artist} />}
+          <Group gap="xs" my="md">
+            <Badge color="blue">{artwork.medium}</Badge>
+          </Group>
+
+          {/* Show buttons If its not logged in user's artwork */}
+          {user?.id !== artwork.artist.id && (
+            <Group mt="md" justify="flex-start">
+              <Button
+                variant="light"
+                leftSection={
+                  <IconHeart
+                    size={16}
+                    fill={user?.wishlist?.includes(artwork.id) ? "none" : "red"}
+                  />
+                }
+                onClick={handleAddToWishlist}
+              >
+                Wishlist
+                {/* {user?.wishlist?.includes(artwork.id) ? "Wishlist" : "Remove from Wishlist"} */}
+              </Button>
+              <Button
+                variant="light"
+                leftSection={<IconShoppingCart size={16} />}
+                onClick={handleAddToCart}
+              >
+                Add to Cart
+              </Button>
+            </Group>
+          )}
+
+          {/* Artist Info */}
+          <Divider my="md" />
+          <ArtistInfo artist={artwork.artist} />
         </Grid.Col>
-        {/* TODO: Button to wishlist */}
       </Grid>
       {relatedArtworks?.length > 0 && typeof relatedArtworks === "object" && (
         <RelatedArtworks artworks={relatedArtworks} />

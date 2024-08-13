@@ -16,7 +16,7 @@ export default function Cart() {
 
   if (cart.length === 0)
     return (
-      <Group justify="center">
+      <Group justify="center" py="xl">
         <Title>Your cart is empty.</Title>
       </Group>
     );
@@ -31,10 +31,10 @@ export default function Cart() {
         </Group>
         {cart.map((item) => (
           <CartItem
-            key={item.artwork.id}
+            key={item.artwork.id + item.id}
             item={item}
-            onRemove={() => removeFromCart(item.artwork.id)}
-            onUpdateQuantity={(newQuantity) => updateQuantity(item.artwork.id, newQuantity)}
+            onRemove={() => removeFromCart(item.id)}
+            onUpdateQuantity={(newQuantity) => updateQuantity(item.id, newQuantity)}
           />
         ))}
         <Divider />

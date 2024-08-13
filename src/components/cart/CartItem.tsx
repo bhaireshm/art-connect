@@ -1,12 +1,17 @@
+"use client";
+
 import type { CartItemComponentProps } from "@/types";
+import { ROUTES } from "@/utils/constants";
 import { ActionIcon, Box, Card, CloseButton, Flex, Group, Image, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function CartItem({
   item,
   onRemove,
   onUpdateQuantity,
 }: Readonly<CartItemComponentProps>) {
+  const router = useRouter();
   return (
     <Card withBorder padding="sm" radius="md">
       <Card.Section>
@@ -21,7 +26,13 @@ export default function CartItem({
           <Box m="md" style={{ flex: 1 }}>
             <Flex justify="space-between" align="flex-start">
               <Box>
-                <Text fw={500}>{item.artwork.title}</Text>
+                <Text
+                  fw={500}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => router.push(`${ROUTES.ARTWORKS.path}/${item.artwork.id}`)}
+                >
+                  {item.artwork.title}
+                </Text>
                 <Text size="sm" c="dimmed">
                   {item.artwork.description}
                 </Text>
@@ -46,9 +57,7 @@ export default function CartItem({
                   </ActionIcon>
                 </Group>
               </Group>
-              <Box>
-                <Text fw={700}>₹{item.artwork.price.toFixed(2)}</Text>
-              </Box>
+              <Text fw={700}>₹{item.artwork.price.toFixed(2)}</Text>
             </Flex>
           </Box>
         </Flex>

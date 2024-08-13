@@ -33,10 +33,6 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
   const handleAddToWishlist = async () => {
     if (user && artwork) {
       const updatedWishlist = [...(user?.wishlist || []), artwork.id];
-      console.log(
-        "file: artwork-card.tsx:41  handleAddToWishlist  updatedWishlist",
-        updatedWishlist
-      );
       updateUserInfo({ wishlist: updatedWishlist });
 
       await API(`/api/users/${user.id}`, {

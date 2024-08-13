@@ -1,9 +1,8 @@
 "use client";
 
+import { useAuth } from "@/context";
 import { API } from "@/core";
-import { useAppSelector, useUser } from "@/redux";
 import type { Artwork } from "@/types";
-import { ROUTES } from "@/utils/constants";
 import {
   ActionIcon,
   Badge,
@@ -28,16 +27,10 @@ interface ArtworkCardProps {
 export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
   const theme = useMantineTheme();
   const router = useRouter();
-  const { selectUser, updateUserInfo } = useUser();
-  const user = useAppSelector(selectUser);
+  const { user, updateUserInfo } = useAuth();
   const { addToCart } = useCart();
 
   const handleAddToWishlist = async () => {
-    // TODO: Check user before updating
-    if (!user) {
-      router.push(ROUTES.LOGIN.path);
-      return;
-    }
     if (user && artwork) {
       const updatedWishlist = [...(user?.wishlist || []), artwork.id];
       console.log(

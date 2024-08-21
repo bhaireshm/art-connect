@@ -1,5 +1,8 @@
 # ArtConnect - Showcase Art and Drawings
 
+[![GitHub Pages Build Status](https://github.com/bhaireshm/art-connect/actions/workflows/pages/pages-build-deployment/badge.svg?branch=master)](https://github.com/bhaireshm/art-connect/actions/workflows/pages/pages-build-deployment)
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/art-connect-swart?name=Vercel%20Deploy)
+
 ## Features
 
 This has the following features:

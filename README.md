@@ -8,7 +8,31 @@ This has the following features:
 - [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
 - ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
 
-## npm scripts
+## Steps to start
+
+Clone the repository
+
+```sh
+git clone https://github.com/bhaireshm/art-connect.git
+```
+
+Install dependencies
+
+```sh
+npm install
+```
+
+Provide permission for scripts, git-hooks.
+
+```sh
+npm run prepare
+```
+
+Start development server
+
+```bash
+npm run dev
+```
 
 - `dev` – start dev server
 - `build` – bundle application for production

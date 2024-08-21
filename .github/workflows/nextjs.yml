@@ -24,6 +24,13 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_URL: ${{ secrets.DB_URL }}
+  EMAIL_USER: ${{ secrets.EMAIL_USER }}
+  EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+
 jobs:
   # Build job
   build:

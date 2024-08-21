@@ -125,7 +125,6 @@ export default function Login(props: Readonly<LoginProps>) {
 
           <PasswordInput
             required
-            rightSection
             label="Password"
             placeholder="Your password"
             value={form.values.password}

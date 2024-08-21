@@ -30,6 +30,12 @@ export function AuthProvider({ children }: Readonly<PropsWithChildren>) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const IGNORED_PATHS = [
+    ROUTES.LOGIN.path,
+    ROUTES.FORGOT_PASSWORD.path,
+    ROUTES.RESET_PASSWORD.path,
+  ];
+
   const checkAuthStatus = () => {
     const storedUser = localStorage.getItem(SCHEMA_NAMES.USER);
     if (!isEmpty(storedUser)) {
@@ -50,8 +56,11 @@ export function AuthProvider({ children }: Readonly<PropsWithChildren>) {
   useEffect(() => {
     if (isLoading) return;
 
-    if (!isAuthenticated && pathName !== ROUTES.LOGIN.path) router.push(ROUTES.LOGIN.path);
-    else if (isAuthenticated && pathName === ROUTES.LOGIN.path) router.push(ROUTES.HOME.path);
+    // Check if the current path is in the ignored paths list
+    if (!isAuthenticated && !IGNORED_PATHS.includes(pathName)) router.push(ROUTES.LOGIN.path);
+    else if (isAuthenticated && IGNORED_PATHS.includes(pathName)) router.push(ROUTES.HOME.path);
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, pathName, router, isLoading]);
 
   const setUserAndAuthenticate = (newUser: User) => {

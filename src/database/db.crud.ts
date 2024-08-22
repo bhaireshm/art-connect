@@ -238,6 +238,18 @@ class DBCrud<T> extends Database {
     const result = await this.model.findOneAndUpdate(query, data, { new: true, runValidators: true, ...options });
     return result;
   }
+
+  public async findByIdAndDelete(id: string, options?: QueryOptions) {
+    await this.connect();
+    const result = await this.model.findByIdAndDelete(id, options);
+    return result;
+  }
+
+  public async findByIdAndUpdate(id: string, data: Partial<T>, options?: QueryOptions) {
+    await this.connect();
+    const result = await this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true, ...options });
+    return result;
+  }
 }
 
 export default DBCrud;

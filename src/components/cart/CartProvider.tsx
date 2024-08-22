@@ -96,9 +96,8 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
 
     const removeFromCart = async (artworkId: string) => {
       try {
-        await API.delete(`/api/cart/${user?.id}/items/${artworkId}`);
-
-        setCart((prevCart) => prevCart.filter((item) => item.artwork.id !== artworkId));
+        const response = await API.delete(`/api/cart/${user?.id}/items/${artworkId}`);
+        setCart(response?.data?.items ?? []);
 
         notifications.show({
           color: "green",

@@ -87,8 +87,7 @@ class DBCrud<T> extends Database {
   public async updateById(id: string, data: Partial<T>, options?: QueryOptions) {
     await this.connect();
     const result = await this.model
-      .findByIdAndUpdate(id, data, { new: true, runValidators: true, ...options })
-      .exec();
+      .findByIdAndUpdate(id, data, { new: true, runValidators: true, ...options });
     return result;
   }
 
@@ -232,11 +231,11 @@ class DBCrud<T> extends Database {
    */
   public async findOneAndUpdate(
     query: FilterQuery<T>,
-    data: Partial<T> | UpdateQuery<T>,
+    data?: Partial<T> | UpdateQuery<T>,
     options?: MongooseUpdateQueryOptions
   ): Promise<T | null> {
     await this.connect();
-    const result = await this.model.findOneAndUpdate(query, data, { new: true, runValidators: true, ...options }).exec();
+    const result = await this.model.findOneAndUpdate(query, data, { new: true, runValidators: true, ...options });
     return result;
   }
 }

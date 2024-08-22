@@ -48,11 +48,11 @@ export default function CartItem({
             <Flex mt="md" justify="space-between" align="center">
               <Group gap="xs">
                 <Group>
-                  <ActionIcon size="xs" onClick={() => onUpdateQuantity(item.quantity - 1)}>
+                  <ActionIcon size="xs" onClick={() => onUpdateQuantity(-1)}>
                     <IconMinus size={16} />
                   </ActionIcon>
                   <Text>{item.quantity}</Text>
-                  <ActionIcon size="xs" onClick={() => onUpdateQuantity(item.quantity + 1)}>
+                  <ActionIcon size="xs" onClick={() => onUpdateQuantity(1)}>
                     <IconPlus size={16} />
                   </ActionIcon>
                 </Group>

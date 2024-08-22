@@ -115,15 +115,29 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
       }
     };
 
-    const updateQuantity = async (artworkId: string, quantity: number) => {
+    const updateQuantity = async (itemId: string, quantity: number) => {
       try {
-        await API.post(`/api/cart/${user?.id}/items/${artworkId}`, { quantity });
+        let cartItem: any = null;
+        const updatedCart = cart.map((item) => {
+          if (item?.id === itemId) {
+            item = { ...item, quantity: item.quantity + quantity };
+            cartItem = item;
+          }
 
-        setCart((prevCart) =>
-          prevCart.map((item) =>
-            item.artwork.id === artworkId ? { ...item, quantity: Math.max(0, quantity) } : item
-          )
+          return item;
+        });
+
+        const totalCost = cart.reduce(
+          (total, item) => total + item.artwork.price * item.quantity,
+          cartItem?.artwork?.price ?? 0
         );
+
+        await API.post(`/api/cart/${user?.id}/items`, {
+          items: [{ artwork: cartItem?.artwork?.id, quantity }],
+          totalCost,
+        });
+
+        setCart(updatedCart);
 
         notifications.show({
           color: "green",

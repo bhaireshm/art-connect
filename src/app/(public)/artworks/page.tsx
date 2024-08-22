@@ -29,6 +29,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
 
   const [searchTerm, setSearchTerm] = useState(search);
   const [medium, setMedium] = useState<string | null>("");
+  const [mediums, setMediums] = useState<{ label: string; value: string }[]>([]);
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
   const [artworks, setArtworks] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -55,6 +56,17 @@ export default function ArtworksListingPage(): React.JSX.Element {
     },
     [currentPage]
   );
+
+  const loadArtworkMediums = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const result = await API.get("/api/artworks/mediums");
+      setMediums(result?.data?.map((d: any) => ({ label: d, value: d })));
+    } catch (error) {
+      console.error("Failed to fetch artwork mediums:", error);
+    }
+    setIsLoading(false);
+  }, []);
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams(searchParams);
@@ -85,6 +97,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
       ...(search && { searchTerm: search }),
     };
     loadArtworks(filter);
+    loadArtworkMediums();
   }, [currentPage, medium, artistId, search, loadArtworks]);
 
   return (
@@ -114,18 +127,7 @@ export default function ArtworksListingPage(): React.JSX.Element {
             </ActionIcon>
           }
         />
-        <Select
-          value={medium}
-          placeholder="Select medium"
-          onChange={setMedium}
-          data={[
-            { value: "", label: "All" },
-            { value: "Oil", label: "Oil" },
-            { value: "Acrylic", label: "Acrylic" },
-            { value: "Watercolor", label: "Watercolor" },
-            { value: "Sculpture", label: "Sculpture" },
-          ]}
-        />
+        <Select value={medium} placeholder="Select medium" onChange={setMedium} data={mediums} />
         <Button onClick={handleSearch}>Search</Button>
       </Group>
       {isLoading ? (

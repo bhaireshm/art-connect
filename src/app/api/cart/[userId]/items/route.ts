@@ -4,7 +4,6 @@ import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { Cart, CartItem } from "@/modules";
 import { STATUS_TEXT } from "@/utils/constants";
-import { Types } from "mongoose";
 import { NextRequest } from "next/server";
 
 /** 
@@ -15,33 +14,45 @@ import { NextRequest } from "next/server";
  */
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
-    const data = await req.json();
-    const { items, totalCost }: any = data;
-
-    const userId = new Types.ObjectId(params.userId);
+    const data: any = await req.json();
+    const { userId } = params;
+    const { items = [], totalCost = 0 } = data;
+    const filter = { user: userId };
 
     // Find existing cart or create a new one
-    const cart: any = await Cart.findOneAndUpdate({ user: userId }, { user: userId, items: [], totalCost: 0 });
+    const cart: any = await Cart.findOneAndUpdate(filter, {}, { upsert: true });
+
+    if (!cart) return ResponseHandler.error("Cart not found", 404);
+
+    // Populate the items in the updated cart
+    await cart.populate("items");
 
     // Process each item
     for (const item of items) {
-      const artworkId = new Types.ObjectId(item.artwork);
+      const artworkId = item.artwork;
 
       // Check if the item already exists in the cart
       const existingItemIndex = cart.items.findIndex((cartItem: any) =>
-        cartItem.artwork.toString() === artworkId.toString()
+        cartItem.artwork.toString() === artworkId
       );
 
-      if (existingItemIndex > -1)
+      if (existingItemIndex > -1) {
         // Update existing item
-        cart.items[existingItemIndex].quantity = item.quantity;
+        cart.items[existingItemIndex].quantity += item.quantity;
+        const updatedQuantity = cart.items[existingItemIndex].quantity;
+
+        await CartItem.updateById(cart.items[existingItemIndex].id.toString(),
+          { quantity: updatedQuantity } as any,
+          { new: true }
+        );
+      }
       else {
         // Create new CartItem
         const newCartItem: any = await CartItem.create({
           artwork: artworkId,
           quantity: item.quantity
         });
-        cart.items.push(newCartItem._id);
+        cart.items.push(newCartItem.id.toString());
       }
     }
 

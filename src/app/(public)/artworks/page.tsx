@@ -61,7 +61,12 @@ export default function ArtworksListingPage(): React.JSX.Element {
     setIsLoading(true);
     try {
       const result = await API.get("/api/artworks/mediums");
-      setMediums(result?.data?.map((d: any) => ({ label: d, value: d })));
+      setMediums(
+        result?.data?.reduce(
+          (p: any, c: any) => [...p, { label: c, value: c }],
+          [{ label: "All", value: "" }]
+        )
+      );
     } catch (error) {
       console.error("Failed to fetch artwork mediums:", error);
     }

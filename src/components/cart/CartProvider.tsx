@@ -25,7 +25,7 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
       setIsLoading(true);
       try {
         const response = await API.get(`/api/cart/${user?.id}`);
-        if (response?.data?.length) setCart(response.data[0]?.items || []);
+        if (!isEmpty(response?.data)) setCart(response.data?.items || []);
       } catch (error) {
         notifications.show({
           color: "red",
@@ -52,7 +52,7 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
       }
 
       try {
-        await API.post(`/api/cart/${user?.id}/items`, {
+        const respone = await API.post(`/api/cart/${user?.id}/items`, {
           items: [{ artwork: artwork.id, quantity: 1 }],
           totalCost: cart.reduce(
             (total, item) => total + item.artwork.price * item.quantity,
@@ -62,11 +62,21 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
 
         setCart((prevCart) => {
           const existingItem = prevCart.find((item) => item.artwork.id === artwork.id);
+
           if (existingItem)
             return prevCart.map((item) =>
               item.artwork.id === artwork.id ? { ...item, quantity: item.quantity + 1 } : item
             );
-          return [...prevCart, { id: "", artwork, quantity: 1 }];
+
+          const cartItem = respone?.data?.items?.find((item: any) => item.artwork === artwork.id);
+          return [
+            ...prevCart,
+            {
+              id: cartItem.id ?? "",
+              artwork,
+              quantity: 1,
+            },
+          ];
         });
 
         notifications.show({

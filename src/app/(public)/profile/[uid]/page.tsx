@@ -1,17 +1,40 @@
 "use client";
 
 import classes from "@/assets/styles/profile.module.css";
+import { DeleteAccountConfirmation } from "@/components";
+import { useAuth } from "@/context";
 import { API } from "@/core";
-import { Button, Container, Group, Loader, Paper, Stack, Text, TextInput } from "@mantine/core";
+import { SCHEMA_NAMES } from "@/utils/constants";
+import {
+  ActionIcon,
+  Button,
+  Container,
+  Group,
+  Loader,
+  Paper,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Tooltip,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { useParams } from "next/navigation";
+import { IconTrash } from "@tabler/icons-react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserProfileEdit() {
   const { uid } = useParams();
+  const router = useRouter();
+  const { logout } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [userFormData, setUserFormData] = useState(null);
+
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
 
   const form = useForm({
     initialValues: {
@@ -32,7 +55,7 @@ export default function UserProfileEdit() {
           country: "",
         },
       },
-      // TODO: add user-type
+      type: "USER",
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -80,6 +103,22 @@ export default function UserProfileEdit() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await API.delete(`/api/users/${uid}`);
+      notifications.show({
+        title: "Account Deleted",
+        message: "Your account has been deleted",
+        color: "green",
+      });
+
+      logout();
+      router.push("/");
+    } catch (error) {
+      notifications.show({ title: "Error", message: "Failed to delete account", color: "red" });
     }
   };
 
@@ -162,6 +201,16 @@ export default function UserProfileEdit() {
                 {...form.getInputProps("profile.address.country")}
               />
             </Group>
+
+            <Select
+              label="Account Type"
+              data={[
+                { value: SCHEMA_NAMES.USER, label: "Regular User" },
+                { value: SCHEMA_NAMES.ARTIST, label: "Artist" },
+              ]}
+              {...form.getInputProps("type")}
+            />
+
             <TextInput
               label="Google Account"
               placeholder="Google account email"
@@ -172,9 +221,25 @@ export default function UserProfileEdit() {
               placeholder="Facebook account email"
               {...form.getInputProps("socialAccounts.facebook")}
             />
-            <Button type="submit" loading={isLoading}>
-              Update Profile
-            </Button>
+
+            <Group justify="space-between">
+              <div>
+                <Tooltip label="Delete Account" position="right" fz="xs">
+                  <ActionIcon color="red" variant="subtle" size="lg" onClick={openDialog}>
+                    <IconTrash size={20} />
+                  </ActionIcon>
+                </Tooltip>
+                <DeleteAccountConfirmation
+                  isOpen={isDialogOpen}
+                  onClose={closeDialog}
+                  onConfirm={handleDeleteAccount}
+                />
+              </div>
+
+              <Button type="submit" loading={isLoading}>
+                Update Profile
+              </Button>
+            </Group>
           </Stack>
         </form>
       </Paper>

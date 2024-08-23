@@ -70,6 +70,15 @@ export default function ArtistsListingPage() {
     router.push(`/artists?${params.toString()}`);
   };
 
+  if (isLoading) return <Loader size="xl" style={{ display: "block", margin: "10px auto" }} />;
+
+  if (artists?.length === 0)
+    return (
+      <Text fz="lg" c="dimmed" ta="center">
+        No artists found
+      </Text>
+    );
+
   return (
     <Container mb="md">
       <Group justify="space-between" mb="xl">
@@ -97,53 +106,49 @@ export default function ArtistsListingPage() {
           }
         />
       </Group>
-      {isLoading ? (
-        <Loader size="xl" style={{ display: "block", margin: "10px auto" }} />
-      ) : (
-        <>
-          <Grid>
-            {artists.map((artist) => (
-              <Grid.Col key={artist.id} span={{ xs: 12, sm: 6, md: 4 }}>
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                  <Card.Section>
-                    <Image
-                      height={160}
-                      alt={artist.name}
-                      fallbackSrc="https://picsum.photos/200/300"
-                    />
-                  </Card.Section>
-                  <Group justify="space-around" mt="md" mb="xs">
-                    <Text fw={500}>{artist.name}</Text>
-                  </Group>
-                  <Text size="sm" c="dimmed" w={250} truncate="end">
-                    {artist.bio}
-                  </Text>
-                  <Button
-                    component={Link}
-                    href={`/artists/${artist.id}`}
-                    variant="light"
-                    color="blue"
-                    fullWidth
-                    mt="md"
-                    radius="md"
-                  >
-                    View Profile
-                  </Button>
-                </Card>
-              </Grid.Col>
-            ))}
-          </Grid>
-          <Group justify="center" mt="xl">
-            <Pagination
-              size="sm"
-              withEdges
-              total={totalPages}
-              value={currentPage}
-              onChange={handlePageChange}
-            />
-          </Group>
-        </>
-      )}
+      <>
+        <Grid>
+          {artists.map((artist) => (
+            <Grid.Col key={artist.id} span={{ xs: 12, sm: 6, md: 4 }}>
+              <Card shadow="sm" padding="lg" radius="md" withBorder>
+                <Card.Section>
+                  <Image
+                    height={160}
+                    alt={artist.name}
+                    fallbackSrc="https://picsum.photos/200/300"
+                  />
+                </Card.Section>
+                <Group justify="space-around" mt="md" mb="xs">
+                  <Text fw={500}>{artist.name}</Text>
+                </Group>
+                <Text size="sm" c="dimmed" w={250} truncate="end">
+                  {artist.bio}
+                </Text>
+                <Button
+                  component={Link}
+                  href={`/artists/${artist.id}`}
+                  variant="light"
+                  color="blue"
+                  fullWidth
+                  mt="md"
+                  radius="md"
+                >
+                  View Profile
+                </Button>
+              </Card>
+            </Grid.Col>
+          ))}
+        </Grid>
+        <Group justify="center" mt="xl">
+          <Pagination
+            size="sm"
+            withEdges
+            total={totalPages}
+            value={currentPage}
+            onChange={handlePageChange}
+          />
+        </Group>
+      </>
     </Container>
   );
 }

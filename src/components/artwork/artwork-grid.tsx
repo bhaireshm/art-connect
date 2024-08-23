@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@mantine/core";
+import { Group, SimpleGrid, Text } from "@mantine/core";
 import { ArtworkCard } from "./artwork-card";
 
 interface ArtworkGridProps {
@@ -6,6 +6,15 @@ interface ArtworkGridProps {
 }
 
 export function ArtworkGrid({ artworks }: Readonly<ArtworkGridProps>) {
+  if (artworks?.length === 0)
+    return (
+      <Group justify="center" py="xl">
+        <Text fz="lg" c="dimmed" ta="center">
+          No artworks found
+        </Text>
+      </Group>
+    );
+
   return (
     <SimpleGrid
       spacing="md"

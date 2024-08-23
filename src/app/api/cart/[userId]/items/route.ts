@@ -38,13 +38,18 @@ export async function POST(req: NextRequest, { params }: { params: { userId: str
 
       if (existingItemIndex > -1) {
         // Update existing item
-        cart.items[existingItemIndex].quantity += item.quantity;
-        const updatedQuantity = cart.items[existingItemIndex].quantity;
+        const updatedQuantity = cart.items[existingItemIndex].quantity + item.quantity;
 
-        await CartItem.updateById(cart.items[existingItemIndex].id.toString(),
-          { quantity: updatedQuantity } as any,
-          { new: true }
-        );
+        if (updatedQuantity <= 0) {
+          // Remove the item from the cart
+          await CartItem.findByIdAndDelete(cart.items[existingItemIndex].id.toString());
+          cart.items.splice(existingItemIndex, 1);
+        }
+        else
+          await CartItem.updateById(cart.items[existingItemIndex].id.toString(),
+            { quantity: updatedQuantity } as any,
+            { new: true }
+          );
       }
       else {
         // Create new CartItem

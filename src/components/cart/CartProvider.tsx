@@ -136,7 +136,9 @@ export function CartProvider({ children }: Readonly<React.PropsWithChildren>) {
           totalCost,
         });
 
-        setCart(updatedCart);
+        if (updatedCart.some((c) => c.quantity <= 0))
+          setCart(updatedCart.filter((c) => c.quantity > 0));
+        else setCart(updatedCart);
 
         notifications.show({
           color: "green",

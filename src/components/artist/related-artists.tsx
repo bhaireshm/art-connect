@@ -1,5 +1,5 @@
 import type { Artist } from "@/types";
-import { Container, SimpleGrid, Text } from "@mantine/core";
+import { Container, Group, SimpleGrid, Text } from "@mantine/core";
 import { ArtistCard } from "./artist-card";
 
 interface RelatedArtworksProps {
@@ -7,6 +7,15 @@ interface RelatedArtworksProps {
 }
 
 export function RelatedArtists({ artists }: Readonly<RelatedArtworksProps>) {
+  if (artists?.length === 0)
+    return (
+      <Group justify="center" py="xl">
+        <Text fz="lg" c="dimmed" ta="center">
+          No related artists found
+        </Text>
+      </Group>
+    );
+
   return (
     <Container>
       <Text

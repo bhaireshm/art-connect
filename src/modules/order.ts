@@ -1,6 +1,7 @@
 import { DB, DBCrud } from "@/database";
 import { SCHEMA_NAMES } from "@/utils/constants";
 import { Schema, model, models } from "mongoose";
+import { addressSchema } from "./address";
 
 const orderSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: SCHEMA_NAMES.USER, required: true },
@@ -12,28 +13,15 @@ const orderSchema = new Schema({
         required: true,
       },
       quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
     },
   ],
   totalCost: { type: Number, required: true },
-  shippingAddress: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String,
-  },
-  billingAddress: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String,
-  },
-  paymentMethod: { type: String, required: true },
-  orderStatus: { type: String, required: true },
+  shippingAddress: addressSchema,
+  billingAddress: addressSchema,
+  paymentMethod: { type: String }, // TODO: Add payment methods
+  orderStatus: { type: String }, // TODO: Add order statuses
   orderDate: { type: Date, default: Date.now },
-  estimatedDeliveryDate: { type: Date, required: true },
+  estimatedDeliveryDate: { type: Date }, // TODO: Add estimated delivery date
 }, DB.getDefaultSchemaOptions());
 
 const Order = new DBCrud<typeof orderSchema>(

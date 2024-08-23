@@ -7,5 +7,5 @@ export * from "./Features";
 export * from "./Footer";
 export { default as Hero } from "./Hero";
 export * from "./Navbar";
+export * from "./order";
 export { default as Wishlist } from "./Wishlist";
-

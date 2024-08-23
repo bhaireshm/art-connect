@@ -4,7 +4,7 @@ import { ResponseHandler } from "@/core";
 import DatabaseError from "@/database/db.error";
 import { Artwork } from "@/modules";
 import type { Params } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import { type NextRequest } from "next/server";
 
 const awid = "awid";

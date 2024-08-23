@@ -1,6 +1,6 @@
 import { ResponseHandler } from "@/core";
 import { Artwork } from "@/modules";
-import { uniqueArrayOfObjects } from "@bhairesh/ez.js";
+import { uniqueArrayOfObjects } from "@bhaireshm/ez.js";
 
 /** /api/artworks/mediums */
 export async function GET() {

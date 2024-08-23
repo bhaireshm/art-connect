@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Container, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { currencyFormatter } from "@bhaireshm/ez.js";
 import CartItem from "./CartItem";
 import { useCart } from "./CartProvider";
 
@@ -43,7 +44,7 @@ export default function Cart() {
             Proceed to Checkout
           </Button>
           <Text size="xl" fw={700}>
-            Total: ₹{totalCost.toFixed(2)}
+            Total: {currencyFormatter(+totalCost.toFixed(2))}
           </Text>
         </Group>
       </Stack>

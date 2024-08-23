@@ -19,7 +19,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isEmail, useForm } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
       confirmPassword: "",
     },
     validate: {
-      email: (value) => !isResetMode && (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      email: (value) => !isResetMode && isEmail("Invalid email")(value),
       newPassword: (value) =>
         isResetMode && value.length < 6 ? "Password must be at least 6 characters" : null,
       confirmPassword: (value, values) =>

@@ -18,7 +18,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isEmail, useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { setCookie } from "cookies-next";
@@ -42,7 +42,7 @@ export default function Login(props: Readonly<LoginProps>) {
       terms: false,
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
+      email: (val) => isEmail("Invalid email")(val),
       password: (val) => (val.length < 6 ? "Password should include at least 6 characters" : null),
     },
   });

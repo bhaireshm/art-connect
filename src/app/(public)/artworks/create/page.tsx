@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context";
 import {
   ActionIcon,
   Button,
@@ -20,6 +21,7 @@ import { useState } from "react";
 export default function CreateArtworkForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrls, setImageUrls] = useState<string[]>([""]);
+  const { user } = useAuth();
 
   const form = useForm({
     initialValues: {
@@ -59,7 +61,7 @@ export default function CreateArtworkForm() {
     try {
       const payload = {
         ...values,
-        artist: "6696b230442dec4d15eea073", // current user id, if he's an artist
+        artist: user?.id,
         images: imageUrls.filter((url) => url), // Filter out empty URLs
       };
 
@@ -77,6 +79,7 @@ export default function CreateArtworkForm() {
         autoClose: 2000,
       });
       form.reset();
+      setImageUrls([""]);
     } catch (error) {
       console.error("Error creating artwork:", error);
       notifications.show({

@@ -8,6 +8,8 @@ import { Error } from "mongoose";
  * for specific database error information.
  */
 export default class DatabaseError extends Error {
+  name: string;
+  
   /**
    * HTTP status code associated with the error.
    */
@@ -40,18 +42,18 @@ export default class DatabaseError extends Error {
     let host;
     let key;
 
-    if (err instanceof Error.ValidationError) {
+    if (err?.name === Error.ValidationError.name) {
       message = "Validation failed";
       statusCode = STATUS_TEXT.BAD_REQUEST;
       errors = err.errors;
-    } else if (err instanceof Error.DocumentNotFoundError) {
+    } else if (err?.name === Error.DocumentNotFoundError.name) {
       message = "Document not found";
       statusCode = STATUS_TEXT.NOT_FOUND;
-    } else if (err.name === "MongoServerError" && err.code === 11000) {
+    } else if (err?.name === "MongoServerError" && err.code === 11000) {
       message = "Duplicate key error";
       statusCode = STATUS_TEXT.CONFLICT;
       key = Object.keys(err.keyValue)[0];
-    } else if (err instanceof Error.MongooseServerSelectionError) {
+    } else if (err?.name === Error.MongooseServerSelectionError.name) {
       message = "Connection failed";
       statusCode = STATUS_TEXT.INTERNAL_SERVER_ERROR;
     }

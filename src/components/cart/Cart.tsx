@@ -1,12 +1,40 @@
 "use client";
 
-import { Button, Container, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { useAuth } from "@/context";
+import { API } from "@/core";
+import { ROUTES } from "@/utils/constants";
 import { currencyFormatter } from "@bhaireshm/ez.js";
+import { Button, Container, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import CartItem from "./CartItem";
 import { useCart } from "./CartProvider";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, totalCost, isLoading, clearCart } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
+
+  const handleCheckout = async () => {
+    setIsCheckoutLoading(true);
+    try {
+      const res = await API.post(`/api/cart/${user?.id}/checkout`, {
+        shippingAddress: { ...user?.profile?.address },
+        billingAddress: { ...user?.profile?.address },
+      });
+      // console.log("handleCheckout res", res);
+
+      if (res.status === 201) {
+        clearCart();
+        router.push(`${ROUTES.ORDERS.path}/${res.data.order.id}`);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsCheckoutLoading(false);
+    }
+  };
 
   if (isLoading)
     return (
@@ -40,7 +68,7 @@ export default function Cart() {
         ))}
         <Divider />
         <Group justify="space-between">
-          <Button size="sm" variant="light">
+          <Button size="sm" variant="light" loading={isCheckoutLoading} onClick={handleCheckout}>
             Proceed to Checkout
           </Button>
           <Text size="xl" fw={700}>

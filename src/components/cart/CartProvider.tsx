@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthProvider";
 import { API } from "@/core";
 import type { Artwork, CartContextType } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import { notifications } from "@mantine/notifications";
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 

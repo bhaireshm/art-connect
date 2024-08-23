@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { API } from "@/core";
 import type { Artwork } from "@/types";
 import { API_BASE_URL } from "@/utils/constants";
-import { objectToQueryParams } from "@bhairesh/ez.js";
+import { currencyFormatter, objectToQueryParams } from "@bhaireshm/ez.js";
 import { Badge, Button, Container, Divider, Grid, Group, Image, Loader, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconHeart, IconShoppingCart } from "@tabler/icons-react";
@@ -128,7 +128,7 @@ export default function ArtworkDetails() {
           <Text size="xl" fw={700}>
             {artwork.title}
           </Text>
-          <Badge color="green">₹{artwork.price}</Badge>
+          <Badge color="green">{currencyFormatter(+artwork.price)}</Badge>
           <Text mt="md">{artwork.description}</Text>
           <Text mt="sm">
             Dimensions: {artwork.dimensions.height} x {artwork.dimensions.width} x

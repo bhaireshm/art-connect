@@ -1,5 +1,5 @@
 import type { Artist } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import { Avatar, Badge, Button, Group, Paper, Text } from "@mantine/core";
 import { IconPalette } from "@tabler/icons-react";
 import Link from "next/link";

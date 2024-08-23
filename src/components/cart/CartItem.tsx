@@ -2,6 +2,7 @@
 
 import type { CartItemComponentProps } from "@/types";
 import { ROUTES } from "@/utils/constants";
+import { currencyFormatter } from "@bhaireshm/ez.js";
 import { ActionIcon, Box, Card, CloseButton, Flex, Group, Image, Text } from "@mantine/core";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -57,7 +58,7 @@ export default function CartItem({
                   </ActionIcon>
                 </Group>
               </Group>
-              <Text fw={700}>₹{item.artwork.price.toFixed(2)}</Text>
+              <Text fw={700}>{currencyFormatter(+item.artwork.price.toFixed(2))}</Text>
             </Flex>
           </Box>
         </Flex>

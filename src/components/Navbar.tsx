@@ -4,7 +4,7 @@ import Logo from "@/assets/images/logo.png";
 import classes from "@/assets/styles/navbar.module.css";
 import { useAuth } from "@/context";
 import { ROUTES, SCHEMA_NAMES } from "@/utils/constants";
-import { titleCase } from "@bhairesh/ez.js";
+import { titleCase } from "@bhaireshm/ez.js";
 import {
   ActionIcon,
   Avatar,

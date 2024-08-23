@@ -1,6 +1,6 @@
 "use client";
 
-import { objectToQueryParams } from "@bhairesh/ez.js";
+import { objectToQueryParams } from "@bhaireshm/ez.js";
 import { Container, Loader, Space, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 

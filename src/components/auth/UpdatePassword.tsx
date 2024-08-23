@@ -154,7 +154,7 @@ export default function UpdatePassword(props: ReadOnlyProps<{ resetMode: boolean
               )}
               <Button
                 type="submit"
-                variant="light"
+                variant="gradient"
                 flex="1 1 auto"
                 className={classes.control}
                 loading={isLoading}

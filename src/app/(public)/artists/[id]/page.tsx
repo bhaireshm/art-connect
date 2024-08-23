@@ -3,7 +3,7 @@
 import { ArtworkCard } from "@/components";
 import { API } from "@/core";
 import type { Artist, Artwork } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import {
   Button,
   Container,

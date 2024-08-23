@@ -1,5 +1,5 @@
 import type { AnyObj } from "@/types";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import { createHmac, randomBytes } from "crypto";
 
 /**

@@ -147,7 +147,7 @@ export default function Login(props: Readonly<LoginProps>) {
                 Forgot password?
               </Anchor>
             )}
-            <Button type="submit" variant="light" loading={isLoading}>
+            <Button type="submit" variant="gradient" loading={isLoading}>
               {upperFirst(type)}
             </Button>
           </Group>

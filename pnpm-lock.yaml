@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@bhairesh/ez.js':
-        specifier: ^1.2.3
-        version: 1.2.3
+      '@bhaireshm/ez.js':
+        specifier: ^1.2.4
+        version: 1.2.4
       '@mantine/carousel':
         specifier: ^7.10.1
         version: 7.11.2(@mantine/core@7.11.2(@mantine/hooks@7.11.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.11.2(react@18.3.1))(embla-carousel-react@8.1.6(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -178,8 +178,8 @@ packages:
     resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
-  '@bhairesh/ez.js@1.2.3':
-    resolution: {integrity: sha512-2uBpJE1k9M6mKbfclBjB+9AQ3DkQTS3mU/LWLcl/0G+6qBbnT23aD1U6+vJFVNWQsJtr+Ey6w2erwnb1YMc3uA==}
+  '@bhaireshm/ez.js@1.2.4':
+    resolution: {integrity: sha512-pYhSKvaWkM/75uFk7toniuWxTd6yfUFXcOq5zZnwG39lcohFk/vAJ8EXjdD6ujFrmttVjNuU6gyxSAoPsz4Aig==}
 
   '@emnapi/runtime@1.2.0':
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
@@ -2586,7 +2586,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@bhairesh/ez.js@1.2.3': {}
+  '@bhaireshm/ez.js@1.2.4': {}
 
   '@emnapi/runtime@1.2.0':
     dependencies:

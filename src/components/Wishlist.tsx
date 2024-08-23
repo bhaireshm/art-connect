@@ -4,6 +4,7 @@ import { useAuth } from "@/context";
 import { API } from "@/core";
 import type { Artwork } from "@/types";
 import { ROUTES } from "@/utils/constants";
+import { currencyFormatter } from "@bhaireshm/ez.js";
 import {
   ActionIcon,
   Card,
@@ -100,7 +101,7 @@ export default function Wishlist() {
                 {artwork.title}
               </Text>
               <Text size="sm" c="dimmed">
-                ${artwork.price.toFixed(2)}
+                {currencyFormatter(+artwork.price.toFixed(2))}
               </Text>
 
               <Divider my="xs" />

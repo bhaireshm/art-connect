@@ -2,7 +2,7 @@
 
 import type { User } from "@/types";
 import { ROUTES, SCHEMA_NAMES } from "@/utils/constants";
-import { isEmpty } from "@bhairesh/ez.js";
+import { isEmpty } from "@bhaireshm/ez.js";
 import { Group, Loader } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import {

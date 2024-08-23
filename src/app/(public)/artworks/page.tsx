@@ -3,7 +3,7 @@
 import { ArtworkGrid } from "@/components";
 import { API } from "@/core";
 import { API_BASE_URL } from "@/utils/constants";
-import { objectToQueryParams } from "@bhairesh/ez.js";
+import { objectToQueryParams } from "@bhaireshm/ez.js";
 import {
   ActionIcon,
   Button,

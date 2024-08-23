@@ -3,6 +3,7 @@
 import { useAuth } from "@/context";
 import { API } from "@/core";
 import type { Artwork } from "@/types";
+import { currencyFormatter } from "@bhaireshm/ez.js";
 import {
   ActionIcon,
   Badge,
@@ -75,7 +76,7 @@ export function ArtworkCard({ artwork }: Readonly<ArtworkCardProps>) {
       <Card.Section p="xs">
         <Group justify="space-between" mx="sm">
           <Text fw={500} size="md">
-            ₹{artwork.price}
+            {currencyFormatter(+artwork.price)}
           </Text>
           <Group gap={0}>
             <ActionIcon

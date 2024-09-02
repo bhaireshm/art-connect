@@ -44,7 +44,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   updateArtistInfo({ type: newUser.type, userId: newUser.id, payload: { name: userPayload.username } });
 
   // Generate the token
-  const { password: _, ...userRestData }: any = newUser;
+  const { password: _, ...userRestData }: any = newUser.toJSON();
   const userTokenData = {
     email,
     username,

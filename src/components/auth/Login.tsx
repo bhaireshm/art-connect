@@ -56,20 +56,26 @@ export default function Login(props: Readonly<LoginProps>) {
 
       if (response.error) throw new Error(response.error);
 
-      let userData = {};
+      let userData: any = {};
       if (type === LOGIN) {
         if (!response.token || !response.user) throw new Error("Unable to login");
-        userData = { user: response.user, token: response.token };
+        userData = {
+          user: { ...response.user, id: response.user._id ?? response.user.id },
+          token: response.token,
+        };
       } else if (type === REGISTER) {
         if (!response) throw new Error(response.message || "Unable to register");
-        userData = { user: response.user, token: response.token };
+        userData = {
+          user: { ...response.user, id: response.user._id ?? response.user.id },
+          token: response.token,
+        };
       }
 
       // Set the token in the cookie
       setCookie(COOKIE.name, response.token, COOKIE.serializeOptions);
       response.user && localStorage?.setItem(SCHEMA_NAMES.USER, JSON.stringify(userData));
 
-      setUser(response.user as User);
+      setUser(userData.user as User);
       props.onSuccess?.(response.user);
 
       notifications.show({

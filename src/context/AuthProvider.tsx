@@ -59,7 +59,7 @@ export function AuthProvider({ children }: Readonly<PropsWithChildren>) {
     // Check if the current path is in the ignored paths list
     if (!isAuthenticated && !IGNORED_PATHS.includes(pathName)) router.push(ROUTES.LOGIN.path);
     else if (isAuthenticated && IGNORED_PATHS.includes(pathName)) router.push(ROUTES.HOME.path);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, pathName, router, isLoading]);
 
